@@ -10,19 +10,20 @@ Trader bisa menjual alat analisa: indikator, Expert Advisor (EA), dan template/s
 ## Tabel
 
 `products`
-| Kolom | Keterangan |
-|---|---|
-| seller_id, category_id | |
-| name, slug, summary, description (markdown) | |
-| platform | `mt4`, `mt5`, `tradingview` |
-| price | bigint, 0 = gratis |
-| version | string |
-| file_path | disk private (tidak untuk TradingView) |
-| tradingview_url | untuk script invite-only |
-| screenshots | json path[] |
-| status | `draft`, `in_review`, `published`, `rejected`, `unlisted` |
-| rejection_reason | |
-| sales_count, rating_avg, rating_count | cache |
+
+| Kolom                                       | Keterangan                                                |
+| ------------------------------------------- | --------------------------------------------------------- |
+| seller_id, category_id                      |                                                           |
+| name, slug, summary, description (markdown) |                                                           |
+| platform                                    | `mt4`, `mt5`, `tradingview`                               |
+| price                                       | bigint, 0 = gratis                                        |
+| version                                     | string                                                    |
+| file_path                                   | disk private (tidak untuk TradingView)                    |
+| tradingview_url                             | untuk script invite-only                                  |
+| screenshots                                 | json path[]                                               |
+| status                                      | `draft`, `in_review`, `published`, `rejected`, `unlisted` |
+| rejection_reason                            |                                                           |
+| sales_count, rating_avg, rating_count       | cache                                                     |
 
 `orders`: `buyer_id`, `product_id`, `price_paid`, `commission`, `seller_income`, `status` (`pending_payment`, `paid`, `refunded`), `payment_id`, `license_key` (unik, dibuat saat paid).
 
@@ -34,17 +35,17 @@ Trader bisa menjual alat analisa: indikator, Expert Advisor (EA), dan template/s
 
 1. Buat produk (`draft`) → upload file (≤ `marketplace.max_file_mb`, ekstensi: `.ex4`, `.ex5`, `.mq4`, `.mq5`, `.zip`) → **Ajukan review** → `in_review`.
 2. Admin memeriksa:
-   - file bisa dibuka dan bukan malware
-   - deskripsi tidak mengandung klaim terlarang (lihat `ui-ux/copywriting.md`; validator otomatis menandai kata terlarang)
-   - screenshot asli
+    - file bisa dibuka dan bukan malware
+    - deskripsi tidak mengandung klaim terlarang (lihat `ui-ux/copywriting.md`; validator otomatis menandai kata terlarang)
+    - screenshot asli
 3. `published` atau `rejected` (wajib alasan). Edit setelah published → kembali `in_review` untuk perubahan file/deskripsi. Perubahan harga tidak perlu review.
 
 ## Alur Pembeli
 
 1. Halaman produk → **Beli** → centang disclaimer → checkout gateway (sama seperti subscription, `payments.payable` = order).
 2. Webhook paid:
-   - `orders.status = paid`, buat `license_key`
-   - `PostTransaction(marketplace_income, pending, seller_income, available_at = now + hold_period_days)`
+    - `orders.status = paid`, buat `license_key`
+    - `PostTransaction(marketplace_income, pending, seller_income, available_at = now + hold_period_days)`
 3. Pembeli mendapat akses **Download** lewat signed URL (berlaku 10 menit, dibuat ulang setiap klik) di **Pembelian Saya**.
 4. Produk gratis: order langsung `paid` tanpa gateway.
 

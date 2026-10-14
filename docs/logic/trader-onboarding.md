@@ -4,18 +4,18 @@ Sokotra merekrut trader untuk memposting analisa. Setiap user terdaftar (member)
 
 ## Tabel `trader_profiles`
 
-| Kolom | Keterangan |
-|---|---|
-| user_id | unik |
-| display_name, slug | unik, dipakai di URL profil `/traders/{slug}` |
-| bio, trading_style | `scalping`, `intraday`, `swing`, `position` |
-| experience_years | |
-| main_instruments | json instrument_id[] |
-| status | `applied`, `approved`, `rejected`, `suspended` |
-| rank_id | default rank level 1 (Newbie) saat approved |
-| is_featured | dikurasi admin |
-| is_flagged | ditandai fraud, dikecualikan dari payroll & leaderboard |
-| applied_at, approved_at, reviewed_by, rejection_reason | |
+| Kolom                                                  | Keterangan                                              |
+| ------------------------------------------------------ | ------------------------------------------------------- |
+| user_id                                                | unik                                                    |
+| display_name, slug                                     | unik, dipakai di URL profil `/traders/{slug}`           |
+| bio, trading_style                                     | `scalping`, `intraday`, `swing`, `position`             |
+| experience_years                                       |                                                         |
+| main_instruments                                       | json instrument_id[]                                    |
+| status                                                 | `applied`, `approved`, `rejected`, `suspended`          |
+| rank_id                                                | default rank level 1 (Newbie) saat approved             |
+| is_featured                                            | dikurasi admin                                          |
+| is_flagged                                             | ditandai fraud, dikecualikan dari payroll & leaderboard |
+| applied_at, approved_at, reviewed_by, rejection_reason |                                                         |
 
 ## Alur
 
@@ -26,9 +26,9 @@ Sokotra merekrut trader untuk memposting analisa. Setiap user terdaftar (member)
 
 ## Status → Kemampuan
 
-| Kemampuan | Syarat |
-|---|---|
-| Posting sinyal free | `approved` |
-| Posting sinyal premium & buka channel | `approved` + rank `can_sell_premium` |
-| Jual produk | `approved` + rank `can_sell_products` |
-| Masuk payroll | `approved` + kelayakan di `payroll-rewards.md` |
+| Kemampuan                             | Syarat                                         |
+| ------------------------------------- | ---------------------------------------------- |
+| Posting sinyal free                   | `approved`                                     |
+| Posting sinyal premium & buka channel | `approved` + rank `can_sell_premium`           |
+| Jual produk                           | `approved` + rank `can_sell_products`          |
+| Masuk payroll                         | `approved` + kelayakan di `payroll-rewards.md` |

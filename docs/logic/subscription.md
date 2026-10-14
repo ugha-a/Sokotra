@@ -15,16 +15,17 @@ Penghasilan kedua platform. Member membayar langganan ke trader dengan rank mene
 `channel_plans`: `trader_id` unik, `monthly_price`, `description`, `is_open` (menerima subscriber baru).
 
 `subscriptions`
-| Kolom | Keterangan |
-|---|---|
-| subscriber_id, trader_id | |
-| months | |
-| price_paid | bigint |
-| platform_fee | `price_paid × fee_percent` (dibulatkan ke bawah ke rupiah) |
-| trader_income | `price_paid − platform_fee` |
-| status | `pending_payment`, `active`, `expired`, `cancelled`, `refunded` |
-| starts_at, ends_at | |
-| payment_id | fk `payments` |
+
+| Kolom                    | Keterangan                                                      |
+| ------------------------ | --------------------------------------------------------------- |
+| subscriber_id, trader_id |                                                                 |
+| months                   |                                                                 |
+| price_paid               | bigint                                                          |
+| platform_fee             | `price_paid × fee_percent` (dibulatkan ke bawah ke rupiah)      |
+| trader_income            | `price_paid − platform_fee`                                     |
+| status                   | `pending_payment`, `active`, `expired`, `cancelled`, `refunded` |
+| starts_at, ends_at       |                                                                 |
+| payment_id               | fk `payments`                                                   |
 
 `payments` (dipakai bersama marketplace): `user_id`, `payable_type/id`, `amount`, `gateway`, `gateway_reference` **unik**, `status` (`pending`, `paid`, `failed`, `expired`, `refunded`), `paid_at`, `raw_payload` json.
 
@@ -33,9 +34,9 @@ Penghasilan kedua platform. Member membayar langganan ke trader dengan rank mene
 1. Member klik **Langganan** di profil trader → pilih durasi → wajib centang disclaimer risiko.
 2. `CreateSubscriptionCheckout` → `subscriptions` (`pending_payment`) + `payments` (`pending`) → redirect ke halaman bayar gateway (Midtrans Snap / Xendit Invoice).
 3. Webhook `paid` (idempotent per `gateway_reference`):
-   - `payments.status = paid`
-   - `subscriptions.status = active`. `starts_at = now`, atau `ends_at` langganan aktif sebelumnya jika ini perpanjangan. `ends_at = starts_at + months`.
-   - `PostTransaction(subscription_income, pending, trader_income, available_at = now + hold_period_days)`
+    - `payments.status = paid`
+    - `subscriptions.status = active`. `starts_at = now`, atau `ends_at` langganan aktif sebelumnya jika ini perpanjangan. `ends_at = starts_at + months`.
+    - `PostTransaction(subscription_income, pending, trader_income, available_at = now + hold_period_days)`
 4. Notifikasi ke member dan trader.
 
 ## Akses

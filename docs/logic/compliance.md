@@ -12,10 +12,10 @@
 ## Disclaimer Risiko
 
 - Teks dari `content.risk_disclaimer` (admin) ditampilkan:
-  - footer setiap halaman publik
-  - di setiap SignalCard (versi singkat + link)
-  - checkbox wajib sebelum checkout subscription dan produk
-  - saat registrasi (persetujuan S&K + disclaimer)
+    - footer setiap halaman publik
+    - di setiap SignalCard (versi singkat + link)
+    - checkbox wajib sebelum checkout subscription dan produk
+    - saat registrasi (persetujuan S&K + disclaimer)
 - Persetujuan disimpan di `user_consents` (`user_id`, `type`, `version`, `accepted_at`, `ip`).
 
 ## KYC

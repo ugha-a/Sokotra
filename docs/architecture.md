@@ -2,17 +2,17 @@
 
 ## Stack
 
-| Layer | Teknologi |
-|---|---|
-| Backend | Laravel 13, PHP 8.4 |
-| Frontend | Inertia 3 + React 19 (TypeScript) + Tailwind v4 + shadcn/ui (Radix) |
-| Routing FE | Laravel Wayfinder (route & action typed, `resources/js/routes`, `resources/js/actions`) |
-| Auth | Laravel Fortify (sudah termasuk 2FA & passkey dari starter kit) |
-| Role | `spatie/laravel-permission` (role: `member`, `trader`, `admin`) |
-| Test | Pest 5 |
-| Queue / Scheduler | Database queue (dev) → Redis + Horizon (production) |
-| Realtime | Laravel Reverb (dipasang saat modul Sinyal) |
-| Storage | `local` (dev) / S3 private (production) untuk KYC dan file produk |
+| Layer             | Teknologi                                                                                                  |
+| ----------------- | ---------------------------------------------------------------------------------------------------------- |
+| Backend           | Laravel 13, PHP 8.4                                                                                        |
+| Frontend          | Inertia 3 + React 19 (TypeScript) + Tailwind v4 + shadcn/ui (Radix)                                        |
+| Routing FE        | Laravel Wayfinder (route & action typed, `resources/js/routes`, `resources/js/actions`)                    |
+| Auth              | Laravel Fortify (sudah termasuk 2FA & passkey dari starter kit)                                            |
+| Role              | `spatie/laravel-permission` (role dari enum `App\Enums\Role`, dibuat oleh migration `seed_platform_roles`) |
+| Test              | Pest 5                                                                                                     |
+| Queue / Scheduler | Database queue (dev) → Redis + Horizon (production)                                                        |
+| Realtime          | Laravel Reverb (dipasang saat modul Sinyal)                                                                |
+| Storage           | `local` (dev) / S3 private (production) untuk KYC dan file produk                                          |
 
 ## Struktur Folder Backend
 
@@ -30,6 +30,7 @@ app/
 Domain: `Signal`, `Ranking`, `Payroll`, `Wallet`, `Subscription`, `Marketplace`, `Broker`, `Kyc`, `MasterData`.
 
 ### Aturan
+
 - **Controller tidak berisi logic bisnis.** Logic ada di Action agar bisa dites tanpa HTTP.
 - **Semua angka bisnis dibaca dari master data** (`logic/master-data.md`), tidak di-hardcode.
 - **Uang**: integer rupiah (`bigInteger`/`unsignedBigInteger`), tanpa desimal. Nama kolom berakhiran `_amount` atau `price`.
@@ -62,14 +63,16 @@ Navigasi sidebar disusun per role (lihat `ui-ux/sitemap-flows.md`).
 
 Mengikuti CLAUDE.md root: setiap modul **test ditulis dulu (Red)**, lalu kode minimum (Green), lalu refactor.
 
-| Jenis | Lokasi | Isi |
-|---|---|---|
-| Unit | `tests/Unit/<Domain>/` | Rumus murni: R-multiple, pips, streak, rank, gaji, ledger |
-| Feature | `tests/Feature/<Domain>/` | Action + HTTP + otorisasi role + Inertia props |
+| Jenis    | Lokasi                      | Isi                                                           |
+| -------- | --------------------------- | ------------------------------------------------------------- |
+| Unit     | `tests/Unit/<Domain>/`      | Rumus murni: R-multiple, pips, streak, rank, gaji, ledger     |
+| Frontend | `resources/js/**/*.test.ts` | Fungsi murni FE (format, navigasi) dengan Vitest bawaan Vite+ |
+| Feature  | `tests/Feature/<Domain>/`   | Action + HTTP + otorisasi role + Inertia props                |
 
 - Database test: SQLite in-memory (`phpunit.xml`).
 - Integrasi eksternal **selalu di-fake**: `FakePriceFeed`, `FakePaymentGateway`.
-- Jalankan: `php artisan test`, `npm run types:check`, `npm run check`.
+- Jalankan: `php artisan test`, `npx vp test run`, `npm run types:check`, `npm run check`.
+- Test PHP berjalan tanpa Vite (`withoutVite()` di `tests/TestCase.php`), jadi tidak perlu build sebelum test.
 
 ## Git
 

@@ -59,6 +59,39 @@
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
+
+    --font-mono:
+        'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+    /* Sokotra semantic tokens — see docs/ui-ux/design-system.md */
+    --color-brand: var(--brand);
+    --color-brand-foreground: var(--brand-foreground);
+    --color-profit: var(--profit);
+    --color-profit-foreground: var(--profit-foreground);
+    --color-profit-soft: color-mix(in oklch, var(--profit) 12%, transparent);
+    --color-loss: var(--loss);
+    --color-loss-foreground: var(--loss-foreground);
+    --color-loss-soft: color-mix(in oklch, var(--loss) 12%, transparent);
+    --color-pending: var(--pending);
+    --color-pending-foreground: var(--pending-foreground);
+    --color-pending-soft: color-mix(in oklch, var(--pending) 12%, transparent);
+    --color-neutral-status: var(--neutral-status);
+    --color-neutral-status-foreground: var(--neutral-status-foreground);
+    --color-neutral-status-soft: color-mix(
+        in oklch,
+        var(--neutral-status) 12%,
+        transparent
+    );
+    --color-premium: var(--premium);
+    --color-premium-foreground: var(--premium-foreground);
+    --color-premium-soft: color-mix(in oklch, var(--premium) 12%, transparent);
+
+    --color-rank-1: var(--rank-1);
+    --color-rank-2: var(--rank-2);
+    --color-rank-3: var(--rank-3);
+    --color-rank-4: var(--rank-4);
+    --color-rank-5: var(--rank-5);
+    --color-rank-6: var(--rank-6);
 }
 
 :root {
@@ -95,6 +128,25 @@
     --sidebar-accent-foreground: oklch(0.205 0 0);
     --sidebar-border: oklch(0.922 0 0);
     --sidebar-ring: oklch(0.87 0 0);
+
+    --brand: oklch(0.55 0.15 250);
+    --brand-foreground: oklch(0.985 0 0);
+    --profit: oklch(0.6 0.15 155);
+    --profit-foreground: oklch(0.985 0 0);
+    --loss: oklch(0.58 0.2 25);
+    --loss-foreground: oklch(0.985 0 0);
+    --pending: oklch(0.75 0.15 80);
+    --pending-foreground: oklch(0.205 0 0);
+    --neutral-status: oklch(0.556 0 0);
+    --neutral-status-foreground: oklch(0.985 0 0);
+    --premium: oklch(0.7 0.14 70);
+    --premium-foreground: oklch(0.205 0 0);
+    --rank-1: oklch(0.556 0 0);
+    --rank-2: oklch(0.6 0.15 155);
+    --rank-3: oklch(0.55 0.15 250);
+    --rank-4: oklch(0.55 0.2 300);
+    --rank-5: oklch(0.68 0.18 50);
+    --rank-6: oklch(0.75 0.15 85);
 }
 
 .dark {
@@ -130,6 +182,25 @@
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(0.269 0 0);
     --sidebar-ring: oklch(0.439 0 0);
+
+    --brand: oklch(0.68 0.14 250);
+    --brand-foreground: oklch(0.145 0 0);
+    --profit: oklch(0.72 0.16 155);
+    --profit-foreground: oklch(0.145 0 0);
+    --loss: oklch(0.68 0.19 25);
+    --loss-foreground: oklch(0.145 0 0);
+    --pending: oklch(0.8 0.14 80);
+    --pending-foreground: oklch(0.145 0 0);
+    --neutral-status: oklch(0.708 0 0);
+    --neutral-status-foreground: oklch(0.145 0 0);
+    --premium: oklch(0.78 0.13 70);
+    --premium-foreground: oklch(0.145 0 0);
+    --rank-1: oklch(0.708 0 0);
+    --rank-2: oklch(0.72 0.16 155);
+    --rank-3: oklch(0.68 0.14 250);
+    --rank-4: oklch(0.7 0.18 300);
+    --rank-5: oklch(0.75 0.16 50);
+    --rank-6: oklch(0.82 0.14 85);
 }
 
 @layer base {

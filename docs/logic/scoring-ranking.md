@@ -11,22 +11,23 @@ Hanya sinyal berstatus final **`tp_hit`, `sl_hit`, `closed_timeout`**. Status `e
 
 Disimpan per `period` (`week`, `month`, `rolling_90d`, `all_time`) + `period_start`. Diperbarui saat event `SignalClosed` (inkremental) dan direkonsiliasi oleh job harian.
 
-| Metrik | Rumus |
-|---|---|
-| closed_signals | jumlah sinyal closed |
-| wins / losses | |
-| win_rate | `wins / closed_signals × 100` |
-| total_r | `Σ result_r` |
-| avg_rr | rata-rata `rr` dari sinyal closed |
-| total_pips | `Σ result_pips` (informasi saja, tidak untuk ranking) |
-| max_consecutive_wins / losses | urut `closed_at` |
-| current_streak | kemenangan berurutan terakhir (0 jika terakhir kalah) |
-| max_drawdown_r | penurunan terbesar dari puncak kurva kumulatif `result_r` |
-| profit_factor | `Σ R menang / |Σ R kalah|` |
+| Metrik                        | Rumus                                                     |
+| ----------------------------- | --------------------------------------------------------- |
+| closed_signals                | jumlah sinyal closed                                      |
+| wins / losses                 |                                                           |
+| win_rate                      | `wins / closed_signals × 100`                             |
+| total_r                       | `Σ result_r`                                              |
+| avg_rr                        | rata-rata `rr` dari sinyal closed                         |
+| total_pips                    | `Σ result_pips` (informasi saja, tidak untuk ranking)     |
+| max_consecutive_wins / losses | urut `closed_at`                                          |
+| current_streak                | kemenangan berurutan terakhir (0 jika terakhir kalah)     |
+| max_drawdown_r                | penurunan terbesar dari puncak kurva kumulatif `result_r` |
+| profit_factor                 | `Σ R menang / abs(Σ R kalah)`                             |
 
 `Support\TraderStatsCalculator::fromSignals(Collection $signals): TraderStats` adalah fungsi murni dan sumber kebenaran tunggal rumus di atas.
 
 ### Streak
+
 - Kemenangan berurutan menurut `closed_at`, satu trader, semua instrumen.
 - Kekalahan me-reset streak ke 0.
 - `expired`/`cancelled` diabaikan (tidak me-reset), kecuali `signal.count_expired_in_streak = true`.
@@ -35,13 +36,14 @@ Disimpan per `period` (`week`, `month`, `rolling_90d`, `all_time`) + `period_sta
 ## Rank (dihitung ulang mingguan, Senin 00:05 WIB)
 
 Job `RecalculateRanks`:
+
 1. Ambil statistik `rolling_90d` dan jumlah **follower valid** setiap trader.
 2. Rank = level **tertinggi** yang **semua** threshold-nya terpenuhi:
-   - `closed_signals ≥ min_closed_signals`
-   - `win_rate ≥ min_win_rate`
-   - `total_r ≥ min_total_r`
-   - `valid_followers ≥ min_valid_followers`
-   - `max_drawdown_r ≤ max_drawdown_r` (jika diisi)
+    - `closed_signals ≥ min_closed_signals`
+    - `win_rate ≥ min_win_rate`
+    - `total_r ≥ min_total_r`
+    - `valid_followers ≥ min_valid_followers`
+    - `max_drawdown_r ≤ max_drawdown_r` (jika diisi)
 3. Perubahan rank dicatat di `trader_rank_histories` dan dinotifikasi ke trader.
 4. Jika rank turun di bawah `can_sell_premium`: channel premium **dibekukan untuk penjualan baru**. Subscriber yang ada tetap dilayani sampai masa langganan habis.
 
@@ -71,10 +73,10 @@ consistency = 1 / (1 + max_drawdown_r)
 
 ## Anti-Fraud Ranking
 
-| Pola | Deteksi | Tindakan |
-|---|---|---|
+| Pola               | Deteksi                                                                                   | Tindakan                                                                 |
+| ------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | Hedging antar akun | Sinyal berlawanan, instrumen sama, publish dalam ±10 menit, dari IP/device hash yang sama | Tandai kedua trader untuk review admin; sinyal dikecualikan dari payroll |
-| Multi-akun trader | KYC (NIK) sama | Ditolak saat approval |
-| Followers palsu | Banyak akun baru dari IP sama mem-follow trader yang sama | Follower ditandai tidak valid |
-| Spam TP kecil | Dicegah oleh `min_rr` dan `min_sl_pips` | — |
-| Cancel berlebihan | `max_cancel_per_week` | — |
+| Multi-akun trader  | KYC (NIK) sama                                                                            | Ditolak saat approval                                                    |
+| Followers palsu    | Banyak akun baru dari IP sama mem-follow trader yang sama                                 | Follower ditandai tidak valid                                            |
+| Spam TP kecil      | Dicegah oleh `min_rr` dan `min_sl_pips`                                                   | —                                                                        |
+| Cancel berlebihan  | `max_cancel_per_week`                                                                     | —                                                                        |

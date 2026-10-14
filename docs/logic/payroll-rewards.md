@@ -31,20 +31,22 @@ gaji = base_salary[rank]
 
 ## Proses
 
-| Langkah | Waktu | Aktor |
-|---|---|---|
-| 1. `GeneratePayrollDraft` untuk bulan sebelumnya | Tanggal 1, 01:00 WIB | Scheduler |
-| 2. Review item, bisa men-*hold* trader tertentu (wajib isi catatan) | Tanggal 1–5 | Admin |
-| 3. `ApprovePayroll` → setiap item `amount > 0` dikreditkan ke wallet trader (`payroll_credit`, langsung **available**) | | Admin |
-| 4. Notifikasi ke trader + slip rincian | | Sistem |
+| Langkah                                                                                                                | Waktu                | Aktor     |
+| ---------------------------------------------------------------------------------------------------------------------- | -------------------- | --------- |
+| 1. `GeneratePayrollDraft` untuk bulan sebelumnya                                                                       | Tanggal 1, 01:00 WIB | Scheduler |
+| 2. Review item, bisa men-_hold_ trader tertentu (wajib isi catatan)                                                    | Tanggal 1–5          | Admin     |
+| 3. `ApprovePayroll` → setiap item `amount > 0` dikreditkan ke wallet trader (`payroll_credit`, langsung **available**) |                      | Admin     |
+| 4. Notifikasi ke trader + slip rincian                                                                                 |                      | Sistem    |
 
 Tabel:
+
 - `payroll_periods` (`month` unik `YYYY-MM`, `status` draft/approved, `approved_by`, `approved_at`, `total_amount`)
 - `payroll_items` (`period_id`, `trader_id`, `rank_id`, `eligible`, `ineligible_reasons`, `base_amount`, `wins_counted`, `wins_amount`, `followers_counted`, `followers_amount`, `streak_amount`, `total_amount`, `status` pending/held/paid)
 
 Aturan:
+
 - Satu period hanya bisa di-approve sekali (idempotent). Kredit wallet memakai `reference = payroll_item:{id}` yang unik.
-- Draft bisa di-*regenerate* selama belum di-approve.
+- Draft bisa di-_regenerate_ selama belum di-approve.
 - Pajak (PPh) akan dihitung di fase berikutnya; kolom `tax_amount` disiapkan (default 0).
 
 ## Contoh

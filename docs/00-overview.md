@@ -6,11 +6,11 @@ Referensi model bisnis: Traders Family (tradersfamily.id).
 
 ## Persona
 
-| Persona | Kebutuhan | Yang didapat di Sokotra |
-|---|---|---|
-| **Member** (FOMO / pemula / serius belajar) | Ingin ikut trading tapi belum bisa analisa | Follow trader, sinyal gratis & premium, marketplace indikator/EA, buka akun broker, edukasi |
-| **Trader Analis** | Ingin dibayar dari kemampuan analisa | Channel sinyal, ranking, followers, gaji bulanan, reward streak, jual subscription & indikator/EA |
-| **Admin** | Mengelola platform | Master data, approval (trader, KYC, produk, withdraw, payroll, broker), laporan revenue |
+| Persona                                     | Kebutuhan                                  | Yang didapat di Sokotra                                                                           |
+| ------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------- |
+| **Member** (FOMO / pemula / serius belajar) | Ingin ikut trading tapi belum bisa analisa | Follow trader, sinyal gratis & premium, marketplace indikator/EA, buka akun broker, edukasi       |
+| **Trader Analis**                           | Ingin dibayar dari kemampuan analisa       | Channel sinyal, ranking, followers, gaji bulanan, reward streak, jual subscription & indikator/EA |
+| **Admin**                                   | Mengelola platform                         | Master data, approval (trader, KYC, produk, withdraw, payroll, broker), laporan revenue           |
 
 Satu user bisa menjadi Member sekaligus Trader setelah lolos approval.
 
@@ -25,19 +25,19 @@ Biaya platform: gaji bulanan trader dan reward streak (lihat `logic/payroll-rewa
 
 ## Glosarium
 
-| Istilah | Arti |
-|---|---|
-| **Sinyal / Analisa** | Rencana trading dari trader: instrumen, arah, entry, SL, TP, dan alasan analisa |
-| **Pip** | Satuan pergerakan harga terkecil yang lazim. Besarnya per instrumen diatur di master `instruments.pip_size` |
-| **SL / TP** | Stop Loss / Take Profit. Keduanya wajib di setiap sinyal |
-| **RR (Risk Reward)** | `jarak TP / jarak SL` dari entry |
-| **R-multiple** | Satuan skor. Menang = `+RR`, kalah = `-1`. Adil antar instrumen |
-| **Streak** | Jumlah kemenangan berurutan (urut `closed_at`) |
-| **Rank** | Level trader (diatur di master `ranks`), dihitung ulang mingguan |
-| **Follower valid** | Follower dengan email terverifikasi dan aktif dalam N hari terakhir (master) |
-| **Premium channel** | Sinyal berbayar dari trader rank menengah ke atas |
-| **Ledger** | Catatan mutasi saldo wallet yang tidak bisa diubah (append-only) |
-| **IB** | Introducing Broker, skema afiliasi broker yang memberi rebate per lot |
+| Istilah              | Arti                                                                                                        |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| **Sinyal / Analisa** | Rencana trading dari trader: instrumen, arah, entry, SL, TP, dan alasan analisa                             |
+| **Pip**              | Satuan pergerakan harga terkecil yang lazim. Besarnya per instrumen diatur di master `instruments.pip_size` |
+| **SL / TP**          | Stop Loss / Take Profit. Keduanya wajib di setiap sinyal                                                    |
+| **RR (Risk Reward)** | `jarak TP / jarak SL` dari entry                                                                            |
+| **R-multiple**       | Satuan skor. Menang = `+RR`, kalah = `-1`. Adil antar instrumen                                             |
+| **Streak**           | Jumlah kemenangan berurutan (urut `closed_at`)                                                              |
+| **Rank**             | Level trader (diatur di master `ranks`), dihitung ulang mingguan                                            |
+| **Follower valid**   | Follower dengan email terverifikasi dan aktif dalam N hari terakhir (master)                                |
+| **Premium channel**  | Sinyal berbayar dari trader rank menengah ke atas                                                           |
+| **Ledger**           | Catatan mutasi saldo wallet yang tidak bisa diubah (append-only)                                            |
+| **IB**               | Introducing Broker, skema afiliasi broker yang memberi rebate per lot                                       |
 
 ## Prinsip Produk
 
@@ -47,20 +47,20 @@ Biaya platform: gaji bulanan trader dan reward streak (lihat `logic/payroll-rewa
 
 ## Peta Dokumen
 
-| Dokumen | Isi |
-|---|---|
-| `architecture.md` | Stack, struktur folder, konvensi kode, testing |
-| `logic/master-data.md` | Semua master data dan pemakainya |
-| `logic/trader-onboarding.md` | Rekrutmen trader, profil, status |
-| `logic/signal-lifecycle.md` | Sinyal: validasi, state machine, engine evaluasi |
-| `logic/scoring-ranking.md` | Statistik, skor, rank, leaderboard, follow |
-| `logic/payroll-rewards.md` | Gaji bulanan dan reward |
-| `logic/wallet-ledger.md` | Wallet, ledger, withdraw |
-| `logic/subscription.md` | Channel premium |
-| `logic/marketplace.md` | Indikator/EA |
-| `logic/broker.md` | Broker partner dan rebate IB |
-| `logic/compliance.md` | Kepatuhan, KYC, disclaimer, anti-fraud |
-| `ui-ux/design-system.md` | Token warna, tipografi, format angka |
-| `ui-ux/components.md` | Katalog komponen reusable |
-| `ui-ux/sitemap-flows.md` | Sitemap per role dan user flow |
-| `ui-ux/copywriting.md` | Gaya bahasa, teks wajib, kata terlarang |
+| Dokumen                      | Isi                                              |
+| ---------------------------- | ------------------------------------------------ |
+| `architecture.md`            | Stack, struktur folder, konvensi kode, testing   |
+| `logic/master-data.md`       | Semua master data dan pemakainya                 |
+| `logic/trader-onboarding.md` | Rekrutmen trader, profil, status                 |
+| `logic/signal-lifecycle.md`  | Sinyal: validasi, state machine, engine evaluasi |
+| `logic/scoring-ranking.md`   | Statistik, skor, rank, leaderboard, follow       |
+| `logic/payroll-rewards.md`   | Gaji bulanan dan reward                          |
+| `logic/wallet-ledger.md`     | Wallet, ledger, withdraw                         |
+| `logic/subscription.md`      | Channel premium                                  |
+| `logic/marketplace.md`       | Indikator/EA                                     |
+| `logic/broker.md`            | Broker partner dan rebate IB                     |
+| `logic/compliance.md`        | Kepatuhan, KYC, disclaimer, anti-fraud           |
+| `ui-ux/design-system.md`     | Token warna, tipografi, format angka             |
+| `ui-ux/components.md`        | Katalog komponen reusable                        |
+| `ui-ux/sitemap-flows.md`     | Sitemap per role dan user flow                   |
+| `ui-ux/copywriting.md`       | Gaya bahasa, teks wajib, kata terlarang          |
