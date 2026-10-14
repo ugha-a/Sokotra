@@ -4,7 +4,9 @@ Semua angka dan pilihan bisnis disimpan di master dan dikelola dari **Admin → 
 
 Aturan umum:
 
-- Setiap master punya kolom `is_active` (kecuali Platform Settings). Data yang sudah dipakai transaksi **tidak dihapus**, cukup dinonaktifkan.
+- Setiap master punya kolom `is_active` (Halaman Konten memakai `is_published`, Platform Settings tidak punya). Data yang sudah dipakai transaksi **tidak dihapus**, cukup dinonaktifkan. Admin UI tidak menyediakan tombol hapus.
+- Nilai default dibuat oleh migration `seed_master_defaults` (memanggil `MasterDataSeeder`, idempotent: tidak menimpa nilai yang sudah diubah admin). Default baru di masa depan = migration baru.
+- Implementasi admin: setiap master didefinisikan sebagai class di `app/MasterData/Resources/` (lihat `architecture.md`).
 - Perubahan master **tidak mengubah data historis**. Contoh: sinyal yang sudah closed tetap memakai `pip_size` saat ia dibuat (disalin ke sinyal).
 - Setiap perubahan master dicatat di `admin_audit_logs` (siapa, kapan, nilai lama/baru).
 
@@ -104,7 +106,11 @@ Seed: 0–99 → 0, 100–499 → 250.000, 500–999 → 750.000, 1.000+ → 1.5
 
 ## 7. Platform Settings — `platform_settings`
 
-Key-value (`key` unik, `value` json, `group`, `type`, `label`, `description`). Diakses lewat `App\Support\Settings::get('key')` (cache, dibersihkan saat update).
+Key-value (`key` unik, `value` json, `group`, `type`, `label`, `description`, `options`, `sort_order`). Diakses lewat `App\Support\Settings::get('key')`: nilai sudah bertipe sesuai `type`, di-cache, cache dibersihkan saat update, dan key yang tidak dikenal melempar exception.
+
+Tipe (`App\Enums\SettingType`): `integer`, `decimal`, `money`, `percent` (0–100), `boolean`, `text`, `choice` (`options` = map nilai → label), `integer_list`, `string_list`. Validasi tambahan: total `score.weight_*` harus 1,00.
+
+Update lewat `PUT /admin/settings` dengan payload bersarang per grup: `settings[wallet][min_withdraw]=150000`.
 
 | Key                            | Default      | Keterangan                                     |
 | ------------------------------ | ------------ | ---------------------------------------------- |
@@ -122,7 +128,7 @@ Key-value (`key` unik, `value` json, `group`, `type`, `label`, `description`). D
 
 | Kolom                 | Keterangan                                             |
 | --------------------- | ------------------------------------------------------ |
-| name, slug, logo_path |                                                        |
+| name, slug, logo_url  |                                                        |
 | regulator_license_no  | Nomor izin Bappebti (wajib)                            |
 | website_url           |                                                        |
 | affiliate_url         | Link IB, mendukung placeholder `{ref}`                 |

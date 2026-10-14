@@ -49,6 +49,12 @@ export function formatPercent(percent: Numeric): string {
     return `${formatDecimal(toNumber(percent), 1)}%`;
 }
 
+export function formatNumber(value: Numeric): string {
+    return new Intl.NumberFormat(LOCALE, { maximumFractionDigits: 5 }).format(
+        toNumber(value),
+    );
+}
+
 export function formatCompact(count: number): string {
     return new Intl.NumberFormat(LOCALE, {
         notation: 'compact',

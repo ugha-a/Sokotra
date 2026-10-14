@@ -9,14 +9,6 @@ beforeEach(function () {
     $this->seed(RoleSeeder::class);
 });
 
-function userWithRoles(Role ...$roles): User
-{
-    $user = User::factory()->create();
-    $user->assignRole(array_map(fn (Role $role) => $role->value, $roles));
-
-    return $user;
-}
-
 it('seeds every platform role', function () {
     expect(Spatie\Permission\Models\Role::pluck('name')->sort()->values()->all())
         ->toBe(['admin', 'member', 'trader']);

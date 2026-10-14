@@ -25,7 +25,10 @@ describe('buildNavigation', () => {
     it('adds the admin group for admins', () => {
         expect(summarize(['admin'])).toEqual([
             { label: 'Member', items: ['Beranda'] },
-            { label: 'Admin', items: ['Ringkasan'] },
+            {
+                label: 'Admin',
+                items: ['Ringkasan', 'Master Data', 'Pengaturan', 'Audit Log'],
+            },
         ]);
     });
 
@@ -37,6 +40,13 @@ describe('buildNavigation', () => {
                 ),
         );
 
-        expect(urls).toEqual(['/dashboard', '/trader', '/admin']);
+        expect(urls).toEqual([
+            '/dashboard',
+            '/trader',
+            '/admin',
+            '/admin/master/instruments',
+            '/admin/settings',
+            '/admin/audit-logs',
+        ]);
     });
 });

@@ -1,5 +1,7 @@
 <?php
 
+use App\Enums\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -44,7 +46,15 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+function userWithRoles(Role ...$roles): User
 {
-    // ..
+    $user = User::factory()->create();
+    $user->assignRole(array_map(fn (Role $role) => $role->value, $roles));
+
+    return $user;
+}
+
+function adminUser(): User
+{
+    return userWithRoles(Role::Member, Role::Admin);
 }

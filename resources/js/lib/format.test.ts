@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vite-plus/test';
 import {
     formatCompact,
     formatDate,
+    formatNumber,
     formatPercent,
     formatPips,
     formatPrice,
@@ -50,6 +51,14 @@ describe('formatPercent', () => {
     it('rounds to one decimal', () => {
         expect(formatPercent(55.234)).toBe('55,2%');
         expect(formatPercent(100)).toBe('100,0%');
+    });
+});
+
+describe('formatNumber', () => {
+    it('formats plain numbers with Indonesian separators', () => {
+        expect(formatNumber(1250)).toBe('1.250');
+        expect(formatNumber('1.5')).toBe('1,5');
+        expect(formatNumber('0.00010')).toBe('0,0001');
     });
 });
 

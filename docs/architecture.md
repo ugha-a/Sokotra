@@ -24,7 +24,8 @@ app/
   Http/Requests/<Area>/  # FormRequest per aksi
   Models/
   Services/<Integrasi>/  # PriceFeed, PaymentGateway, Disbursement (interface + driver)
-  Support/               # Helper murni (Money, Pips, RMultiple)
+  MasterData/            # MasterResource per master (Resources/), Field (schema form), MasterRegistry
+  Support/               # Helper murni (Settings, Money, Pips, RMultiple)
 ```
 
 Domain: `Signal`, `Ranking`, `Payroll`, `Wallet`, `Subscription`, `Marketplace`, `Broker`, `Kyc`, `MasterData`.
@@ -58,6 +59,18 @@ resources/js/
 ```
 
 Navigasi sidebar disusun per role (lihat `ui-ux/sitemap-flows.md`).
+
+### Master Data Generik
+
+Semua master di admin memakai satu jalur: `MasterRegistry` → `MasterResource` → `Admin\MasterDataController` → halaman `admin/master/index`.
+
+- Menambah master baru = membuat class baru di `app/MasterData/Resources/` dan mendaftarkannya di `MasterRegistry::RESOURCES`. Tidak perlu controller atau halaman baru.
+- `MasterResource` mendeskripsikan `fields()` (schema form via `Field::*`), `columns()`, `rules()`, serta hook `prepareForValidation()`, `after()` (validasi lintas field), `beforeSave()`, dan `appends()` (accessor model untuk tabel).
+- Validasi master dijalankan di `App\Actions\MasterData\SaveMasterRecord`, bukan FormRequest, karena aturannya berasal dari resource. Semua create/update/toggle dicatat ke `admin_audit_logs` lewat `RecordAdminAudit`.
+
+### Lokalisasi
+
+Locale default `id`. Pesan validasi ada di `lang/id/validation.php`; label field diambil dari schema (`attributeLabels()`). Rule yang belum diterjemahkan jatuh ke bahasa Inggris.
 
 ## Testing (TDD wajib)
 

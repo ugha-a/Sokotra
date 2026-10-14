@@ -1,0 +1,29 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('platform_settings', function (Blueprint $table) {
+            $table->id();
+            $table->string('key')->unique();
+            $table->string('group', 30)->index();
+            $table->string('type', 20);
+            $table->string('label');
+            $table->text('description')->nullable();
+            $table->json('options')->nullable();
+            $table->json('value');
+            $table->unsignedInteger('sort_order')->default(0);
+            $table->timestamps();
+        });
+    }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('platform_settings');
+    }
+};
