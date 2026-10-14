@@ -1,0 +1,77 @@
+# Arsitektur & Konvensi Kode
+
+## Stack
+
+| Layer | Teknologi |
+|---|---|
+| Backend | Laravel 13, PHP 8.4 |
+| Frontend | Inertia 3 + React 19 (TypeScript) + Tailwind v4 + shadcn/ui (Radix) |
+| Routing FE | Laravel Wayfinder (route & action typed, `resources/js/routes`, `resources/js/actions`) |
+| Auth | Laravel Fortify (sudah termasuk 2FA & passkey dari starter kit) |
+| Role | `spatie/laravel-permission` (role: `member`, `trader`, `admin`) |
+| Test | Pest 5 |
+| Queue / Scheduler | Database queue (dev) → Redis + Horizon (production) |
+| Realtime | Laravel Reverb (dipasang saat modul Sinyal) |
+| Storage | `local` (dev) / S3 private (production) untuk KYC dan file produk |
+
+## Struktur Folder Backend
+
+```
+app/
+  Actions/<Domain>/      # Satu class = satu use-case. Method publik: handle(...)
+  Enums/                 # Status & tipe (backed enum string)
+  Http/Controllers/<Area>/  # Area: Public, Member, Trader, Admin. Tipis: validasi → Action → Inertia
+  Http/Requests/<Area>/  # FormRequest per aksi
+  Models/
+  Services/<Integrasi>/  # PriceFeed, PaymentGateway, Disbursement (interface + driver)
+  Support/               # Helper murni (Money, Pips, RMultiple)
+```
+
+Domain: `Signal`, `Ranking`, `Payroll`, `Wallet`, `Subscription`, `Marketplace`, `Broker`, `Kyc`, `MasterData`.
+
+### Aturan
+- **Controller tidak berisi logic bisnis.** Logic ada di Action agar bisa dites tanpa HTTP.
+- **Semua angka bisnis dibaca dari master data** (`logic/master-data.md`), tidak di-hardcode.
+- **Uang**: integer rupiah (`bigInteger`/`unsignedBigInteger`), tanpa desimal. Nama kolom berakhiran `_amount` atau `price`.
+- **Harga instrumen**: `decimal(18,5)`. Di PHP diperlakukan sebagai string/`float` hanya di Support helper.
+- **Persentase**: `decimal(5,2)` (contoh `20.00` = 20%).
+- **Status**: PHP backed enum di `app/Enums`, kolom `string`.
+- **Data finansial & audit bersifat append-only**: `wallet_transactions`, `signal_events`. Tidak ada update/delete.
+- **Operasi uang** dibungkus `DB::transaction()` dengan `lockForUpdate()` pada wallet.
+- **Webhook pembayaran idempotent** (unik per `gateway_reference`).
+
+## Struktur Folder Frontend
+
+```
+resources/js/
+  pages/
+    public/    # landing, leaderboard, profil trader, marketplace, broker
+    member/    # feed, langganan, pembelian, wallet
+    trader/    # posting sinyal, statistik, channel, produk, payroll
+    admin/     # master data, approval, laporan
+  components/
+    ui/        # shadcn primitives — jangan diubah untuk kebutuhan domain
+    domain/    # SignalCard, TraderCard, RankBadge, dst (lihat ui-ux/components.md)
+  layouts/     # app (sidebar), auth, settings, public
+  lib/         # format.ts (Rupiah, pips, persen, tanggal), utils.ts
+```
+
+Navigasi sidebar disusun per role (lihat `ui-ux/sitemap-flows.md`).
+
+## Testing (TDD wajib)
+
+Mengikuti CLAUDE.md root: setiap modul **test ditulis dulu (Red)**, lalu kode minimum (Green), lalu refactor.
+
+| Jenis | Lokasi | Isi |
+|---|---|---|
+| Unit | `tests/Unit/<Domain>/` | Rumus murni: R-multiple, pips, streak, rank, gaji, ledger |
+| Feature | `tests/Feature/<Domain>/` | Action + HTTP + otorisasi role + Inertia props |
+
+- Database test: SQLite in-memory (`phpunit.xml`).
+- Integrasi eksternal **selalu di-fake**: `FakePriceFeed`, `FakePaymentGateway`.
+- Jalankan: `php artisan test`, `npm run types:check`, `npm run check`.
+
+## Git
+
+- Branch `main` stabil. Setiap modul di branch `feature/<modul>`.
+- Commit message: `<type>(<domain>): <ringkasan>` — contoh `feat(signal): evaluasi otomatis TP/SL dari candle 1m`.
