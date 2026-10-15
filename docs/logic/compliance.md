@@ -24,8 +24,11 @@ Wajib untuk: menjadi trader, withdraw, menjual produk, membuka premium.
 
 `kyc_verifications`: `user_id`, `full_name`, `nik` (**terenkripsi**, plus `nik_hash` unik untuk deteksi duplikat), `birth_date`, `id_card_path`, `selfie_path` (disk private), `status` (`submitted`, `verified`, `rejected`), `reviewed_by`, `reviewed_at`, `rejection_reason`.
 
-- Satu NIK = satu akun (`nik_hash` unik).
-- Dokumen hanya bisa dilihat admin dengan permission `kyc.review`, lewat signed URL. Setiap akses dicatat di `kyc_access_logs`.
+- **Satu baris KYC per user** (`user_id` unik). Pengiriman ulang mengganti data, mengembalikan status ke `submitted`, dan menghapus file lama.
+- Satu NIK = satu akun: `nik_hash` (HMAC-SHA256 dengan `APP_KEY`) unik dan dicek **saat pengajuan**. Jika `APP_KEY` dirotasi, semua `nik_hash` harus dihitung ulang.
+- Admin melihat NIK tersamarkan (`************1234`); NIK lengkap terlihat di foto KTP.
+- File disimpan di disk `local` (`storage/app/private`, `kyc/{user_id}/`). Batas ukuran `kyc.max_file_mb`, usia minimum `kyc.min_age`.
+- Dokumen hanya bisa dilihat admin dengan permission `kyc.review` (`App\Enums\Permission`, diberikan ke role admin oleh `RoleSeeder`), lewat signed URL yang berlaku `kyc.document_link_minutes` menit. Setiap akses (termasuk setiap kali halaman review memuat gambar) dicatat di `kyc_access_logs`.
 - Fase lanjut: OCR KTP & liveness check via provider.
 
 ## Data Pribadi (UU PDP)

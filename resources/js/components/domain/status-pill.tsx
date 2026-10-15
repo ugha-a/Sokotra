@@ -1,8 +1,7 @@
+import type { StatusTone } from '@/lib/status';
 import { cn } from '@/lib/utils';
 
-type Tone = 'profit' | 'loss' | 'pending' | 'neutral' | 'premium' | 'brand';
-
-const tones: Record<Tone, string> = {
+const tones: Record<StatusTone, string> = {
     profit: 'bg-profit-soft text-profit',
     loss: 'bg-loss-soft text-loss',
     pending: 'bg-pending-soft text-pending',
@@ -17,7 +16,7 @@ export function StatusPill({
     className,
 }: {
     label: string;
-    tone: Tone;
+    tone: StatusTone;
     className?: string;
 }) {
     return (

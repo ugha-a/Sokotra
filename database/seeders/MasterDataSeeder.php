@@ -201,6 +201,12 @@ class MasterDataSeeder extends Seeder
                 'pasti profit', 'dijamin untung', 'anti loss', 'tanpa risiko',
                 'cepat kaya', 'passive income pasti', 'balik modal', 'win rate 100%',
             ], 'Klaim terlarang', null],
+
+            [SettingGroup::Trader, 'trader.reapply_cooldown_days', SettingType::Integer, 7, 'Jeda pengajuan ulang setelah aplikasi ditolak (hari)', null],
+            [SettingGroup::Trader, 'trader.max_main_instruments', SettingType::Integer, 5, 'Maksimal instrumen utama per trader', null],
+            [SettingGroup::Trader, 'kyc.max_file_mb', SettingType::Integer, 5, 'Ukuran foto KTP / selfie maksimal (MB)', null],
+            [SettingGroup::Trader, 'kyc.min_age', SettingType::Integer, 18, 'Usia minimum (tahun)', null],
+            [SettingGroup::Trader, 'kyc.document_link_minutes', SettingType::Integer, 10, 'Masa berlaku link dokumen KYC untuk admin (menit)', null],
         ];
 
         foreach ($settings as $order => [$group, $key, $type, $value, $label, $options]) {

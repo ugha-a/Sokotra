@@ -76,7 +76,7 @@ consistency = 1 / (1 + max_drawdown_r)
 | Pola               | Deteksi                                                                                   | Tindakan                                                                 |
 | ------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
 | Hedging antar akun | Sinyal berlawanan, instrumen sama, publish dalam ±10 menit, dari IP/device hash yang sama | Tandai kedua trader untuk review admin; sinyal dikecualikan dari payroll |
-| Multi-akun trader  | KYC (NIK) sama                                                                            | Ditolak saat approval                                                    |
+| Multi-akun trader  | KYC (NIK) sama                                                                            | Ditolak saat pengajuan (validasi `nik_hash`)                             |
 | Followers palsu    | Banyak akun baru dari IP sama mem-follow trader yang sama                                 | Follower ditandai tidak valid                                            |
 | Spam TP kecil      | Dicegah oleh `min_rr` dan `min_sl_pips`                                                   | —                                                                        |
 | Cancel berlebihan  | `max_cancel_per_week`                                                                     | —                                                                        |

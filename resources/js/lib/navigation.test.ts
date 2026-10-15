@@ -9,9 +9,9 @@ function summarize(roles: string[]) {
 }
 
 describe('buildNavigation', () => {
-    it('shows only the member group to members', () => {
+    it('offers the trader application to members', () => {
         expect(summarize(['member'])).toEqual([
-            { label: 'Member', items: ['Beranda'] },
+            { label: 'Member', items: ['Beranda', 'Jadi Trader'] },
         ]);
     });
 
@@ -24,10 +24,16 @@ describe('buildNavigation', () => {
 
     it('adds the admin group for admins', () => {
         expect(summarize(['admin'])).toEqual([
-            { label: 'Member', items: ['Beranda'] },
+            { label: 'Member', items: ['Beranda', 'Jadi Trader'] },
             {
                 label: 'Admin',
-                items: ['Ringkasan', 'Master Data', 'Pengaturan', 'Audit Log'],
+                items: [
+                    'Ringkasan',
+                    'Aplikasi Trader',
+                    'Master Data',
+                    'Pengaturan',
+                    'Audit Log',
+                ],
             },
         ]);
     });
@@ -44,6 +50,7 @@ describe('buildNavigation', () => {
             '/dashboard',
             '/trader',
             '/admin',
+            '/admin/traders',
             '/admin/master/instruments',
             '/admin/settings',
             '/admin/audit-logs',

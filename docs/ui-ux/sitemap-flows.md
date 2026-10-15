@@ -41,16 +41,16 @@
 
 ### Admin — grup "Admin"
 
-| Menu           | URL                                                                                                                                                                                                    |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Ringkasan      | `/admin` (KPI: user, trader aktif, revenue per sumber, antrian approval)                                                                                                                               |
-| Approval       | `/admin/traders`, `/admin/kyc`, `/admin/products`, `/admin/withdrawals`, `/admin/broker-accounts`                                                                                                      |
-| Payroll        | `/admin/payroll`                                                                                                                                                                                       |
-| Pengguna       | `/admin/users`                                                                                                                                                                                         |
-| Sinyal & Fraud | `/admin/signals`, `/admin/fraud-flags`                                                                                                                                                                 |
-| Rebate IB      | `/admin/broker-rebates`                                                                                                                                                                                |
-| Master Data    | `/admin/master/{instruments,ranks,payroll-rules,follower-brackets,brokers,product-categories,banks,content-pages}`, `/admin/settings` (Signal Rules, Score, Wallet, Subscription, Marketplace, Konten) |
-| Audit Log      | `/admin/audit-logs`                                                                                                                                                                                    |
+| Menu           | URL                                                                                                                                                                                                                            |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Ringkasan      | `/admin` (KPI: user, trader aktif, revenue per sumber, antrian approval)                                                                                                                                                       |
+| Approval       | `/admin/traders` (+ detail `/admin/traders/{id}` berisi review KYC), `/admin/products`, `/admin/withdrawals`, `/admin/broker-accounts`. Antrian `/admin/kyc` terpisah menyusul di modul Wallet (KYC untuk withdraw non-trader) |
+| Payroll        | `/admin/payroll`                                                                                                                                                                                                               |
+| Pengguna       | `/admin/users`                                                                                                                                                                                                                 |
+| Sinyal & Fraud | `/admin/signals`, `/admin/fraud-flags`                                                                                                                                                                                         |
+| Rebate IB      | `/admin/broker-rebates`                                                                                                                                                                                                        |
+| Master Data    | `/admin/master/{instruments,ranks,payroll-rules,follower-brackets,brokers,product-categories,banks,content-pages}`, `/admin/settings` (Signal Rules, Score, Wallet, Subscription, Marketplace, Konten)                         |
+| Audit Log      | `/admin/audit-logs`                                                                                                                                                                                                            |
 
 Pengaturan akun: `/settings/*` (bawaan starter kit).
 

@@ -14,7 +14,12 @@ it('returns typed default settings', function () {
         ->and(Settings::get('signal.ambiguous_candle_rule'))->toBe('sl_first')
         ->and(Settings::get('signal.count_expired_in_streak'))->toBeFalse()
         ->and(Settings::get('content.prohibited_phrases'))->toContain('pasti profit')
-        ->and(Settings::get('content.risk_disclaimer'))->toContain('berisiko tinggi');
+        ->and(Settings::get('content.risk_disclaimer'))->toContain('berisiko tinggi')
+        ->and(Settings::get('trader.reapply_cooldown_days'))->toBe(7)
+        ->and(Settings::get('trader.max_main_instruments'))->toBe(5)
+        ->and(Settings::get('kyc.max_file_mb'))->toBe(5)
+        ->and(Settings::get('kyc.min_age'))->toBe(18)
+        ->and(Settings::get('kyc.document_link_minutes'))->toBe(10);
 });
 
 it('fails loudly for unknown setting keys', function () {
@@ -33,7 +38,7 @@ it('shows settings grouped for admins', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('admin/settings')
-            ->has('groups', 6)
+            ->has('groups', 7)
             ->where('groups.0.key', 'signal'));
 });
 

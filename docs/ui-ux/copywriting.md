@@ -42,17 +42,18 @@ Validator `App\Support\ProhibitedClaims::find(string $text): array` memeriksa de
 
 ## Label Status (konsisten di semua halaman)
 
-| Status                                                     | Label                                           |
-| ---------------------------------------------------------- | ----------------------------------------------- |
-| signal.pending                                             | Menunggu Entry                                  |
-| signal.active                                              | Berjalan                                        |
-| signal.tp_hit                                              | Kena TP                                         |
-| signal.sl_hit                                              | Kena SL                                         |
-| signal.closed_timeout                                      | Ditutup (Waktu Habis)                           |
-| signal.expired                                             | Kedaluwarsa                                     |
-| signal.cancelled                                           | Dibatalkan                                      |
-| withdraw.requested / processing / paid / rejected / failed | Diajukan / Diproses / Dibayar / Ditolak / Gagal |
-| kyc.submitted / verified / rejected                        | Menunggu Review / Terverifikasi / Ditolak       |
-| subscription.active / expired                              | Aktif / Berakhir                                |
+| Status                                                     | Label                                                |
+| ---------------------------------------------------------- | ---------------------------------------------------- |
+| signal.pending                                             | Menunggu Entry                                       |
+| signal.active                                              | Berjalan                                             |
+| signal.tp_hit                                              | Kena TP                                              |
+| signal.sl_hit                                              | Kena SL                                              |
+| signal.closed_timeout                                      | Ditutup (Waktu Habis)                                |
+| signal.expired                                             | Kedaluwarsa                                          |
+| signal.cancelled                                           | Dibatalkan                                           |
+| withdraw.requested / processing / paid / rejected / failed | Diajukan / Diproses / Dibayar / Ditolak / Gagal      |
+| kyc.submitted / verified / rejected                        | Menunggu Review / Terverifikasi / Ditolak            |
+| trader.applied / approved / rejected / suspended           | Menunggu Review / Disetujui / Ditolak / Ditangguhkan |
+| subscription.active / expired                              | Aktif / Berakhir                                     |
 
 Label didefinisikan sekali: backend lewat method `label()` di enum, dikirim ke frontend bersama value-nya.

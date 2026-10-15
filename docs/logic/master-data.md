@@ -112,17 +112,22 @@ Tipe (`App\Enums\SettingType`): `integer`, `decimal`, `money`, `percent` (0–10
 
 Update lewat `PUT /admin/settings` dengan payload bersarang per grup: `settings[wallet][min_withdraw]=150000`.
 
-| Key                            | Default      | Keterangan                                     |
-| ------------------------------ | ------------ | ---------------------------------------------- |
-| wallet.min_withdraw            | 100000       | Rp                                             |
-| wallet.withdraw_fee            | 6500         | Rp per withdraw                                |
-| wallet.hold_period_days        | 7            | Pendapatan pending → available                 |
-| subscription.fee_percent       | 20.00        | Fee platform                                   |
-| subscription.durations         | [1, 3, 6]    | Bulan                                          |
-| marketplace.commission_percent | 15.00        |                                                |
-| marketplace.max_file_mb        | 20           |                                                |
-| content.risk_disclaimer        | teks         | Lihat `ui-ux/copywriting.md`                   |
-| content.prohibited_phrases     | daftar frasa | Klaim terlarang (lihat `ui-ux/copywriting.md`) |
+| Key                            | Default      | Keterangan                                                  |
+| ------------------------------ | ------------ | ----------------------------------------------------------- |
+| wallet.min_withdraw            | 100000       | Rp                                                          |
+| wallet.withdraw_fee            | 6500         | Rp per withdraw                                             |
+| wallet.hold_period_days        | 7            | Pendapatan pending → available                              |
+| subscription.fee_percent       | 20.00        | Fee platform                                                |
+| subscription.durations         | [1, 3, 6]    | Bulan                                                       |
+| marketplace.commission_percent | 15.00        |                                                             |
+| marketplace.max_file_mb        | 20           |                                                             |
+| content.risk_disclaimer        | teks         | Lihat `ui-ux/copywriting.md`                                |
+| content.prohibited_phrases     | daftar frasa | Klaim terlarang (lihat `ui-ux/copywriting.md`)              |
+| trader.reapply_cooldown_days   | 7            | Jeda pengajuan ulang setelah aplikasi trader ditolak (hari) |
+| trader.max_main_instruments    | 5            | Maksimal instrumen utama per trader                         |
+| kyc.max_file_mb                | 5            | Ukuran foto KTP / selfie maksimal (MB)                      |
+| kyc.min_age                    | 18           | Usia minimum pendaftar KYC (tahun)                          |
+| kyc.document_link_minutes      | 10           | Masa berlaku link dokumen KYC untuk admin (menit)           |
 
 ## 8. Brokers — `brokers`
 
@@ -154,13 +159,14 @@ Platform produk (enum di kode, bukan master): `mt4`, `mt5`, `tradingview`.
 
 ## Siapa Memakai Apa
 
-| Modul        | Master yang dibaca                                                  |
-| ------------ | ------------------------------------------------------------------- |
-| Sinyal       | Instruments, Signal Rules                                           |
-| Ranking      | Ranks, Score Weights                                                |
-| Payroll      | Payroll Rules, Follower Brackets, Ranks                             |
-| Wallet       | Platform Settings (wallet.*), Banks                                 |
-| Subscription | Ranks (harga & izin), Platform Settings (subscription.*)            |
-| Marketplace  | Ranks (izin), Product Categories, Platform Settings (marketplace.*) |
-| Broker       | Brokers                                                             |
-| Publik       | Content Pages, `content.risk_disclaimer`                            |
+| Modul        | Master yang dibaca                                                                                    |
+| ------------ | ----------------------------------------------------------------------------------------------------- |
+| Sinyal       | Instruments, Signal Rules                                                                             |
+| Ranking      | Ranks, Score Weights                                                                                  |
+| Payroll      | Payroll Rules, Follower Brackets, Ranks                                                               |
+| Wallet       | Platform Settings (wallet.*), Banks                                                                   |
+| Subscription | Ranks (harga & izin), Platform Settings (subscription.*)                                              |
+| Marketplace  | Ranks (izin), Product Categories, Platform Settings (marketplace.*)                                   |
+| Broker       | Brokers                                                                                               |
+| Publik       | Content Pages, `content.risk_disclaimer`                                                              |
+| Trader & KYC | Instruments, Ranks (rank awal), Platform Settings (`trader.*`, `kyc.*`, `content.prohibited_phrases`) |

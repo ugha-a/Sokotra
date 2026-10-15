@@ -7,6 +7,8 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -27,6 +29,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property-read TraderProfile|null $traderProfile
+ * @property-read KycVerification|null $kycVerification
  */
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -34,6 +38,30 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, HasRoles, Notifiable, PasskeyAuthenticatable, TwoFactorAuthenticatable;
+
+    /**
+     * @return HasOne<TraderProfile, $this>
+     */
+    public function traderProfile(): HasOne
+    {
+        return $this->hasOne(TraderProfile::class);
+    }
+
+    /**
+     * @return HasOne<KycVerification, $this>
+     */
+    public function kycVerification(): HasOne
+    {
+        return $this->hasOne(KycVerification::class);
+    }
+
+    /**
+     * @return HasMany<UserConsent, $this>
+     */
+    public function consents(): HasMany
+    {
+        return $this->hasMany(UserConsent::class);
+    }
 
     /**
      * Get the attributes that should be cast.
