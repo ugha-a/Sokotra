@@ -3,7 +3,6 @@ import { CircleCheck, Clock, CircleX } from 'lucide-react';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { formatRupiah } from '@/lib/format';
-import { index as subscriptions } from '@/routes/subscriptions';
 
 type Payment = {
     id: number;
@@ -12,6 +11,7 @@ type Payment = {
     status_label: string;
     description: string;
     checkout_url: string | null;
+    return_url: string;
 };
 
 export default function PaymentStatus({ payment }: { payment: Payment }) {
@@ -43,7 +43,7 @@ export default function PaymentStatus({ payment }: { payment: Payment }) {
                     </Button>
                 )}
                 <Button variant="outline" asChild>
-                    <Link href={subscriptions()}>Lihat langganan</Link>
+                    <Link href={payment.return_url}>Kembali</Link>
                 </Button>
             </div>
         </>

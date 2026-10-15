@@ -2,8 +2,10 @@
 
 namespace App\Actions\Payments;
 
+use App\Actions\Marketplace\OrderPaymentHandler;
 use App\Actions\Subscription\SubscriptionPaymentHandler;
 use App\Enums\PaymentStatus;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Subscription;
 use App\Services\Payments\PaymentEvent;
@@ -18,6 +20,7 @@ class HandlePaymentEvent
     /** @var array<class-string, class-string<HandlesPayment>> */
     public const HANDLERS = [
         Subscription::class => SubscriptionPaymentHandler::class,
+        Order::class => OrderPaymentHandler::class,
     ];
 
     public function handle(PaymentEvent $event): ?Payment

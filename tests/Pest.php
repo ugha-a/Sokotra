@@ -12,6 +12,7 @@ use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\KycVerification;
 use App\Models\Payment;
+use App\Models\Product;
 use App\Models\Rank;
 use App\Models\Signal;
 use App\Models\Subscription;
@@ -183,4 +184,24 @@ function paidSubscription(User $subscriber, User $trader, int $months = 1): Subs
     app(HandlePaymentEvent::class)->handle(new PaymentEvent($payment->gateway_reference, PaymentStatus::Paid, ['fake' => true]));
 
     return Subscription::latest('id')->firstOrFail();
+}
+
+/** Pro trader with verified KYC: allowed to sell products. */
+function sellerTrader(): User
+{
+    $seller = approvedTrader('pro');
+    verifiedKyc($seller);
+
+    return $seller;
+}
+
+function publishedProduct(?User $seller = null, array $attributes = []): Product
+{
+    return Product::factory()->for($seller ?? sellerTrader(), 'seller')->published()->create($attributes);
+}
+
+function payLatestPayment(): void
+{
+    $payment = Payment::latest('id')->firstOrFail();
+    app(HandlePaymentEvent::class)->handle(new PaymentEvent($payment->gateway_reference, PaymentStatus::Paid, []));
 }

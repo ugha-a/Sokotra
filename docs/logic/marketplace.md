@@ -20,12 +20,12 @@ Trader bisa menjual alat analisa: indikator, Expert Advisor (EA), dan template/s
 | version                                     | string                                                    |
 | file_path                                   | disk private (tidak untuk TradingView)                    |
 | tradingview_url                             | untuk script invite-only                                  |
-| screenshots                                 | json path[]                                               |
+| screenshots                                 | json path[] di disk `public` (maks. 5 gambar)             |
 | status                                      | `draft`, `in_review`, `published`, `rejected`, `unlisted` |
 | rejection_reason                            |                                                           |
 | sales_count, rating_avg, rating_count       | cache                                                     |
 
-`orders`: `buyer_id`, `product_id`, `price_paid`, `commission`, `seller_income`, `status` (`pending_payment`, `paid`, `refunded`), `payment_id`, `license_key` (unik, dibuat saat paid).
+`orders`: `buyer_id`, `product_id`, `price_paid`, `commission`, `seller_income`, `status` (`pending_payment`, `paid`, `refunded`, `cancelled`), `license_key` (unik, format `SKT-XXXX-XXXX-XXXX-XXXX`, dibuat saat paid), `paid_at`, `refunded_at`, `refund_reason`. Pembayaran memakai tabel `payments` yang sama dengan subscription (`OrderPaymentHandler`).
 
 `product_reviews`: `order_id` unik, `rating` 1–5, `comment`. **Hanya pembeli** dengan order `paid`.
 
@@ -46,7 +46,7 @@ Trader bisa menjual alat analisa: indikator, Expert Advisor (EA), dan template/s
 2. Webhook paid:
     - `orders.status = paid`, buat `license_key`
     - `PostTransaction(marketplace_income, pending, seller_income, available_at = now + hold_period_days)`
-3. Pembeli mendapat akses **Download** lewat signed URL (berlaku 10 menit, dibuat ulang setiap klik) di **Pembelian Saya**.
+3. Pembeli mendapat akses **Download** di **Pembelian Saya** (`/purchases`): tombol mengarah ke `/purchases/{order}/download` yang membuat signed URL baru (berlaku 10 menit) ke file privat. Produk TradingView diarahkan ke link script. Penjual menerima notifikasi `ProductSold`; `sales_count` bertambah.
 4. Produk gratis: order langsung `paid` tanpa gateway.
 
 Pembeli yang sama tidak bisa membeli produk yang sama dua kali (selama order lama tidak di-refund).
@@ -57,4 +57,10 @@ Pembeli yang sama tidak bisa membeli produk yang sama dua kali (selama order lam
 
 ## Refund
 
-Sama dengan subscription: admin, dalam hold period, `refund_reversal`, akses download dicabut.
+Sama dengan subscription: admin (`/admin/orders`), selama pendapatan penjual masih tertahan, `refund_reversal` dengan reference `reverse:{id}`, `sales_count` dikurangi, akses download dicabut.
+
+## Halaman
+
+- Publik: `/marketplace` (filter kategori, platform, urutan) dan `/marketplace/{slug}` (screenshot, deskripsi, ulasan, beli).
+- Penjual: `/trader/products` (daftar + ajukan review) dan form tambah/ubah.
+- Admin: `/admin/products` (moderasi per status, download file via signed URL 30 menit) dan `/admin/orders` (pesanan + refund).

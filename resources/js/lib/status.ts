@@ -26,6 +26,9 @@ const TONES: Record<string, StatusTone> = {
     expired: 'neutral',
     cancelled: 'neutral',
     refunded: 'loss',
+    in_review: 'pending',
+    published: 'profit',
+    unlisted: 'neutral',
 };
 
 /**

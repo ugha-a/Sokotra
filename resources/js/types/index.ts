@@ -6,3 +6,4 @@ export type * from './trader';
 export type * from './signal';
 export type * from './wallet';
 export type * from './payroll';
+export type * from './marketplace';

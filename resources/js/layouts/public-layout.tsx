@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import AppLogo from '@/components/app-logo';
 import { Button } from '@/components/ui/button';
 import { dashboard, home, leaderboard, login, register } from '@/routes';
+import { index as marketplace } from '@/routes/marketplace';
 
 /**
  * Layout for pages anyone can open (leaderboard, trader profiles, content pages).
@@ -23,6 +24,9 @@ export default function PublicLayout({
                     <nav className="flex items-center gap-2">
                         <Button variant="ghost" size="sm" asChild>
                             <Link href={leaderboard()}>Leaderboard</Link>
+                        </Button>
+                        <Button variant="ghost" size="sm" asChild>
+                            <Link href={marketplace()}>Marketplace</Link>
                         </Button>
                         {auth.user ? (
                             <Button size="sm" asChild>

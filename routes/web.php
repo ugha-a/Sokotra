@@ -5,8 +5,10 @@ use App\Enums\Role;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\KycDocumentController;
 use App\Http\Controllers\Admin\MasterDataController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\PayrollController as AdminPayrollController;
 use App\Http\Controllers\Admin\PlatformSettingController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
 use App\Http\Controllers\Admin\TraderApplicationController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
@@ -15,15 +17,19 @@ use App\Http\Controllers\Member\BecomeTraderController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\FollowController;
 use App\Http\Controllers\Member\FollowingController;
+use App\Http\Controllers\Member\OrderController;
+use App\Http\Controllers\Member\PurchaseController;
 use App\Http\Controllers\Member\SubscriptionController as MemberSubscriptionController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Public\LeaderboardController;
+use App\Http\Controllers\Public\MarketplaceController;
 use App\Http\Controllers\Public\TraderProfileController;
 use App\Http\Controllers\SignalFeedController;
 use App\Http\Controllers\Trader\ChannelController;
 use App\Http\Controllers\Trader\DashboardController as TraderDashboardController;
 use App\Http\Controllers\Trader\PayrollController as TraderPayrollController;
+use App\Http\Controllers\Trader\ProductController as TraderProductController;
 use App\Http\Controllers\Trader\QuoteController;
 use App\Http\Controllers\Trader\SignalController;
 use App\Http\Controllers\Wallet\BankAccountController;
@@ -36,6 +42,8 @@ Route::inertia('/', 'welcome')->name('home');
 Route::get('leaderboard', LeaderboardController::class)->name('leaderboard');
 Route::get('traders/{profile:slug}', [TraderProfileController::class, 'show'])->name('traders.show');
 Route::post('webhooks/payments/{gateway}', [PaymentController::class, 'webhook'])->name('webhooks.payments');
+Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
+Route::get('marketplace/{product:slug}', [MarketplaceController::class, 'show'])->name('marketplace.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', MemberDashboardController::class)->name('dashboard');
@@ -49,6 +57,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
     Route::get('payments/{payment}/simulate', [PaymentController::class, 'simulate'])->name('payments.simulate.show');
     Route::post('payments/{payment}/simulate', [PaymentController::class, 'completeSimulation'])->name('payments.simulate.complete');
+
+    Route::post('marketplace/{product}/buy', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+    Route::get('purchases/{order}/download', [PurchaseController::class, 'download'])->name('purchases.download');
+    Route::get('purchases/{order}/file', [PurchaseController::class, 'file'])->middleware('signed')->name('purchases.file');
+    Route::post('purchases/{order}/review', [PurchaseController::class, 'review'])->name('purchases.review');
 
     Route::get('wallet', [WalletController::class, 'show'])->name('wallet.show');
     Route::post('wallet/bank-accounts', [BankAccountController::class, 'store'])->name('wallet.bank-accounts.store');
@@ -78,6 +92,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('quotes/{instrument}', [QuoteController::class, 'show'])->name('quotes.show');
             Route::get('payroll', TraderPayrollController::class)->name('payroll');
+            Route::get('products', [TraderProductController::class, 'index'])->name('products.index');
+            Route::get('products/create', [TraderProductController::class, 'create'])->name('products.create');
+            Route::post('products', [TraderProductController::class, 'store'])->name('products.store');
+            Route::get('products/{product}/edit', [TraderProductController::class, 'edit'])->name('products.edit');
+            Route::put('products/{product}', [TraderProductController::class, 'update'])->name('products.update');
+            Route::post('products/{product}/submit', [TraderProductController::class, 'submit'])->name('products.submit');
+
             Route::get('channel', [ChannelController::class, 'show'])->name('channel');
             Route::put('channel', [ChannelController::class, 'update'])->name('channel.update');
         });
@@ -104,6 +125,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('payroll/{period}/approve', [AdminPayrollController::class, 'approve'])->name('payroll.approve');
             Route::post('payroll/items/{item}/hold', [AdminPayrollController::class, 'hold'])->name('payroll.items.hold');
             Route::post('payroll/items/{item}/release', [AdminPayrollController::class, 'release'])->name('payroll.items.release');
+
+            Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
+            Route::post('products/{product}/approve', [AdminProductController::class, 'approve'])->name('products.approve');
+            Route::post('products/{product}/reject', [AdminProductController::class, 'reject'])->name('products.reject');
+            Route::get('products/{product}/file', [AdminProductController::class, 'file'])->middleware('signed')->name('products.file');
+            Route::get('orders', [AdminOrderController::class, 'index'])->name('orders.index');
+            Route::post('orders/{order}/refund', [AdminOrderController::class, 'refund'])->name('orders.refund');
 
             Route::get('subscriptions', [AdminSubscriptionController::class, 'index'])->name('subscriptions.index');
             Route::post('subscriptions/{subscription}/refund', [AdminSubscriptionController::class, 'refund'])->name('subscriptions.refund');

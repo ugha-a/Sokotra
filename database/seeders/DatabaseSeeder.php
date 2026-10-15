@@ -11,6 +11,7 @@ use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\Instrument;
 use App\Models\KycVerification;
+use App\Models\Product;
 use App\Models\Rank;
 use App\Models\Signal;
 use App\Models\TraderProfile;
@@ -56,6 +57,13 @@ class DatabaseSeeder extends Seeder
         ]);
         ChannelPlan::create(['trader_id' => $elite->id, 'monthly_price' => 150000, 'description' => 'Sinyal premium XAUUSD harian.', 'is_open' => true]);
         Signal::factory()->for($elite, 'trader')->create(['visibility' => 'premium']);
+
+        $product = Product::factory()->for($elite, 'seller')->published()->create([
+            'name' => 'Gold Trend EA',
+            'slug' => 'gold-trend-ea',
+            'price' => 350000,
+        ]);
+        Storage::disk('local')->put((string) $product->file_path, 'demo-ex5');
 
         $applicant = $this->demoUser('Pemohon Demo', 'pemohon@sokotra.test', Role::Member);
         $this->demoKyc($applicant, KycStatus::Submitted);

@@ -17,10 +17,18 @@ import {
     Coins,
     Crown,
     Gem,
+    Package,
+    ShoppingBag,
+    Store,
     ReceiptText,
     Landmark,
 } from 'lucide-react';
 import { dashboard, leaderboard } from '@/routes';
+import { index as adminOrders } from '@/routes/admin/orders';
+import { index as adminProducts } from '@/routes/admin/products';
+import { index as marketplace } from '@/routes/marketplace';
+import { index as purchases } from '@/routes/purchases';
+import { index as traderProducts } from '@/routes/trader/products';
 import { dashboard as adminDashboard } from '@/routes/admin';
 import { index as auditLogs } from '@/routes/admin/audit-logs';
 import { index as masterData } from '@/routes/admin/master';
@@ -58,8 +66,10 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                 { title: 'Beranda', href: dashboard(), icon: LayoutGrid },
                 { title: 'Sinyal', href: signalFeed(), icon: Radio },
                 { title: 'Leaderboard', href: leaderboard(), icon: Trophy },
+                { title: 'Marketplace', href: marketplace(), icon: Store },
                 { title: 'Diikuti', href: following(), icon: Users },
                 { title: 'Langganan', href: subscriptions(), icon: Gem },
+                { title: 'Pembelian', href: purchases(), icon: ShoppingBag },
                 ...(isTrader
                     ? []
                     : [
@@ -93,6 +103,7 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     icon: ListChecks,
                 },
                 { title: 'Channel Premium', href: channel(), icon: Crown },
+                { title: 'Produk Saya', href: traderProducts(), icon: Package },
                 { title: 'Gaji & Reward', href: payroll(), icon: Coins },
                 { title: 'Wallet', href: wallet(), icon: Wallet },
             ],
@@ -119,6 +130,8 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     href: adminSubscriptions(),
                     icon: Gem,
                 },
+                { title: 'Produk', href: adminProducts(), icon: Package },
+                { title: 'Pesanan', href: adminOrders(), icon: ShoppingBag },
                 { title: 'Penarikan', href: withdrawals(), icon: Banknote },
                 {
                     title: 'Wallet Pengguna',
