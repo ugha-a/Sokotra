@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Public;
 use App\Enums\TraderStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SignalResource;
+use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\Instrument;
 use App\Models\Signal;
+use App\Models\Subscription;
 use App\Models\TraderProfile;
 use App\Models\TraderStat;
 use App\Support\Ranking\TraderStatsCalculator;
@@ -56,6 +58,10 @@ class TraderProfileController extends Controller
             'isFollowing' => $viewer !== null
                 && Follow::where('follower_id', $viewer->id)->where('trader_id', $profile->user_id)->exists(),
             'isOwnProfile' => $viewer?->id === $profile->user_id,
+            'plan' => ($plan = ChannelPlan::where('trader_id', $profile->user_id)->where('is_open', true)->first())
+                ? ['monthly_price' => $plan->monthly_price, 'description' => $plan->description]
+                : null,
+            'isSubscribed' => Subscription::isActive($viewer, $profile->user_id),
             'riskDisclaimer' => Settings::get('content.risk_disclaimer'),
         ]);
     }

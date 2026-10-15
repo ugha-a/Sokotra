@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Payments\PaymentGateway;
+use App\Services\Payments\SimulatedPaymentGateway;
 use App\Services\PriceFeed\PriceFeed;
 use App\Services\PriceFeed\SimulatedPriceFeed;
 use Carbon\CarbonImmutable;
@@ -28,6 +30,19 @@ class AppServiceProvider extends ServiceProvider
             return match ($driver) {
                 'simulated' => new SimulatedPriceFeed((array) config('services.price_feed.simulated.base_prices')),
                 default => throw new InvalidArgumentException("Unknown price feed driver [{$driver}]."),
+            };
+        });
+
+        $this->app->singleton(PaymentGateway::class, function (): PaymentGateway {
+            $driver = config('services.payments.driver');
+
+            if ($driver === 'simulated' && $this->app->isProduction()) {
+                throw new InvalidArgumentException('The simulated payment gateway must not be used in production.');
+            }
+
+            return match ($driver) {
+                'simulated' => new SimulatedPaymentGateway,
+                default => throw new InvalidArgumentException("Unknown payment driver [{$driver}]."),
             };
         });
     }

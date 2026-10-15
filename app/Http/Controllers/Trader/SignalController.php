@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Trader\PublishSignalRequest;
 use App\Models\Instrument;
 use App\Models\Signal;
+use App\Models\Subscription;
 use App\Models\TraderProfile;
 use App\Models\User;
 use App\Support\Settings;
@@ -63,7 +64,8 @@ class SignalController extends Controller
                 'min_analysis_chars' => Settings::get('signal.min_analysis_chars'),
                 'chart_max_mb' => Settings::get('signal.chart_max_mb'),
             ],
-            'canPublishPremium' => TraderProfile::where('user_id', $trader->id)->first()?->rank->can_sell_premium ?? false,
+            'canPublishPremium' => (TraderProfile::where('user_id', $trader->id)->first()?->rank->can_sell_premium ?? false)
+                || Subscription::query()->where('trader_id', $trader->id)->currentlyActive()->exists(),
             'blockReason' => $publish->blockReason($trader),
             'riskDisclaimer' => Settings::get('content.risk_disclaimer'),
         ]);

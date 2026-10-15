@@ -3,6 +3,7 @@
 namespace App\Actions\Ranking;
 
 use App\Enums\TraderStatus;
+use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\Rank;
 use App\Models\TraderProfile;
@@ -105,6 +106,11 @@ class RecalculateRanks
 
         DB::transaction(function () use ($profile, $target, $from, $metrics) {
             $profile->update(['rank_id' => $target->id]);
+
+            if (! $target->can_sell_premium) {
+                // Frozen for new subscribers; existing ones are served until they end.
+                ChannelPlan::where('trader_id', $profile->user_id)->update(['is_open' => false]);
+            }
 
             TraderRankHistory::create([
                 'user_id' => $profile->user_id,

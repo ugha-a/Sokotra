@@ -22,6 +22,7 @@ export type SignalItem = {
     sl_pips: string | null;
     analysis: string | null;
     chart_url: string | null;
+    subscribe_url: string | null;
     close_price: string | null;
     result_pips: string | null;
     result_r: string | null;

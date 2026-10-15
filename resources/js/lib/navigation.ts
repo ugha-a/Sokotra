@@ -15,6 +15,8 @@ import {
     Wallet,
     Banknote,
     Coins,
+    Crown,
+    Gem,
     ReceiptText,
     Landmark,
 } from 'lucide-react';
@@ -24,18 +26,24 @@ import { index as auditLogs } from '@/routes/admin/audit-logs';
 import { index as masterData } from '@/routes/admin/master';
 import { edit as platformSettings } from '@/routes/admin/settings';
 import { index as payrollPeriods } from '@/routes/admin/payroll';
+import { index as adminSubscriptions } from '@/routes/admin/subscriptions';
 import { index as traderApplications } from '@/routes/admin/traders';
 import { index as adminWallets } from '@/routes/admin/wallets';
 import { index as withdrawals } from '@/routes/admin/withdrawals';
 import { show as becomeTrader } from '@/routes/become-trader';
 import { index as following } from '@/routes/following';
 import { index as signalFeed } from '@/routes/signals';
+import { index as subscriptions } from '@/routes/subscriptions';
 import { show as wallet } from '@/routes/wallet';
 import {
     create as createSignal,
     index as traderSignals,
 } from '@/routes/trader/signals';
-import { dashboard as traderDashboard, payroll } from '@/routes/trader';
+import {
+    channel,
+    dashboard as traderDashboard,
+    payroll,
+} from '@/routes/trader';
 import type { NavGroup } from '@/types';
 
 /**
@@ -51,6 +59,7 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                 { title: 'Sinyal', href: signalFeed(), icon: Radio },
                 { title: 'Leaderboard', href: leaderboard(), icon: Trophy },
                 { title: 'Diikuti', href: following(), icon: Users },
+                { title: 'Langganan', href: subscriptions(), icon: Gem },
                 ...(isTrader
                     ? []
                     : [
@@ -83,6 +92,7 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     href: traderSignals(),
                     icon: ListChecks,
                 },
+                { title: 'Channel Premium', href: channel(), icon: Crown },
                 { title: 'Gaji & Reward', href: payroll(), icon: Coins },
                 { title: 'Wallet', href: wallet(), icon: Wallet },
             ],
@@ -104,6 +114,11 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     icon: UserCheck,
                 },
                 { title: 'Payroll', href: payrollPeriods(), icon: ReceiptText },
+                {
+                    title: 'Subscription',
+                    href: adminSubscriptions(),
+                    icon: Gem,
+                },
                 { title: 'Penarikan', href: withdrawals(), icon: Banknote },
                 {
                     title: 'Wallet Pengguna',

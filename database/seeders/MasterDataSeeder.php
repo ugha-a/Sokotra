@@ -197,6 +197,8 @@ class MasterDataSeeder extends Seeder
 
             [SettingGroup::Subscription, 'subscription.fee_percent', SettingType::Percent, 20.0, 'Fee platform', null],
             [SettingGroup::Subscription, 'subscription.durations', SettingType::IntegerList, [1, 3, 6], 'Pilihan durasi (bulan)', null],
+            [SettingGroup::Subscription, 'subscription.reminder_days', SettingType::IntegerList, [3, 1], 'Kirim pengingat sebelum berakhir (hari)', null],
+            [SettingGroup::Subscription, 'subscription.inactive_alert_days', SettingType::Integer, 14, 'Peringatkan admin jika channel tanpa sinyal premium (hari)', null],
 
             [SettingGroup::Marketplace, 'marketplace.commission_percent', SettingType::Percent, 15.0, 'Komisi platform', null],
             [SettingGroup::Marketplace, 'marketplace.max_file_mb', SettingType::Integer, 20, 'Ukuran file produk maksimal (MB)', null],

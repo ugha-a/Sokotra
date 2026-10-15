@@ -39,6 +39,15 @@ return [
     | Market data for signals (docs/logic/signal-lifecycle.md). "simulated" is for
     | local development only; a real provider driver is added later.
     */
+    /*
+    | Payment gateway (docs/logic/subscription.md). "simulated" is for local
+    | development only; Midtrans/Xendit drivers are added with credentials.
+    */
+    'payments' => [
+        'driver' => env('PAYMENT_DRIVER', 'simulated'),
+        'checkout_expiry_hours' => 24,
+    ],
+
     'price_feed' => [
         'driver' => env('PRICE_FEED_DRIVER', 'simulated'),
 

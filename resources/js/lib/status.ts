@@ -20,6 +20,12 @@ const TONES: Record<string, StatusTone> = {
     draft: 'pending',
     held: 'premium',
     skipped: 'neutral',
+    active: 'profit',
+    pending: 'pending',
+    pending_payment: 'pending',
+    expired: 'neutral',
+    cancelled: 'neutral',
+    refunded: 'loss',
 };
 
 /**

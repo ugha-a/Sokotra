@@ -7,9 +7,11 @@ use App\Actions\Ranking\RefreshTraderStats;
 use App\Enums\KycStatus;
 use App\Enums\Role;
 use App\Enums\SignalStatus;
+use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\Instrument;
 use App\Models\KycVerification;
+use App\Models\Rank;
 use App\Models\Signal;
 use App\Models\TraderProfile;
 use App\Models\User;
@@ -43,6 +45,17 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->demoTrackRecord($trader);
+
+        // Premium channel to try subscriptions with the simulated payment gateway.
+        $elite = $this->demoUser('Elite Demo', 'elite@sokotra.test', Role::Member, Role::Trader);
+        $this->demoKyc($elite, KycStatus::Verified);
+        TraderProfile::factory()->approved()->for($elite)->create([
+            'display_name' => 'Elite Demo',
+            'slug' => 'elite-demo',
+            'rank_id' => Rank::where('slug', 'elite')->value('id'),
+        ]);
+        ChannelPlan::create(['trader_id' => $elite->id, 'monthly_price' => 150000, 'description' => 'Sinyal premium XAUUSD harian.', 'is_open' => true]);
+        Signal::factory()->for($elite, 'trader')->create(['visibility' => 'premium']);
 
         $applicant = $this->demoUser('Pemohon Demo', 'pemohon@sokotra.test', Role::Member);
         $this->demoKyc($applicant, KycStatus::Submitted);

@@ -11,6 +11,7 @@ use App\Events\SignalPublished;
 use App\Events\SignalTriggered;
 use App\Models\Instrument;
 use App\Models\Signal;
+use App\Models\Subscription;
 use App\Models\TraderProfile;
 use App\Models\User;
 use App\Services\PriceFeed\PriceFeed;
@@ -110,8 +111,10 @@ class PublishSignal
         }
 
         $canSellPremium = TraderProfile::where('user_id', $trader->id)->first()?->rank->can_sell_premium ?? false;
+        // After a rank drop, existing subscribers are still served (docs/logic/subscription.md → Pembekuan).
+        $hasSubscribers = Subscription::query()->where('trader_id', $trader->id)->currentlyActive()->exists();
 
-        if (! $canSellPremium) {
+        if (! $canSellPremium && ! $hasSubscribers) {
             throw ValidationException::withMessages(['visibility' => 'Rank kamu belum bisa memposting sinyal premium.']);
         }
     }

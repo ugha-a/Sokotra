@@ -1,18 +1,26 @@
 <?php
 
+use App\Actions\Payments\HandlePaymentEvent;
 use App\Actions\Wallet\PostTransaction;
 use App\Enums\KycStatus;
+use App\Enums\PaymentStatus;
 use App\Enums\Role;
 use App\Enums\SignalStatus;
 use App\Enums\WalletBucket;
 use App\Enums\WalletTransactionType;
+use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\KycVerification;
+use App\Models\Payment;
 use App\Models\Rank;
 use App\Models\Signal;
+use App\Models\Subscription;
 use App\Models\TraderProfile;
 use App\Models\User;
 use App\Models\WalletTransaction;
+use App\Services\Payments\FakePaymentGateway;
+use App\Services\Payments\PaymentEvent;
+use App\Services\Payments\PaymentGateway;
 use App\Services\PriceFeed\FakePriceFeed;
 use App\Services\PriceFeed\PriceFeed;
 use Carbon\CarbonImmutable;
@@ -144,4 +152,35 @@ function credit(User $user, int $amount, string $reference = 'test:credit'): Wal
         $reference,
         'Saldo awal test',
     );
+}
+
+function fakePaymentGateway(): FakePaymentGateway
+{
+    $gateway = new FakePaymentGateway;
+    app()->instance(PaymentGateway::class, $gateway);
+
+    return $gateway;
+}
+
+/** Elite trader with verified KYC and an open channel at the given monthly price. */
+function premiumTrader(int $monthlyPrice = 150000): User
+{
+    $trader = approvedTrader('elite');
+    verifiedKyc($trader);
+    ChannelPlan::create(['trader_id' => $trader->id, 'monthly_price' => $monthlyPrice, 'description' => 'Sinyal swing XAUUSD', 'is_open' => true]);
+
+    return $trader;
+}
+
+function paidSubscription(User $subscriber, User $trader, int $months = 1): Subscription
+{
+    test()->actingAs($subscriber)->post(route('subscriptions.store', TraderProfile::where('user_id', $trader->id)->value('id')), [
+        'months' => $months,
+        'accept_risk' => true,
+    ]);
+
+    $payment = Payment::latest('id')->firstOrFail();
+    app(HandlePaymentEvent::class)->handle(new PaymentEvent($payment->gateway_reference, PaymentStatus::Paid, ['fake' => true]));
+
+    return Subscription::latest('id')->firstOrFail();
 }

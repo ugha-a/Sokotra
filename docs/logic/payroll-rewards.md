@@ -32,12 +32,12 @@ gaji = base_salary[rank]
 
 ## Proses
 
-| Langkah                                                                                                                | Waktu                | Aktor     |
-| ---------------------------------------------------------------------------------------------------------------------- | -------------------- | --------- |
-| 1. `GeneratePayrollDraft` untuk bulan sebelumnya                                                                       | Tanggal 1, 01:00 WIB | Scheduler |
-| 2. Review item, bisa men-_hold_ trader tertentu (wajib isi catatan)                                                    | Tanggal 1–5          | Admin     |
-| 3. `ApprovePayroll` → setiap item `amount > 0` dikreditkan ke wallet trader (`payroll_credit`, langsung **available**) |                      | Admin     |
-| 4. Notifikasi ke trader + slip rincian                                                                                 |                      | Sistem    |
+| Langkah                                                                                                                | Waktu                | Aktor                                                      |
+| ---------------------------------------------------------------------------------------------------------------------- | -------------------- | ---------------------------------------------------------- |
+| 1. `payroll:generate` → `GeneratePayrollDraft` untuk bulan sebelumnya                                                  | Tanggal 1, 01:00 WIB | Scheduler (atau tombol **Buat draft** di `/admin/payroll`) |
+| 2. Review item, bisa men-_hold_ trader tertentu (wajib isi catatan)                                                    | Tanggal 1–5          | Admin                                                      |
+| 3. `ApprovePayroll` → setiap item `amount > 0` dikreditkan ke wallet trader (`payroll_credit`, langsung **available**) |                      | Admin                                                      |
+| 4. Notifikasi ke trader + slip rincian                                                                                 |                      | Sistem                                                     |
 
 Tabel:
 
@@ -47,7 +47,9 @@ Tabel:
 Aturan:
 
 - Satu period hanya bisa di-approve sekali (idempotent). Kredit wallet memakai `reference = payroll_item:{id}` yang unik.
-- Draft bisa di-_regenerate_ selama belum di-approve.
+- Draft bisa di-_regenerate_ selama belum di-approve (tombol **Hitung ulang**). Item yang sedang ditahan tetap ditahan setelah dihitung ulang.
+- Saat approve: item layak dengan total > 0 dan status `pending` → `paid` (kredit wallet). Item tidak layak → `skipped`. Item `held` tidak dibayar. Trader menerima notifikasi `PayrollPaid` (email + database).
+- Trader melihat **estimasi bulan berjalan** dan slip yang sudah disetujui di `/trader/payroll`.
 - Pajak (PPh) akan dihitung di fase berikutnya; kolom `tax_amount` disiapkan (default 0).
 
 ## Contoh

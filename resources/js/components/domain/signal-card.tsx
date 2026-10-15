@@ -1,7 +1,9 @@
+import { Link } from '@inertiajs/react';
 import { Crown, ImageIcon, Lock } from 'lucide-react';
 import { DirectionBadge } from '@/components/domain/direction-badge';
 import { RankBadge } from '@/components/domain/rank-badge';
 import { SignalStatusPill } from '@/components/domain/signal-status-pill';
+import { Button } from '@/components/ui/button';
 import { formatPips, formatPrice, formatR, formatRelative } from '@/lib/format';
 import { cn } from '@/lib/utils';
 import type { SignalItem } from '@/types';
@@ -35,15 +37,21 @@ function Level({
     );
 }
 
-function PremiumLock() {
+function PremiumLock({ subscribeUrl }: { subscribeUrl: string | null }) {
     return (
-        <div className="flex items-center gap-3 rounded-lg border border-dashed border-premium/50 bg-premium-soft p-3 text-sm">
+        <div className="flex flex-wrap items-center gap-3 rounded-lg border border-dashed border-premium/50 bg-premium-soft p-3 text-sm">
             <Lock className="size-4 shrink-0 text-premium" />
-            <p>
-                Entry, SL, TP, dan analisa sinyal premium terbuka setelah sinyal
-                selesai. Langganan channel trader akan membukanya secara
-                real-time.
+            <p className="flex-1">
+                Entry, SL, TP, dan analisa sinyal premium terbuka untuk
+                subscriber, dan untuk semua orang setelah sinyal selesai.
             </p>
+            {subscribeUrl && (
+                <Button size="sm" variant="outline" asChild>
+                    <Link href={subscribeUrl}>
+                        <Crown /> Langganan
+                    </Link>
+                </Button>
+            )}
         </div>
     );
 }
@@ -96,7 +104,7 @@ export function SignalCard({
             </header>
 
             {signal.locked ? (
-                <PremiumLock />
+                <PremiumLock subscribeUrl={signal.subscribe_url} />
             ) : (
                 <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
                     <Level

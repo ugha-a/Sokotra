@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\KycDocumentController;
 use App\Http\Controllers\Admin\MasterDataController;
 use App\Http\Controllers\Admin\PayrollController as AdminPayrollController;
 use App\Http\Controllers\Admin\PlatformSettingController;
+use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
 use App\Http\Controllers\Admin\TraderApplicationController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
@@ -14,10 +15,13 @@ use App\Http\Controllers\Member\BecomeTraderController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\FollowController;
 use App\Http\Controllers\Member\FollowingController;
+use App\Http\Controllers\Member\SubscriptionController as MemberSubscriptionController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Public\LeaderboardController;
 use App\Http\Controllers\Public\TraderProfileController;
 use App\Http\Controllers\SignalFeedController;
+use App\Http\Controllers\Trader\ChannelController;
 use App\Http\Controllers\Trader\DashboardController as TraderDashboardController;
 use App\Http\Controllers\Trader\PayrollController as TraderPayrollController;
 use App\Http\Controllers\Trader\QuoteController;
@@ -31,12 +35,20 @@ use Illuminate\Support\Facades\Route;
 Route::inertia('/', 'welcome')->name('home');
 Route::get('leaderboard', LeaderboardController::class)->name('leaderboard');
 Route::get('traders/{profile:slug}', [TraderProfileController::class, 'show'])->name('traders.show');
+Route::post('webhooks/payments/{gateway}', [PaymentController::class, 'webhook'])->name('webhooks.payments');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', MemberDashboardController::class)->name('dashboard');
     Route::get('following', [FollowingController::class, 'index'])->name('following.index');
     Route::post('traders/{profile}/follow', [FollowController::class, 'store'])->name('traders.follow');
     Route::delete('traders/{profile}/follow', [FollowController::class, 'destroy'])->name('traders.unfollow');
+
+    Route::get('subscriptions', [MemberSubscriptionController::class, 'index'])->name('subscriptions.index');
+    Route::get('traders/{profile}/subscribe', [MemberSubscriptionController::class, 'create'])->name('subscriptions.create');
+    Route::post('traders/{profile}/subscribe', [MemberSubscriptionController::class, 'store'])->name('subscriptions.store');
+    Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
+    Route::get('payments/{payment}/simulate', [PaymentController::class, 'simulate'])->name('payments.simulate.show');
+    Route::post('payments/{payment}/simulate', [PaymentController::class, 'completeSimulation'])->name('payments.simulate.complete');
 
     Route::get('wallet', [WalletController::class, 'show'])->name('wallet.show');
     Route::post('wallet/bank-accounts', [BankAccountController::class, 'store'])->name('wallet.bank-accounts.store');
@@ -66,6 +78,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('quotes/{instrument}', [QuoteController::class, 'show'])->name('quotes.show');
             Route::get('payroll', TraderPayrollController::class)->name('payroll');
+            Route::get('channel', [ChannelController::class, 'show'])->name('channel');
+            Route::put('channel', [ChannelController::class, 'update'])->name('channel.update');
         });
 
     Route::middleware('role:'.Role::Admin->value)
@@ -90,6 +104,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('payroll/{period}/approve', [AdminPayrollController::class, 'approve'])->name('payroll.approve');
             Route::post('payroll/items/{item}/hold', [AdminPayrollController::class, 'hold'])->name('payroll.items.hold');
             Route::post('payroll/items/{item}/release', [AdminPayrollController::class, 'release'])->name('payroll.items.release');
+
+            Route::get('subscriptions', [AdminSubscriptionController::class, 'index'])->name('subscriptions.index');
+            Route::post('subscriptions/{subscription}/refund', [AdminSubscriptionController::class, 'refund'])->name('subscriptions.refund');
 
             Route::get('withdrawals', [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');
             Route::post('withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('withdrawals.approve');

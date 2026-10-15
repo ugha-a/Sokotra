@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\ChannelPlan;
 use App\Models\Signal;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -46,6 +47,9 @@ class SignalResource extends JsonResource
             'sl_pips' => $detail($this->sl_pips),
             'analysis' => $detail($this->analysis),
             'chart_url' => $this->chart_image_path && ! $locked ? route('signals.chart', $this->id) : null,
+            'subscribe_url' => $locked && $profile && ChannelPlan::where('trader_id', $this->trader_id)->where('is_open', true)->exists()
+                ? route('subscriptions.create', $profile->id)
+                : null,
             'close_price' => $this->close_price,
             'result_pips' => $this->result_pips,
             'result_r' => $this->result_r,

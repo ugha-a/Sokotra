@@ -115,11 +115,11 @@ Dijalankan oleh scheduler **setiap menit**.
 
 ## Visibilitas
 
-| Viewer                 | Sinyal free | Sinyal premium (terbuka)                            | Sinyal premium (closed) |
-| ---------------------- | ----------- | --------------------------------------------------- | ----------------------- |
-| Publik / member        | Lengkap     | Hanya instrumen + arah, detail terkunci             | Lengkap                 |
-| Subscriber aktif       | Lengkap     | Lengkap, real-time (menyusul di modul Subscription) | Lengkap                 |
-| Trader pemilik / admin | Lengkap     | Lengkap                                             | Lengkap                 |
+| Viewer                 | Sinyal free | Sinyal premium (terbuka)                | Sinyal premium (closed) |
+| ---------------------- | ----------- | --------------------------------------- | ----------------------- |
+| Publik / member        | Lengkap     | Hanya instrumen + arah, detail terkunci | Lengkap                 |
+| Subscriber aktif       | Lengkap     | Lengkap, real-time                      | Lengkap                 |
+| Trader pemilik / admin | Lengkap     | Lengkap                                 | Lengkap                 |
 
 ## Notifikasi
 

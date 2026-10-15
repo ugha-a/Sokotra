@@ -1,12 +1,14 @@
-import { Head } from '@inertiajs/react';
-import { BadgeCheck, Star } from 'lucide-react';
+import { Head, Link } from '@inertiajs/react';
+import { BadgeCheck, Crown, Star } from 'lucide-react';
 import { EquityCurve } from '@/components/domain/equity-curve';
 import { FollowButton } from '@/components/domain/follow-button';
 import { Pagination } from '@/components/domain/pagination';
 import { RankBadge } from '@/components/domain/rank-badge';
 import { SignalCard } from '@/components/domain/signal-card';
 import { StatsGrid } from '@/components/domain/stats-grid';
-import { formatCompact } from '@/lib/format';
+import { Button } from '@/components/ui/button';
+import { formatCompact, formatRupiah } from '@/lib/format';
+import { create as subscribe } from '@/routes/subscriptions';
 import type { EquityPoint } from '@/lib/equity-curve';
 import type {
     Paginated,
@@ -23,6 +25,8 @@ type Props = {
     signals: Paginated<SignalItem>;
     isFollowing: boolean;
     isOwnProfile: boolean;
+    plan: { monthly_price: number; description: string | null } | null;
+    isSubscribed: boolean;
 };
 
 export default function TraderProfile({
@@ -33,6 +37,8 @@ export default function TraderProfile({
     signals,
     isFollowing,
     isOwnProfile,
+    plan,
+    isSubscribed,
 }: Props) {
     return (
         <>
@@ -74,10 +80,27 @@ export default function TraderProfile({
                         </p>
                     </div>
                     {!isOwnProfile && (
-                        <FollowButton
-                            traderId={trader.id}
-                            isFollowing={isFollowing}
-                        />
+                        <div className="flex flex-wrap gap-2">
+                            <FollowButton
+                                traderId={trader.id}
+                                isFollowing={isFollowing}
+                            />
+                            {plan && (
+                                <Button
+                                    variant={
+                                        isSubscribed ? 'outline' : 'default'
+                                    }
+                                    asChild
+                                >
+                                    <Link href={subscribe(trader.id)}>
+                                        <Crown />
+                                        {isSubscribed
+                                            ? 'Perpanjang langganan'
+                                            : `Langganan ${formatRupiah(plan.monthly_price)}/bln`}
+                                    </Link>
+                                </Button>
+                            )}
+                        </div>
                     )}
                 </header>
 
