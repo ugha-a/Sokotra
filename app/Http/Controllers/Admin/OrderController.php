@@ -18,8 +18,8 @@ class OrderController extends Controller
     {
         return Inertia::render('admin/orders/index', [
             'orders' => Order::query()
-                ->with(['buyer:id,name,email', 'product:id,name,seller_id', 'product.seller.traderProfile'])
-                ->whereIn('status', [OrderStatus::Paid, OrderStatus::Refunded])
+                ->with(['buyer:id,name,email', 'product:id,name,seller_id', 'product.seller.traderProfile', 'payment'])
+                ->whereIn('status', [OrderStatus::PendingPayment, OrderStatus::Paid, OrderStatus::Refunded])
                 ->latest('id')
                 ->paginate(25)
                 ->through(fn (Order $order) => [
@@ -33,6 +33,16 @@ class OrderController extends Controller
                     'status_label' => $order->status->label(),
                     'paid_at' => $order->paid_at?->toIso8601String(),
                     'refund_reason' => $order->refund_reason,
+                    'payment' => $order->payment ? [
+                        'id' => $order->payment->id,
+                        'gateway' => $order->payment->gateway,
+                        'gateway_reference' => $order->payment->gateway_reference,
+                        'status' => $order->payment->status->value,
+                        'has_proof' => ! empty($order->payment->raw_payload['proof_path']),
+                        'sender_name' => $order->payment->raw_payload['sender_name'] ?? null,
+                        'sender_bank' => $order->payment->raw_payload['sender_bank'] ?? null,
+                        'proof_url' => ! empty($order->payment->raw_payload['proof_path']) ? route('admin.payments.proof', $order->payment) : null,
+                    ] : null,
                 ]),
             'revenue' => ['commission' => (int) Order::where('status', OrderStatus::Paid)->sum('commission'), 'orders' => Order::where('status', OrderStatus::Paid)->count()],
         ]);

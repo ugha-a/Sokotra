@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\Payments\BankTransferPaymentGateway;
 use App\Services\Payments\MidtransPaymentGateway;
 use App\Services\Payments\PaymentGateway;
 use App\Services\Payments\SimulatedPaymentGateway;
@@ -51,6 +52,7 @@ class AppServiceProvider extends ServiceProvider
 
             return match ($driver) {
                 'simulated' => new SimulatedPaymentGateway,
+                'bank_transfer', 'manual' => new BankTransferPaymentGateway,
                 'midtrans' => new MidtransPaymentGateway(
                     (string) config('services.payments.midtrans.server_key'),
                     (bool) config('services.payments.midtrans.production'),

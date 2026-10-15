@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Role;
+use App\Enums\SettingGroup;
 use App\Models\AdminAuditLog;
 use App\Support\Settings;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -38,7 +39,7 @@ it('shows settings grouped for admins', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('admin/settings')
-            ->has('groups', 8)
+            ->has('groups', count(SettingGroup::cases()))
             ->where('groups.0.key', 'signal'));
 });
 

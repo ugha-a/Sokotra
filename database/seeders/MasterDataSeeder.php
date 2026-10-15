@@ -218,6 +218,11 @@ class MasterDataSeeder extends Seeder
             [SettingGroup::Fraud, 'fraud.hedge_window_minutes', SettingType::Integer, 10, 'Jendela waktu sinyal berlawanan dari jaringan yang sama (menit)', null],
             [SettingGroup::Fraud, 'fraud.follower_ip_threshold', SettingType::Integer, 5, 'Jumlah follower baru dari IP yang sama untuk ditandai', null],
             [SettingGroup::Fraud, 'fraud.follower_window_days', SettingType::Integer, 7, 'Jendela waktu follower baru (hari)', null],
+
+            [SettingGroup::Payment, 'payment.bank_name', SettingType::Text, 'Bank Central Asia (BCA)', 'Nama Bank Tujuan Transfer', null],
+            [SettingGroup::Payment, 'payment.account_number', SettingType::Text, '1234567890', 'Nomor Rekening Tujuan', null],
+            [SettingGroup::Payment, 'payment.account_holder', SettingType::Text, 'PT Sokotra Teknologi Indonesia', 'Nama Pemilik Rekening', null],
+            [SettingGroup::Payment, 'payment.instructions', SettingType::Text, 'Silakan transfer tepat sesuai nominal yang tertera. Cantumkan kode pembayaran pada berita transfer dan unggah bukti transfer setelah selesai.', 'Instruksi Pembayaran', null],
         ];
 
         foreach ($settings as $order => [$group, $key, $type, $value, $label, $options]) {

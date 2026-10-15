@@ -18,8 +18,8 @@ class SubscriptionController extends Controller
     {
         return Inertia::render('admin/subscriptions/index', [
             'subscriptions' => Subscription::query()
-                ->with(['subscriber:id,name,email', 'trader.traderProfile'])
-                ->whereIn('status', [SubscriptionStatus::Active, SubscriptionStatus::Expired, SubscriptionStatus::Refunded])
+                ->with(['subscriber:id,name,email', 'trader.traderProfile', 'payment'])
+                ->whereIn('status', [SubscriptionStatus::PendingPayment, SubscriptionStatus::Active, SubscriptionStatus::Expired, SubscriptionStatus::Refunded])
                 ->latest('id')
                 ->paginate(25)
                 ->through(fn (Subscription $subscription) => [
@@ -35,6 +35,16 @@ class SubscriptionController extends Controller
                     'starts_at' => $subscription->starts_at?->toIso8601String(),
                     'ends_at' => $subscription->ends_at?->toIso8601String(),
                     'refund_reason' => $subscription->refund_reason,
+                    'payment' => $subscription->payment ? [
+                        'id' => $subscription->payment->id,
+                        'gateway' => $subscription->payment->gateway,
+                        'gateway_reference' => $subscription->payment->gateway_reference,
+                        'status' => $subscription->payment->status->value,
+                        'has_proof' => ! empty($subscription->payment->raw_payload['proof_path']),
+                        'sender_name' => $subscription->payment->raw_payload['sender_name'] ?? null,
+                        'sender_bank' => $subscription->payment->raw_payload['sender_bank'] ?? null,
+                        'proof_url' => ! empty($subscription->payment->raw_payload['proof_path']) ? route('admin.payments.proof', $subscription->payment) : null,
+                    ] : null,
                 ]),
             'revenue' => [
                 'platform_fee' => (int) Subscription::whereIn('status', [SubscriptionStatus::Active, SubscriptionStatus::Expired])->sum('platform_fee'),

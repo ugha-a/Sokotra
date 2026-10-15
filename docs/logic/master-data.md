@@ -138,6 +138,10 @@ Update lewat `PUT /admin/settings` dengan payload bersarang per grup: `settings[
 | fraud.hedge_window_minutes       | 10           | Jendela waktu deteksi hedging antar akun (menit)                         |
 | fraud.follower_ip_threshold      | 5            | Jumlah akun satu IP yang mem-follow trader sama sebelum ditandai         |
 | fraud.follower_window_days       | 7            | Jendela waktu pemindaian follower palsu (hari)                           |
+| payment.bank_name                | BCA          | Nama bank tujuan transfer admin                                          |
+| payment.account_number           | 1234567890   | Nomor rekening tujuan transfer admin                                     |
+| payment.account_holder           | PT Sokotra.. | Nama pemilik rekening tujuan admin                                       |
+| payment.instructions             | teks         | Instruksi pembayaran transfer bank                                       |
 
 ## 8. Brokers — `brokers`
 

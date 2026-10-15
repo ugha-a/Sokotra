@@ -12,6 +12,7 @@ enum SettingGroup: string
     case Content = 'content';
     case Trader = 'trader';
     case Fraud = 'fraud';
+    case Payment = 'payment';
 
     public function label(): string
     {
@@ -24,6 +25,7 @@ enum SettingGroup: string
             self::Content => 'Konten',
             self::Trader => 'Trader & KYC',
             self::Fraud => 'Anti-Fraud',
+            self::Payment => 'Rekening Pembayaran',
         };
     }
 

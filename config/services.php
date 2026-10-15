@@ -40,11 +40,12 @@ return [
     | local development only; a real provider driver is added later.
     */
     /*
-    | Payment gateway (docs/logic/subscription.md). "simulated" is for local
-    | development only; Midtrans/Xendit drivers are added with credentials.
+    | Payment gateway (docs/logic/subscription.md). "bank_transfer" is the default
+    | (manual transfer to admin account); "midtrans" is for Snap checkout;
+    | "simulated" is for local development only.
     */
     'payments' => [
-        'driver' => env('PAYMENT_DRIVER', 'simulated'),
+        'driver' => env('PAYMENT_DRIVER', 'bank_transfer'),
         'checkout_expiry_hours' => 24,
 
         'midtrans' => [

@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\FraudFlagController;
 use App\Http\Controllers\Admin\KycDocumentController;
 use App\Http\Controllers\Admin\MasterDataController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\PaymentController as AdminPaymentController;
 use App\Http\Controllers\Admin\PayrollController as AdminPayrollController;
 use App\Http\Controllers\Admin\PlatformSettingController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -66,6 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('traders/{profile}/subscribe', [MemberSubscriptionController::class, 'create'])->name('subscriptions.create');
     Route::post('traders/{profile}/subscribe', [MemberSubscriptionController::class, 'store'])->middleware('throttle:checkout')->name('subscriptions.store');
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
+    Route::post('payments/{payment}/proof', [PaymentController::class, 'submitProof'])->name('payments.proof');
     Route::get('payments/{payment}/simulate', [PaymentController::class, 'simulate'])->name('payments.simulate.show');
     Route::post('payments/{payment}/simulate', [PaymentController::class, 'completeSimulation'])->name('payments.simulate.complete');
 
@@ -162,6 +164,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('subscriptions', [AdminSubscriptionController::class, 'index'])->name('subscriptions.index');
             Route::post('subscriptions/{subscription}/refund', [AdminSubscriptionController::class, 'refund'])->name('subscriptions.refund');
+
+            Route::post('payments/{payment}/confirm', [AdminPaymentController::class, 'confirm'])->name('payments.confirm');
+            Route::post('payments/{payment}/reject', [AdminPaymentController::class, 'reject'])->name('payments.reject');
+            Route::get('payments/{payment}/proof', [AdminPaymentController::class, 'proof'])->name('payments.proof');
 
             Route::get('withdrawals', [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');
             Route::post('withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('withdrawals.approve');

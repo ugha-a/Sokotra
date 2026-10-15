@@ -1,5 +1,7 @@
-import { Head } from '@inertiajs/react';
+import { Head, router } from '@inertiajs/react';
+import { ExternalLink } from 'lucide-react';
 import Heading from '@/components/heading';
+import { ConfirmDialog } from '@/components/domain/confirm-dialog';
 import { Pagination } from '@/components/domain/pagination';
 import { ReasonDialog } from '@/components/domain/reason-dialog';
 import { StatTile } from '@/components/domain/stat-tile';
@@ -8,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { formatDate, formatRupiah } from '@/lib/format';
 import { statusTone } from '@/lib/status';
 import { index, refund } from '@/routes/admin/orders';
+import { confirm, reject } from '@/routes/admin/payments';
 import type { Paginated } from '@/types';
 
 type Row = {
@@ -21,6 +24,16 @@ type Row = {
     status_label: string;
     paid_at: string | null;
     refund_reason: string | null;
+    payment?: {
+        id: number;
+        gateway: string;
+        gateway_reference: string;
+        status: string;
+        has_proof: boolean;
+        sender_name: string | null;
+        sender_bank: string | null;
+        proof_url: string | null;
+    } | null;
 };
 
 export default function AdminOrders({
@@ -36,7 +49,7 @@ export default function AdminOrders({
             <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 <Heading
                     title="Pesanan Marketplace"
-                    description="Refund hanya bisa selama pendapatan penjual masih tertahan."
+                    description="Verifikasi pembayaran transfer bank dan kelola refund pesanan."
                 />
                 <div className="grid gap-3 sm:grid-cols-2">
                     <StatTile
@@ -71,17 +84,84 @@ export default function AdminOrders({
                                     {order.paid_at &&
                                         ` · ${formatDate(order.paid_at)}`}
                                 </span>
+                                {order.payment && (
+                                    <span className="block text-xs text-muted-foreground">
+                                        Ref: {order.payment.gateway_reference}
+                                        {order.payment.sender_name &&
+                                            ` · Pengirim: ${order.payment.sender_name}`}
+                                        {order.payment.sender_bank &&
+                                            ` (${order.payment.sender_bank})`}
+                                    </span>
+                                )}
                                 {order.refund_reason && (
                                     <span className="block text-xs text-loss">
                                         Refund: {order.refund_reason}
                                     </span>
                                 )}
                             </span>
-                            <span className="flex items-center gap-2">
+                            <span className="flex flex-wrap items-center gap-2">
                                 <StatusPill
                                     label={order.status_label}
                                     tone={statusTone(order.status)}
                                 />
+                                {order.status === 'pending_payment' &&
+                                    order.payment && (
+                                        <>
+                                            {order.payment.has_proof &&
+                                                order.payment.proof_url && (
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                        asChild
+                                                    >
+                                                        <a
+                                                            href={
+                                                                order.payment
+                                                                    .proof_url
+                                                            }
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                        >
+                                                            <ExternalLink className="size-3.5" />
+                                                            Bukti
+                                                        </a>
+                                                    </Button>
+                                                )}
+                                            <ConfirmDialog
+                                                trigger={
+                                                    <Button size="sm">
+                                                        Konfirmasi
+                                                    </Button>
+                                                }
+                                                title="Konfirmasi Pembayaran?"
+                                                description="Pastikan dana telah masuk ke rekening tujuan admin. Setelah dikonfirmasi, pembeli dapat langsung mengunduh produk."
+                                                confirmLabel="Konfirmasi Pembayaran"
+                                                onConfirm={() =>
+                                                    router.post(
+                                                        confirm.url(
+                                                            order.payment!.id,
+                                                        ),
+                                                    )
+                                                }
+                                            />
+                                            <ReasonDialog
+                                                trigger={
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outline"
+                                                    >
+                                                        Tolak
+                                                    </Button>
+                                                }
+                                                title="Tolak Pembayaran?"
+                                                description="Pembayaran akan ditandai gagal dan pesanan dibatalkan. Berikan alasan penolakan."
+                                                confirmLabel="Tolak Pembayaran"
+                                                action={reject(
+                                                    order.payment.id,
+                                                )}
+                                            />
+                                        </>
+                                    )}
                                 {order.status === 'paid' && (
                                     <ReasonDialog
                                         trigger={
