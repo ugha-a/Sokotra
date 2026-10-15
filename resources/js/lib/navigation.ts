@@ -14,6 +14,8 @@ import {
     UserCheck,
     Wallet,
     Banknote,
+    Coins,
+    ReceiptText,
     Landmark,
 } from 'lucide-react';
 import { dashboard, leaderboard } from '@/routes';
@@ -21,6 +23,7 @@ import { dashboard as adminDashboard } from '@/routes/admin';
 import { index as auditLogs } from '@/routes/admin/audit-logs';
 import { index as masterData } from '@/routes/admin/master';
 import { edit as platformSettings } from '@/routes/admin/settings';
+import { index as payrollPeriods } from '@/routes/admin/payroll';
 import { index as traderApplications } from '@/routes/admin/traders';
 import { index as adminWallets } from '@/routes/admin/wallets';
 import { index as withdrawals } from '@/routes/admin/withdrawals';
@@ -32,7 +35,7 @@ import {
     create as createSignal,
     index as traderSignals,
 } from '@/routes/trader/signals';
-import { dashboard as traderDashboard } from '@/routes/trader';
+import { dashboard as traderDashboard, payroll } from '@/routes/trader';
 import type { NavGroup } from '@/types';
 
 /**
@@ -80,6 +83,7 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     href: traderSignals(),
                     icon: ListChecks,
                 },
+                { title: 'Gaji & Reward', href: payroll(), icon: Coins },
                 { title: 'Wallet', href: wallet(), icon: Wallet },
             ],
         });
@@ -99,6 +103,7 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     href: traderApplications(),
                     icon: UserCheck,
                 },
+                { title: 'Payroll', href: payrollPeriods(), icon: ReceiptText },
                 { title: 'Penarikan', href: withdrawals(), icon: Banknote },
                 {
                     title: 'Wallet Pengguna',

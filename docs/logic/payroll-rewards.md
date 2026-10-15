@@ -11,7 +11,7 @@ Trader dibayar bulanan berdasarkan **jumlah analisa benar (per minggu)**, **juml
 5. `max_drawdown_r_in_month ≤ max_drawdown_r_month`.
 6. Trader tidak sedang ditandai fraud (`trader_profiles.is_flagged = false`).
 
-Jika tidak layak, item payroll tetap dibuat dengan `amount = 0` dan alasan (`ineligible_reasons` json) agar transparan.
+Jika tidak layak, item payroll tetap dibuat dengan semua nominal `0` dan alasan (`ineligible_reasons`) agar transparan. Kode alasan (label di `PayrollCalculator::REASONS`): `rank_not_paid`, `kyc_not_verified`, `flagged` (profil `is_flagged` atau akun `is_fraud_flagged`), `suspended`, `streak_not_reached`, `not_enough_signals`, `drawdown_exceeded`. Trader `suspended` tetap mendapat item (dengan alasan `suspended`).
 
 ## Rumus
 
@@ -27,7 +27,8 @@ gaji = base_salary[rank]
 - Sinyal masuk ke bulan sesuai `closed_at` (WIB).
 - Minggu ISO yang terpotong di awal/akhir bulan hanya dihitung bagian hari di bulan itu.
 - Sinyal yang ditandai fraud (`signals.excluded_from_payroll = true`) tidak dihitung.
-- `Support\PayrollCalculator::calculate(PayrollInput): PayrollResult` adalah fungsi murni dan sumber kebenaran rumus.
+- `App\Support\Payroll\PayrollCalculator::calculate(PayrollInput): PayrollResult` adalah fungsi murni dan sumber kebenaran rumus. Bulan dan zona waktunya (WIB) diambil dari `PayrollInput::monthStart`. `App\Actions\Payroll\CalculateTraderPayroll` memuat data dari database.
+- Follower valid dihitung saat draft dibuat (bukan snapshot akhir bulan).
 
 ## Proses
 
@@ -41,7 +42,7 @@ gaji = base_salary[rank]
 Tabel:
 
 - `payroll_periods` (`month` unik `YYYY-MM`, `status` draft/approved, `approved_by`, `approved_at`, `total_amount`)
-- `payroll_items` (`period_id`, `trader_id`, `rank_id`, `eligible`, `ineligible_reasons`, `base_amount`, `wins_counted`, `wins_amount`, `followers_counted`, `followers_amount`, `streak_amount`, `total_amount`, `status` pending/held/paid)
+- `payroll_items` (`payroll_period_id`, `user_id`, `rank_id`, `eligible`, `ineligible_reasons`, `closed_signals`, `best_streak`, `max_drawdown_r`, `base_amount`, `wins_counted`, `wins_amount`, `followers_counted`, `followers_amount`, `streak_amount`, `tax_amount`, `total_amount`, `status` pending/held/paid/skipped, `hold_note`)
 
 Aturan:
 

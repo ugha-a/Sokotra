@@ -13,3 +13,4 @@ Schedule::command('stats:refresh')->dailyAt('00:15')->withoutOverlapping();
 Schedule::command('ranks:recalculate')->weeklyOn(1, '00:05')->timezone('Asia/Jakarta')->withoutOverlapping();
 Schedule::command('wallets:release')->hourly()->withoutOverlapping();
 Schedule::command('wallets:reconcile')->dailyAt('00:30');
+Schedule::command('payroll:generate')->monthlyOn(1, '01:00')->timezone('Asia/Jakarta')->withoutOverlapping();

@@ -17,6 +17,9 @@ const TONES: Record<string, StatusTone> = {
     processing: 'brand',
     paid: 'profit',
     failed: 'loss',
+    draft: 'pending',
+    held: 'premium',
+    skipped: 'neutral',
 };
 
 /**

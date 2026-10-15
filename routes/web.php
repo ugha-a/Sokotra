@@ -5,6 +5,7 @@ use App\Enums\Role;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\KycDocumentController;
 use App\Http\Controllers\Admin\MasterDataController;
+use App\Http\Controllers\Admin\PayrollController as AdminPayrollController;
 use App\Http\Controllers\Admin\PlatformSettingController;
 use App\Http\Controllers\Admin\TraderApplicationController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
@@ -18,6 +19,7 @@ use App\Http\Controllers\Public\LeaderboardController;
 use App\Http\Controllers\Public\TraderProfileController;
 use App\Http\Controllers\SignalFeedController;
 use App\Http\Controllers\Trader\DashboardController as TraderDashboardController;
+use App\Http\Controllers\Trader\PayrollController as TraderPayrollController;
 use App\Http\Controllers\Trader\QuoteController;
 use App\Http\Controllers\Trader\SignalController;
 use App\Http\Controllers\Wallet\BankAccountController;
@@ -63,6 +65,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('signals/{signal}/cancel', [SignalController::class, 'cancel'])->name('signals.cancel');
 
             Route::get('quotes/{instrument}', [QuoteController::class, 'show'])->name('quotes.show');
+            Route::get('payroll', TraderPayrollController::class)->name('payroll');
         });
 
     Route::middleware('role:'.Role::Admin->value)
@@ -80,6 +83,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('settings', [PlatformSettingController::class, 'update'])->name('settings.update');
 
             Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+
+            Route::get('payroll', [AdminPayrollController::class, 'index'])->name('payroll.index');
+            Route::post('payroll', [AdminPayrollController::class, 'generate'])->name('payroll.generate');
+            Route::get('payroll/{period}', [AdminPayrollController::class, 'show'])->name('payroll.show');
+            Route::post('payroll/{period}/approve', [AdminPayrollController::class, 'approve'])->name('payroll.approve');
+            Route::post('payroll/items/{item}/hold', [AdminPayrollController::class, 'hold'])->name('payroll.items.hold');
+            Route::post('payroll/items/{item}/release', [AdminPayrollController::class, 'release'])->name('payroll.items.release');
 
             Route::get('withdrawals', [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');
             Route::post('withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('withdrawals.approve');
