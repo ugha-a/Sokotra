@@ -9,3 +9,5 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 Schedule::command('signals:evaluate')->everyMinute()->withoutOverlapping();
+Schedule::command('stats:refresh')->dailyAt('00:15')->withoutOverlapping();
+Schedule::command('ranks:recalculate')->weeklyOn(1, '00:05')->timezone('Asia/Jakarta')->withoutOverlapping();

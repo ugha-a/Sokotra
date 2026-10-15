@@ -25,6 +25,12 @@ Setiap token punya pasangan `-foreground` dan varian latar lembut `-soft` (alpha
 
 **Aturan:** buy/sell memakai warna profit/loss **disertai label teks dan ikon** (▲ Buy / ▼ Sell). Jangan mengandalkan warna saja (aksesibilitas buta warna).
 
+### Warna Grafik
+
+| Token            | Light           | Dark            | Dipakai                                                                                                         |
+| ---------------- | --------------- | --------------- | --------------------------------------------------------------------------------------------------------------- |
+| `--chart-equity` | `0.55 0.15 250` | `0.65 0.14 250` | Kurva R kumulatif. Mode gelap sengaja L 0.65 (bukan `--brand` 0.68) agar lolos pita kecerahan validator dataviz |
+
 ### Warna Rank
 
 Diambil dari kolom `ranks.color` (nama token):

@@ -68,6 +68,12 @@ return [
     'timezone' => 'UTC',
 
     /*
+    | Business calendar (weeks, months, payroll, schedules) follows WIB while
+    | timestamps are stored in UTC.
+    */
+    'business_timezone' => 'Asia/Jakarta',
+
+    /*
     |--------------------------------------------------------------------------
     | Application Locale Configuration
     |--------------------------------------------------------------------------

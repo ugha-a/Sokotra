@@ -37,7 +37,7 @@ it('forbids members from trader and admin areas', function (string $route) {
 })->with(['trader.dashboard', 'admin.dashboard']);
 
 it('lets traders open the trader dashboard only', function () {
-    $trader = userWithRoles(Role::Member, Role::Trader);
+    $trader = approvedTrader();
 
     $this->actingAs($trader)
         ->get(route('trader.dashboard'))

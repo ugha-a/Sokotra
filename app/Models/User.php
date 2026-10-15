@@ -29,6 +29,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $remember_token
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
+ * @property Carbon|null $last_active_at
+ * @property bool $is_fraud_flagged
  * @property-read TraderProfile|null $traderProfile
  * @property-read KycVerification|null $kycVerification
  */
@@ -56,6 +58,34 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     }
 
     /**
+     * Followers of this user as a trader.
+     *
+     * @return HasMany<Follow, $this>
+     */
+    public function followers(): HasMany
+    {
+        return $this->hasMany(Follow::class, 'trader_id');
+    }
+
+    /**
+     * Traders this user follows.
+     *
+     * @return HasMany<Follow, $this>
+     */
+    public function following(): HasMany
+    {
+        return $this->hasMany(Follow::class, 'follower_id');
+    }
+
+    /**
+     * @return HasMany<TraderStat, $this>
+     */
+    public function traderStats(): HasMany
+    {
+        return $this->hasMany(TraderStat::class);
+    }
+
+    /**
      * @return HasMany<UserConsent, $this>
      */
     public function consents(): HasMany
@@ -74,6 +104,8 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'two_factor_confirmed_at' => 'datetime',
+            'last_active_at' => 'datetime',
+            'is_fraud_flagged' => 'boolean',
         ];
     }
 }

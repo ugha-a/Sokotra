@@ -187,6 +187,8 @@ class MasterDataSeeder extends Seeder
             [SettingGroup::Score, 'score.weight_followers', SettingType::Decimal, 0.15, 'Bobot followers', null],
             [SettingGroup::Score, 'score.window_days', SettingType::Integer, 90, 'Jendela statistik rank & skor (hari)', null],
             [SettingGroup::Score, 'score.follower_active_days', SettingType::Integer, 30, 'Follower valid jika aktif dalam (hari)', null],
+            [SettingGroup::Score, 'score.leaderboard_min_signals', SettingType::Integer, 20, 'Minimal sinyal selesai untuk masuk leaderboard', null],
+            [SettingGroup::Score, 'score.consistent_min_signals', SettingType::Integer, 50, 'Minimal sinyal selesai untuk "Paling Konsisten"', null],
 
             [SettingGroup::Wallet, 'wallet.min_withdraw', SettingType::Money, 100000, 'Minimum penarikan', null],
             [SettingGroup::Wallet, 'wallet.withdraw_fee', SettingType::Money, 6500, 'Biaya penarikan', null],

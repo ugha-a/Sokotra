@@ -8,16 +8,32 @@ use App\Http\Controllers\Admin\MasterDataController;
 use App\Http\Controllers\Admin\PlatformSettingController;
 use App\Http\Controllers\Admin\TraderApplicationController;
 use App\Http\Controllers\Member\BecomeTraderController;
+use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
+use App\Http\Controllers\Member\FollowController;
+use App\Http\Controllers\Member\FollowingController;
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\Public\LeaderboardController;
+use App\Http\Controllers\Public\TraderProfileController;
 use App\Http\Controllers\SignalFeedController;
+use App\Http\Controllers\Trader\DashboardController as TraderDashboardController;
 use App\Http\Controllers\Trader\QuoteController;
 use App\Http\Controllers\Trader\SignalController;
 use App\Models\KycVerification;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'welcome')->name('home');
+Route::get('leaderboard', LeaderboardController::class)->name('leaderboard');
+Route::get('traders/{profile:slug}', [TraderProfileController::class, 'show'])->name('traders.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', MemberDashboardController::class)->name('dashboard');
+    Route::get('following', [FollowingController::class, 'index'])->name('following.index');
+    Route::post('traders/{profile}/follow', [FollowController::class, 'store'])->name('traders.follow');
+    Route::delete('traders/{profile}/follow', [FollowController::class, 'destroy'])->name('traders.unfollow');
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('notifications/{notification}', [NotificationController::class, 'open'])->name('notifications.open');
+    Route::post('notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
 
     Route::get('signals', [SignalFeedController::class, 'index'])->name('signals.index');
     Route::get('signals/{signal}/chart', [SignalFeedController::class, 'chart'])->name('signals.chart');
@@ -29,7 +45,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->prefix('trader')
         ->name('trader.')
         ->group(function () {
-            Route::inertia('/', 'trader/dashboard')->name('dashboard');
+            Route::get('/', TraderDashboardController::class)->name('dashboard');
 
             Route::get('signals', [SignalController::class, 'index'])->name('signals.index');
             Route::get('signals/create', [SignalController::class, 'create'])->name('signals.create');

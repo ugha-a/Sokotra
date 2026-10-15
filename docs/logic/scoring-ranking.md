@@ -9,7 +9,7 @@ Hanya sinyal berstatus final **`tp_hit`, `sl_hit`, `closed_timeout`**. Status `e
 
 ## Statistik per Trader — `trader_stats`
 
-Disimpan per `period` (`week`, `month`, `rolling_90d`, `all_time`) + `period_start`. Diperbarui saat event `SignalClosed` (inkremental) dan direkonsiliasi oleh job harian.
+Disimpan per `period` (`week`, `month`, `rolling` = `score.window_days` hari terakhir, `all_time`) + `period_start`. Dihitung ulang penuh oleh `App\Actions\Ranking\RefreshTraderStats` setiap kali sinyal trader ditutup (listener `RefreshStatsWhenSignalCloses`) dan untuk semua trader oleh command `stats:refresh` setiap hari 00:15. Batas minggu (Senin) dan bulan memakai kalender WIB (`config('app.business_timezone')`), timestamp tetap UTC.
 
 | Metrik                        | Rumus                                                     |
 | ----------------------------- | --------------------------------------------------------- |
@@ -35,9 +35,9 @@ Disimpan per `period` (`week`, `month`, `rolling_90d`, `all_time`) + `period_sta
 
 ## Rank (dihitung ulang mingguan, Senin 00:05 WIB)
 
-Job `RecalculateRanks`:
+Command `ranks:recalculate` (Senin 00:05 WIB; menjalankan `stats:refresh` dulu) → `App\Actions\Ranking\RecalculateRanks`:
 
-1. Ambil statistik `rolling_90d` dan jumlah **follower valid** setiap trader.
+1. Ambil statistik `rolling` dan jumlah **follower valid** setiap trader `approved` (trader `suspended` tidak diubah). Hanya rank `is_active` yang dipertimbangkan.
 2. Rank = level **tertinggi** yang **semua** threshold-nya terpenuhi:
     - `closed_signals ≥ min_closed_signals`
     - `win_rate ≥ min_win_rate`
@@ -59,9 +59,9 @@ score = w_win_rate    × norm(win_rate)
 consistency = 1 / (1 + max_drawdown_r)
 ```
 
-- Trader dengan `closed_signals < 20` tidak masuk leaderboard (menghindari win rate 100% dari 2 sinyal).
-- Leaderboard publik: **Mingguan, Bulanan, All-time**, plus filter instrumen.
-- **"Most Consistent"**: urut `consistency` lalu `win_rate`, minimal 50 sinyal.
+- Trader dengan `closed_signals < score.leaderboard_min_signals` (default 20) tidak masuk leaderboard (menghindari win rate 100% dari 2 sinyal). Trader `suspended` atau `is_flagged` tidak ditampilkan.
+- Leaderboard publik `/leaderboard`: **Mingguan, Bulanan, All-time**. Normalisasi min-max dihitung di antara trader yang lolos syarat pada periode itu (`App\Actions\Ranking\BuildLeaderboard`). Filter instrumen belum ada (butuh statistik per instrumen).
+- **"Most Consistent"**: urut `consistency` lalu `win_rate`, minimal `score.consistent_min_signals` (default 50) sinyal.
 - **"Featured"**: dikurasi admin (flag `is_featured`) dan tetap wajib memenuhi minimal sinyal.
 
 ## Follow
@@ -69,7 +69,13 @@ consistency = 1 / (1 + max_drawdown_r)
 - Tabel `follows` (`follower_id`, `trader_id`, unik). Gratis, tanpa batas.
 - Trader tidak bisa follow dirinya sendiri.
 - **Follower valid** = `email_verified_at` tidak null **dan** `last_active_at` dalam `score.follower_active_days` hari **dan** bukan akun yang ditandai fraud. Hanya follower valid yang dihitung untuk rank dan gaji. Jumlah total follower tetap ditampilkan.
-- `users.last_active_at` diperbarui oleh middleware (maksimal sekali per jam).
+- `users.last_active_at` diperbarui oleh middleware `TrackLastActivity` (maksimal sekali per jam). Flag akun fraud: `users.is_fraud_flagged`.
+- Profil publik `/traders/{slug}` (hanya trader `approved`): statistik per periode, kurva R kumulatif, riwayat sinyal dengan aturan visibilitas, tombol Ikuti.
+
+## Notifikasi
+
+- Database notification: `SignalPublishedNotification` dan `SignalClosedNotification` ke semua follower (listener `NotifyFollowersOfSignal`, kecuali pembatalan), `RankChanged` (email + database) ke trader.
+- Notifikasi diantrikan (`ShouldQueue`). Ikon lonceng di header memperbarui jumlah belum dibaca dengan polling 60 detik (shared prop `notifications.unread`). Broadcast realtime (Reverb) bisa ditambahkan nanti tanpa mengubah notifikasi.
 
 ## Anti-Fraud Ranking
 

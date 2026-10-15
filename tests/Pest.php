@@ -1,11 +1,16 @@
 <?php
 
 use App\Enums\Role;
+use App\Enums\SignalStatus;
+use App\Models\Follow;
 use App\Models\Rank;
+use App\Models\Signal;
 use App\Models\TraderProfile;
 use App\Models\User;
 use App\Services\PriceFeed\FakePriceFeed;
 use App\Services\PriceFeed\PriceFeed;
+use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -80,4 +85,37 @@ function approvedTrader(string $rankSlug = 'newbie'): User
     ]);
 
     return $user;
+}
+
+/**
+ * Closed signals for a trader with the given R results, closed one hour apart ending now.
+ *
+ * @param  list<float>  $results
+ */
+function closedSignalsFor(User $trader, array $results, ?CarbonInterface $endingAt = null): void
+{
+    $end = CarbonImmutable::instance($endingAt ?? now());
+    $count = count($results);
+
+    foreach ($results as $i => $r) {
+        $closedAt = $end->subHours($count - 1 - $i);
+
+        Signal::factory()->for($trader, 'trader')->create([
+            'status' => $r > 0 ? SignalStatus::TpHit : SignalStatus::SlHit,
+            'rr' => $r > 0 ? $r : 2,
+            'result_r' => $r,
+            'result_pips' => $r * 20,
+            'published_at' => $closedAt->subHour(),
+            'triggered_at' => $closedAt->subHour(),
+            'closed_at' => $closedAt,
+        ]);
+    }
+}
+
+function followTrader(User $trader, int $count = 1, bool $valid = true): void
+{
+    User::factory()->count($count)->create([
+        'email_verified_at' => $valid ? now() : null,
+        'last_active_at' => now(),
+    ])->each(fn (User $user) => Follow::create(['follower_id' => $user->id, 'trader_id' => $trader->id]));
 }

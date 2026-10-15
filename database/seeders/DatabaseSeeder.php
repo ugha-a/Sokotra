@@ -2,9 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Actions\Ranking\RecalculateRanks;
+use App\Actions\Ranking\RefreshTraderStats;
 use App\Enums\KycStatus;
 use App\Enums\Role;
+use App\Enums\SignalStatus;
+use App\Models\Follow;
+use App\Models\Instrument;
 use App\Models\KycVerification;
+use App\Models\Signal;
 use App\Models\TraderProfile;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -36,6 +42,8 @@ class DatabaseSeeder extends Seeder
             'slug' => 'trader-demo',
         ]);
 
+        $this->demoTrackRecord($trader);
+
         $applicant = $this->demoUser('Pemohon Demo', 'pemohon@sokotra.test', Role::Member);
         $this->demoKyc($applicant, KycStatus::Submitted);
         TraderProfile::factory()->for($applicant)->create([
@@ -43,6 +51,43 @@ class DatabaseSeeder extends Seeder
             'slug' => 'pemohon-demo',
             'bio' => 'Swing trader XAUUSD dan EURUSD, fokus pada struktur pasar dan area supply-demand.',
         ]);
+    }
+
+    /**
+     * 30 closed signals over the last weeks plus a few followers, so the leaderboard,
+     * profile and dashboard have something to show.
+     */
+    private function demoTrackRecord(User $trader): void
+    {
+        $results = [2, -1, 1.5, 2, -1, 2.5, 1.5, -1, 2, 2, -1, -1, 3, 1.5, 2, -1, 2, 1.5, -1, 2, 2, 2, -1, 1.5, 2, -1, 2.5, 2, 1.5, 2];
+        $instruments = Instrument::whereIn('symbol', ['EURUSD', 'XAUUSD', 'GBPUSD'])->get();
+
+        foreach ($results as $i => $r) {
+            $closedAt = now()->subDays(count($results) - $i)->setTime(9 + $i % 8, 15);
+            $instrument = $instruments[$i % $instruments->count()];
+
+            Signal::factory()->for($trader, 'trader')->create([
+                'instrument_id' => $instrument->id,
+                'pip_size_snapshot' => $instrument->pip_size,
+                'digits_snapshot' => $instrument->digits,
+                'status' => $r > 0 ? SignalStatus::TpHit : SignalStatus::SlHit,
+                'rr' => $r > 0 ? $r : 2,
+                'result_r' => $r,
+                'result_pips' => $r * 20,
+                'published_at' => $closedAt->subHours(5),
+                'triggered_at' => $closedAt->subHours(5),
+                'closed_at' => $closedAt,
+                'entry_price' => $instrument->symbol === 'XAUUSD' ? '2650.00' : '1.08000',
+                'stop_loss' => $instrument->symbol === 'XAUUSD' ? '2645.00' : '1.07800',
+                'take_profit' => $instrument->symbol === 'XAUUSD' ? '2660.00' : '1.08500',
+            ]);
+        }
+
+        User::factory()->count(12)->create(['last_active_at' => now()])
+            ->each(fn (User $follower) => Follow::create(['follower_id' => $follower->id, 'trader_id' => $trader->id]));
+
+        app(RefreshTraderStats::class)->handle($trader);
+        app(RecalculateRanks::class)->handle();
     }
 
     private function demoUser(string $name, string $email, Role ...$roles): User

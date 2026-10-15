@@ -7,17 +7,20 @@ import {
     Radio,
     SquarePen,
     Settings2,
+    Trophy,
+    Users,
     ShieldCheck,
     TrendingUp,
     UserCheck,
 } from 'lucide-react';
-import { dashboard } from '@/routes';
+import { dashboard, leaderboard } from '@/routes';
 import { dashboard as adminDashboard } from '@/routes/admin';
 import { index as auditLogs } from '@/routes/admin/audit-logs';
 import { index as masterData } from '@/routes/admin/master';
 import { edit as platformSettings } from '@/routes/admin/settings';
 import { index as traderApplications } from '@/routes/admin/traders';
 import { show as becomeTrader } from '@/routes/become-trader';
+import { index as following } from '@/routes/following';
 import { index as signalFeed } from '@/routes/signals';
 import {
     create as createSignal,
@@ -37,6 +40,8 @@ export function buildNavigation(roles: string[]): NavGroup[] {
             items: [
                 { title: 'Beranda', href: dashboard(), icon: LayoutGrid },
                 { title: 'Sinyal', href: signalFeed(), icon: Radio },
+                { title: 'Leaderboard', href: leaderboard(), icon: Trophy },
+                { title: 'Diikuti', href: following(), icon: Users },
                 ...(isTrader
                     ? []
                     : [

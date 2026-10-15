@@ -86,6 +86,8 @@
     --color-premium-foreground: var(--premium-foreground);
     --color-premium-soft: color-mix(in oklch, var(--premium) 12%, transparent);
 
+    --color-chart-equity: var(--chart-equity);
+
     --color-rank-1: var(--rank-1);
     --color-rank-2: var(--rank-2);
     --color-rank-3: var(--rank-3);
@@ -141,6 +143,8 @@
     --neutral-status-foreground: oklch(0.985 0 0);
     --premium: oklch(0.7 0.14 70);
     --premium-foreground: oklch(0.205 0 0);
+    /* Validated with the dataviz palette checker against #ffffff / #0a0a0a. */
+    --chart-equity: oklch(0.55 0.15 250);
     --rank-1: oklch(0.556 0 0);
     --rank-2: oklch(0.6 0.15 155);
     --rank-3: oklch(0.55 0.15 250);
@@ -195,6 +199,7 @@
     --neutral-status-foreground: oklch(0.145 0 0);
     --premium: oklch(0.78 0.13 70);
     --premium-foreground: oklch(0.145 0 0);
+    --chart-equity: oklch(0.65 0.14 250);
     --rank-1: oklch(0.708 0 0);
     --rank-2: oklch(0.72 0.16 155);
     --rank-3: oklch(0.68 0.14 250);

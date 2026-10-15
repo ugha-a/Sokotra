@@ -72,14 +72,16 @@ Seed default:
 
 ## 4. Score Weights — `platform_settings` group `score`
 
-| Key                        | Default |                                             |
-| -------------------------- | ------- | ------------------------------------------- |
-| score.weight_win_rate      | 0.30    |                                             |
-| score.weight_total_r       | 0.35    |                                             |
-| score.weight_consistency   | 0.20    | Kebalikan dari drawdown & variansi mingguan |
-| score.weight_followers     | 0.15    |                                             |
-| score.window_days          | 90      | Jendela statistik untuk rank & skor         |
-| score.follower_active_days | 30      | Definisi follower valid                     |
+| Key                           | Default |                                                   |
+| ----------------------------- | ------- | ------------------------------------------------- |
+| score.weight_win_rate         | 0.30    |                                                   |
+| score.weight_total_r          | 0.35    |                                                   |
+| score.weight_consistency      | 0.20    | Kebalikan dari drawdown & variansi mingguan       |
+| score.weight_followers        | 0.15    |                                                   |
+| score.window_days             | 90      | Jendela statistik untuk rank & skor               |
+| score.follower_active_days    | 30      | Definisi follower valid                           |
+| score.leaderboard_min_signals | 20      | Minimal sinyal selesai untuk masuk leaderboard    |
+| score.consistent_min_signals  | 50      | Minimal sinyal selesai untuk tab Paling Konsisten |
 
 ## 5. Payroll Rules — `payroll_rules` (satu baris per rank)
 

@@ -11,13 +11,25 @@ function summarize(roles: string[]) {
 describe('buildNavigation', () => {
     it('offers the trader application to members', () => {
         expect(summarize(['member'])).toEqual([
-            { label: 'Member', items: ['Beranda', 'Sinyal', 'Jadi Trader'] },
+            {
+                label: 'Member',
+                items: [
+                    'Beranda',
+                    'Sinyal',
+                    'Leaderboard',
+                    'Diikuti',
+                    'Jadi Trader',
+                ],
+            },
         ]);
     });
 
     it('adds the trader group for traders', () => {
         expect(summarize(['member', 'trader'])).toEqual([
-            { label: 'Member', items: ['Beranda', 'Sinyal'] },
+            {
+                label: 'Member',
+                items: ['Beranda', 'Sinyal', 'Leaderboard', 'Diikuti'],
+            },
             {
                 label: 'Trader',
                 items: ['Dashboard Trader', 'Posting Sinyal', 'Sinyal Saya'],
@@ -27,7 +39,16 @@ describe('buildNavigation', () => {
 
     it('adds the admin group for admins', () => {
         expect(summarize(['admin'])).toEqual([
-            { label: 'Member', items: ['Beranda', 'Sinyal', 'Jadi Trader'] },
+            {
+                label: 'Member',
+                items: [
+                    'Beranda',
+                    'Sinyal',
+                    'Leaderboard',
+                    'Diikuti',
+                    'Jadi Trader',
+                ],
+            },
             {
                 label: 'Admin',
                 items: [
@@ -52,6 +73,8 @@ describe('buildNavigation', () => {
         expect(urls).toEqual([
             '/dashboard',
             '/signals',
+            '/leaderboard',
+            '/following',
             '/trader',
             '/trader/signals/create',
             '/trader/signals',

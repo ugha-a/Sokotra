@@ -86,3 +86,71 @@ export type AdminKyc = {
     documents: { id_card: string; selfie: string };
     documentLinkMinutes: number;
 };
+
+export type TraderStatSummary = {
+    period: string;
+    period_start: string | null;
+    closed_signals: number;
+    wins: number;
+    losses: number;
+    win_rate: number;
+    total_r: number;
+    avg_rr: number;
+    total_pips: number;
+    max_consecutive_wins: number;
+    max_consecutive_losses: number;
+    current_streak: number;
+    best_streak: number;
+    max_drawdown_r: number;
+    profit_factor: number | null;
+};
+
+export type StatsByPeriod = Record<
+    'week' | 'month' | 'rolling' | 'all_time',
+    TraderStatSummary | null
+>;
+
+export type LeaderboardRow = {
+    position: number;
+    trader: {
+        name: string;
+        slug: string;
+        rank: RankSummary | null;
+        is_featured: boolean;
+    };
+    score: number;
+    consistency: number;
+    followers: number;
+    stats: TraderStatSummary;
+};
+
+export type RankRequirement = {
+    key: string;
+    label: string;
+    required: number;
+    current: number;
+    met: boolean;
+};
+
+export type PublicTrader = {
+    id: number;
+    name: string;
+    slug: string;
+    bio: string;
+    trading_style: string;
+    experience_years: number;
+    main_instruments: string[];
+    rank: RankSummary | null;
+    followers: number;
+    is_featured: boolean;
+    approved_at: string | null;
+};
+
+export type NotificationItem = {
+    id: string;
+    title: string;
+    body: string;
+    url: string | null;
+    read: boolean;
+    created_at: string | null;
+};

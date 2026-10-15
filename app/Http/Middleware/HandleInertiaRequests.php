@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Support\Settings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,6 +43,10 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
                 'roles' => $request->user()?->getRoleNames()->values()->all() ?? [],
             ],
+            'notifications' => fn () => $request->user()
+                ? ['unread' => $request->user()->unreadNotifications()->count()]
+                : null,
+            'riskDisclaimer' => fn () => Settings::get('content.risk_disclaimer'),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

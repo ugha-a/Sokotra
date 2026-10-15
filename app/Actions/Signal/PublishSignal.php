@@ -7,6 +7,7 @@ use App\Enums\SignalDirection;
 use App\Enums\SignalStatus;
 use App\Enums\SignalVisibility;
 use App\Enums\TraderStatus;
+use App\Events\SignalPublished;
 use App\Events\SignalTriggered;
 use App\Models\Instrument;
 use App\Models\Signal;
@@ -232,6 +233,8 @@ class PublishSignal
             $signal->events()->create(['type' => 'triggered', 'price' => $entry, 'occurred_at' => now()]);
             SignalTriggered::dispatch($signal);
         }
+
+        SignalPublished::dispatch($signal);
 
         return $signal;
     }
