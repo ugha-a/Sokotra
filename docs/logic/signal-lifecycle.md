@@ -96,12 +96,13 @@ Dijalankan oleh scheduler **setiap menit**.
     - Kegagalan apa pun dilempar sebagai `PriceFeedUnavailable`.
 - Driver dipilih dari env `PRICE_FEED_DRIVER` (`config/services.php` → `price_feed.driver`):
 
-| Driver          | Untuk      | Catatan                                                                                                     |
-| --------------- | ---------- | ----------------------------------------------------------------------------------------------------------- |
-| `simulated`     | Dev lokal  | Harga sintetis deterministik dari `price_feed.simulated.base_prices`. **Ditolak di production.**            |
-| `FakePriceFeed` | Test       | Quote & candle disuntikkan (`setQuote`, `addCandles`, `failFor`, `recover`), lewat helper `fakePriceFeed()` |
-| provider asli   | Production | Belum dipilih: Twelve Data, Finnhub, Polygon, atau OANDA. Bandingkan harga dan cakupan XAUUSD 1m            |
+| Driver          | Untuk      | Catatan                                                                                                       |
+| --------------- | ---------- | ------------------------------------------------------------------------------------------------------------- |
+| `simulated`     | Dev lokal  | Harga sintetis deterministik dari `price_feed.simulated.base_prices`. **Ditolak di production.**              |
+| `FakePriceFeed` | Test       | Quote & candle disuntikkan (`setQuote`, `addCandles`, `failFor`, `recover`), lewat helper `fakePriceFeed()`   |
+| `twelvedata`    | Production | Twelve Data REST (`/price`, `/time_series` 1min) memakai `instruments.feed_symbol`; env `TWELVE_DATA_API_KEY` |
 
+- Driver `twelvedata` (`App\Services\PriceFeed\TwelveDataPriceFeed`): harga dari Twelve Data diperlakukan sebagai **bid**; ask = bid + `spread_default` instrumen. Respons error "no data" pada `time_series` (akhir pekan/libur) berarti pasar tutup → daftar candle kosong, bukan kegagalan. Error lain, HTTP gagal, atau koneksi putus → `PriceFeedUnavailable`. Cek batas kredit paket Twelve Data sebelum live (satu request per instrumen terbuka per menit).
 - Jika feed gagal atau ada gap data, evaluasi **tidak menebak**. Cursor (`instrument_feed_cursors.last_candle_at`) tidak maju, dan run berikutnya mengulang dari candle terakhir yang sukses.
 
 ## Implementasi Engine

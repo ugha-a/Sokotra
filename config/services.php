@@ -46,10 +46,20 @@ return [
     'payments' => [
         'driver' => env('PAYMENT_DRIVER', 'simulated'),
         'checkout_expiry_hours' => 24,
+
+        'midtrans' => [
+            'server_key' => env('MIDTRANS_SERVER_KEY'),
+            'production' => (bool) env('MIDTRANS_PRODUCTION', false),
+        ],
     ],
 
     'price_feed' => [
         'driver' => env('PRICE_FEED_DRIVER', 'simulated'),
+
+        'twelvedata' => [
+            'key' => env('TWELVE_DATA_API_KEY'),
+            'base_url' => env('TWELVE_DATA_BASE_URL', 'https://api.twelvedata.com'),
+        ],
 
         'simulated' => [
             'base_prices' => [

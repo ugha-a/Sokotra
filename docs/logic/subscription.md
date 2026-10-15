@@ -32,7 +32,9 @@ Penghasilan kedua platform. Member membayar langganan ke trader dengan rank mene
 ### Payment gateway
 
 - Interface `App\Services\Payments\PaymentGateway`: `name()`, `createCheckout(Payment): Checkout` (reference + URL), `parseWebhook(Request): PaymentEvent` (melempar `InvalidWebhookSignature`).
-- Driver dari env `PAYMENT_DRIVER`: `simulated` (dev; halaman `/payments/{id}/simulate` untuk memilih berhasil/gagal, **ditolak di production**), `FakePaymentGateway` (test, helper `fakePaymentGateway()`), Midtrans/Xendit menyusul setelah ada kredensial.
+- Driver dari env `PAYMENT_DRIVER`: `simulated` (dev; halaman `/payments/{id}/simulate` untuk memilih berhasil/gagal, **ditolak di production**), `FakePaymentGateway` (test, helper `fakePaymentGateway()`), `midtrans` (production, Snap).
+- Driver `midtrans` (`App\Services\Payments\MidtransPaymentGateway`): env `MIDTRANS_SERVER_KEY`, `MIDTRANS_PRODUCTION` (false = sandbox). `order_id` = `SKT-{payment_id}-XXXXXX` (disimpan sebagai `gateway_reference`), masa bayar = `services.payments.checkout_expiry_hours`. Webhook diverifikasi dengan `signature_key = sha512(order_id + status_code + gross_amount + server_key)`. Pemetaan status: `settlement` → paid; `capture` → paid jika `fraud_status` accept/kosong, selain itu tetap pending; `expire` → expired; `deny`/`cancel`/`failure` → failed; lainnya pending. URL notifikasi di dashboard Midtrans: `https://<domain>/webhooks/payments/midtrans`.
+- Jika gateway gagal membuat checkout, `StartCheckout` melaporkan error, transaksi dibatalkan (payment dan subscription/order tidak tersimpan), dan pengguna melihat pesan "Pembayaran sedang tidak bisa diproses" pada field `checkout`.
 - Webhook: `POST /webhooks/payments/{gateway}` (tanpa CSRF). `App\Actions\Payments\HandlePaymentEvent` mengunci baris payment, hanya memproses payment `pending` (idempotent), lalu memanggil handler sesuai jenis payable (`HandlePaymentEvent::HANDLERS`).
 - Checkout `pending` yang lewat `expires_at` (24 jam) menjadi `expired` oleh `subscriptions:lifecycle`.
 

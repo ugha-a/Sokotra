@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Services\Payments\MidtransPaymentGateway;
 use App\Services\Payments\PaymentGateway;
 use App\Services\Payments\SimulatedPaymentGateway;
 use App\Services\PriceFeed\PriceFeed;
 use App\Services\PriceFeed\SimulatedPriceFeed;
+use App\Services\PriceFeed\TwelveDataPriceFeed;
 use Carbon\CarbonImmutable;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -32,6 +34,10 @@ class AppServiceProvider extends ServiceProvider
 
             return match ($driver) {
                 'simulated' => new SimulatedPriceFeed((array) config('services.price_feed.simulated.base_prices')),
+                'twelvedata' => new TwelveDataPriceFeed(
+                    (string) config('services.price_feed.twelvedata.key'),
+                    (string) config('services.price_feed.twelvedata.base_url'),
+                ),
                 default => throw new InvalidArgumentException("Unknown price feed driver [{$driver}]."),
             };
         });
@@ -45,6 +51,10 @@ class AppServiceProvider extends ServiceProvider
 
             return match ($driver) {
                 'simulated' => new SimulatedPaymentGateway,
+                'midtrans' => new MidtransPaymentGateway(
+                    (string) config('services.payments.midtrans.server_key'),
+                    (bool) config('services.payments.midtrans.production'),
+                ),
                 default => throw new InvalidArgumentException("Unknown payment driver [{$driver}]."),
             };
         });

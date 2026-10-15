@@ -79,10 +79,12 @@ consistency = 1 / (1 + max_drawdown_r)
 
 ## Anti-Fraud Ranking
 
-| Pola               | Deteksi                                                                                   | Tindakan                                                                 |
-| ------------------ | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ |
-| Hedging antar akun | Sinyal berlawanan, instrumen sama, publish dalam ±10 menit, dari IP/device hash yang sama | Tandai kedua trader untuk review admin; sinyal dikecualikan dari payroll |
-| Multi-akun trader  | KYC (NIK) sama                                                                            | Ditolak saat pengajuan (validasi `nik_hash`)                             |
-| Followers palsu    | Banyak akun baru dari IP sama mem-follow trader yang sama                                 | Follower ditandai tidak valid                                            |
-| Spam TP kecil      | Dicegah oleh `min_rr` dan `min_sl_pips`                                                   | —                                                                        |
-| Cancel berlebihan  | `max_cancel_per_week`                                                                     | —                                                                        |
+| Pola               | Deteksi                                                                                                                                                            | Tindakan                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Hedging antar akun | Sinyal berlawanan, instrumen sama, publish dalam `fraud.hedge_window_minutes` menit, dari IP yang sama (`DetectHedging` saat publish)                              | `fraud_flags` (hedging) untuk review admin; kedua sinyal dikecualikan dari payroll sampai diputuskan        |
+| Multi-akun trader  | KYC (NIK) sama                                                                                                                                                     | Ditolak saat pengajuan (validasi `nik_hash`)                                                                |
+| Followers palsu    | ≥ `fraud.follower_ip_threshold` akun dengan `registration_ip` sama mem-follow trader yang sama dalam `fraud.follower_window_days` hari (`fraud:scan` harian 00:45) | `fraud_flags` (follower_farm); jika terbukti, akun ditandai fraud dan tidak dihitung sebagai follower valid |
+| Spam TP kecil      | Dicegah oleh `min_rr` dan `min_sl_pips`                                                                                                                            | —                                                                                                           |
+| Cancel berlebihan  | `max_cancel_per_week`                                                                                                                                              | —                                                                                                           |
+
+Deteksi memakai IP saja: hash user agent terlalu umum (banyak pengguna memakai browser yang sama) sehingga tidak dipakai sebagai sinyal. Admin memutuskan flag di `/admin/fraud-flags` (**Terbukti**: trader/akun ditandai fraud → keluar dari leaderboard & payroll; **Abaikan**: sinyal kembali dihitung). Setiap keputusan masuk audit log.

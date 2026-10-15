@@ -216,7 +216,11 @@ export default function ProductPage({
                                 </Label>
                             </div>
                             <InputError
-                                message={errors.accept_risk ?? errors.order}
+                                message={
+                                    errors.accept_risk ??
+                                    errors.order ??
+                                    errors.checkout
+                                }
                             />
                             <Button type="submit" disabled={form.processing}>
                                 {form.processing && <Spinner />}{' '}

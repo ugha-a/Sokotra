@@ -115,7 +115,9 @@ export default function Subscribe({
                             </div>
                             <InputError message={errors.accept_risk} />
                         </div>
-                        <InputError message={errors.subscription} />
+                        <InputError
+                            message={errors.subscription ?? errors.checkout}
+                        />
                         <div className="flex flex-wrap items-center justify-between gap-3">
                             <span className="font-mono text-lg font-semibold tabular-nums">
                                 {formatRupiah(

@@ -135,6 +135,9 @@ Update lewat `PUT /admin/settings` dengan payload bersarang per grup: `settings[
 | kyc.max_file_mb                  | 5            | Ukuran foto KTP / selfie maksimal (MB)                                   |
 | kyc.min_age                      | 18           | Usia minimum pendaftar KYC (tahun)                                       |
 | kyc.document_link_minutes        | 10           | Masa berlaku link dokumen KYC untuk admin (menit)                        |
+| fraud.hedge_window_minutes       | 10           | Jendela waktu deteksi hedging antar akun (menit)                         |
+| fraud.follower_ip_threshold      | 5            | Jumlah akun satu IP yang mem-follow trader sama sebelum ditandai         |
+| fraud.follower_window_days       | 7            | Jendela waktu pemindaian follower palsu (hari)                           |
 
 ## 8. Brokers — `brokers`
 

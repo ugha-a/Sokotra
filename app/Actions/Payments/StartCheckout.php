@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Services\Payments\PaymentGateway;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
+use RuntimeException;
 
 /**
  * Creates a pending payment for a payable and asks the gateway for a checkout URL.
@@ -29,7 +31,15 @@ class StartCheckout
             'expires_at' => now()->addHours((int) config('services.payments.checkout_expiry_hours', 24)),
         ]);
 
-        $checkout = $this->gateway->createCheckout($payment);
+        try {
+            $checkout = $this->gateway->createCheckout($payment);
+        } catch (RuntimeException $exception) {
+            report($exception);
+
+            // The caller's transaction rolls back the payment and the payable.
+            throw ValidationException::withMessages(['checkout' => 'Pembayaran sedang tidak bisa diproses. Coba lagi beberapa saat lagi.']);
+        }
+
         $payment->update(['gateway_reference' => $checkout->reference, 'checkout_url' => $checkout->url]);
 
         return $payment;
