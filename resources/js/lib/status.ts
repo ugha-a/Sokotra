@@ -13,6 +13,10 @@ const TONES: Record<string, StatusTone> = {
     verified: 'profit',
     rejected: 'loss',
     suspended: 'neutral',
+    requested: 'pending',
+    processing: 'brand',
+    paid: 'profit',
+    failed: 'loss',
 };
 
 /**

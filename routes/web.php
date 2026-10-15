@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\KycDocumentController;
 use App\Http\Controllers\Admin\MasterDataController;
 use App\Http\Controllers\Admin\PlatformSettingController;
 use App\Http\Controllers\Admin\TraderApplicationController;
+use App\Http\Controllers\Admin\WalletController as AdminWalletController;
+use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
 use App\Http\Controllers\Member\BecomeTraderController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\FollowController;
@@ -18,6 +20,9 @@ use App\Http\Controllers\SignalFeedController;
 use App\Http\Controllers\Trader\DashboardController as TraderDashboardController;
 use App\Http\Controllers\Trader\QuoteController;
 use App\Http\Controllers\Trader\SignalController;
+use App\Http\Controllers\Wallet\BankAccountController;
+use App\Http\Controllers\Wallet\WalletController;
+use App\Http\Controllers\Wallet\WithdrawalController;
 use App\Models\KycVerification;
 use Illuminate\Support\Facades\Route;
 
@@ -30,6 +35,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('following', [FollowingController::class, 'index'])->name('following.index');
     Route::post('traders/{profile}/follow', [FollowController::class, 'store'])->name('traders.follow');
     Route::delete('traders/{profile}/follow', [FollowController::class, 'destroy'])->name('traders.unfollow');
+
+    Route::get('wallet', [WalletController::class, 'show'])->name('wallet.show');
+    Route::post('wallet/bank-accounts', [BankAccountController::class, 'store'])->name('wallet.bank-accounts.store');
+    Route::delete('wallet/bank-accounts/{bankAccount}', [BankAccountController::class, 'destroy'])->name('wallet.bank-accounts.destroy');
+    Route::post('wallet/withdrawals', [WithdrawalController::class, 'store'])->name('wallet.withdrawals.store');
 
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::get('notifications/{notification}', [NotificationController::class, 'open'])->name('notifications.open');
@@ -70,6 +80,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::put('settings', [PlatformSettingController::class, 'update'])->name('settings.update');
 
             Route::get('audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index');
+
+            Route::get('withdrawals', [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');
+            Route::post('withdrawals/{withdrawal}/approve', [AdminWithdrawalController::class, 'approve'])->name('withdrawals.approve');
+            Route::post('withdrawals/{withdrawal}/paid', [AdminWithdrawalController::class, 'paid'])->name('withdrawals.paid');
+            Route::post('withdrawals/{withdrawal}/reject', [AdminWithdrawalController::class, 'reject'])->name('withdrawals.reject');
+            Route::get('wallets', [AdminWalletController::class, 'index'])->name('wallets.index');
+            Route::post('wallets/{user}/adjust', [AdminWalletController::class, 'adjust'])->name('wallets.adjust');
 
             Route::get('traders', [TraderApplicationController::class, 'index'])->name('traders.index');
             Route::get('traders/{profile}', [TraderApplicationController::class, 'show'])->name('traders.show');

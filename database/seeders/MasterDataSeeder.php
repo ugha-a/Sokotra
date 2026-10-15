@@ -193,6 +193,7 @@ class MasterDataSeeder extends Seeder
             [SettingGroup::Wallet, 'wallet.min_withdraw', SettingType::Money, 100000, 'Minimum penarikan', null],
             [SettingGroup::Wallet, 'wallet.withdraw_fee', SettingType::Money, 6500, 'Biaya penarikan', null],
             [SettingGroup::Wallet, 'wallet.hold_period_days', SettingType::Integer, 7, 'Saldo pending dirilis setelah (hari)', null],
+            [SettingGroup::Wallet, 'wallet.max_bank_accounts', SettingType::Integer, 3, 'Maksimal rekening per pengguna', null],
 
             [SettingGroup::Subscription, 'subscription.fee_percent', SettingType::Percent, 20.0, 'Fee platform', null],
             [SettingGroup::Subscription, 'subscription.durations', SettingType::IntegerList, [1, 3, 6], 'Pilihan durasi (bulan)', null],

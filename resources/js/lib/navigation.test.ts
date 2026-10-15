@@ -32,7 +32,12 @@ describe('buildNavigation', () => {
             },
             {
                 label: 'Trader',
-                items: ['Dashboard Trader', 'Posting Sinyal', 'Sinyal Saya'],
+                items: [
+                    'Dashboard Trader',
+                    'Posting Sinyal',
+                    'Sinyal Saya',
+                    'Wallet',
+                ],
             },
         ]);
     });
@@ -54,6 +59,8 @@ describe('buildNavigation', () => {
                 items: [
                     'Ringkasan',
                     'Aplikasi Trader',
+                    'Penarikan',
+                    'Wallet Pengguna',
                     'Master Data',
                     'Pengaturan',
                     'Audit Log',
@@ -78,8 +85,11 @@ describe('buildNavigation', () => {
             '/trader',
             '/trader/signals/create',
             '/trader/signals',
+            '/wallet',
             '/admin',
             '/admin/traders',
+            '/admin/withdrawals',
+            '/admin/wallets',
             '/admin/master/instruments',
             '/admin/settings',
             '/admin/audit-logs',

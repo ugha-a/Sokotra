@@ -33,6 +33,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property bool $is_fraud_flagged
  * @property-read TraderProfile|null $traderProfile
  * @property-read KycVerification|null $kycVerification
+ * @property-read Wallet|null $wallet
  */
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
@@ -55,6 +56,22 @@ class User extends Authenticatable implements MustVerifyEmail, PasskeyUser
     public function kycVerification(): HasOne
     {
         return $this->hasOne(KycVerification::class);
+    }
+
+    /**
+     * @return HasOne<Wallet, $this>
+     */
+    public function wallet(): HasOne
+    {
+        return $this->hasOne(Wallet::class);
+    }
+
+    /**
+     * @return HasMany<BankAccount, $this>
+     */
+    public function bankAccounts(): HasMany
+    {
+        return $this->hasMany(BankAccount::class);
     }
 
     /**

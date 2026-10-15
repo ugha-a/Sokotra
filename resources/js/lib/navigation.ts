@@ -12,6 +12,9 @@ import {
     ShieldCheck,
     TrendingUp,
     UserCheck,
+    Wallet,
+    Banknote,
+    Landmark,
 } from 'lucide-react';
 import { dashboard, leaderboard } from '@/routes';
 import { dashboard as adminDashboard } from '@/routes/admin';
@@ -19,9 +22,12 @@ import { index as auditLogs } from '@/routes/admin/audit-logs';
 import { index as masterData } from '@/routes/admin/master';
 import { edit as platformSettings } from '@/routes/admin/settings';
 import { index as traderApplications } from '@/routes/admin/traders';
+import { index as adminWallets } from '@/routes/admin/wallets';
+import { index as withdrawals } from '@/routes/admin/withdrawals';
 import { show as becomeTrader } from '@/routes/become-trader';
 import { index as following } from '@/routes/following';
 import { index as signalFeed } from '@/routes/signals';
+import { show as wallet } from '@/routes/wallet';
 import {
     create as createSignal,
     index as traderSignals,
@@ -74,6 +80,7 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     href: traderSignals(),
                     icon: ListChecks,
                 },
+                { title: 'Wallet', href: wallet(), icon: Wallet },
             ],
         });
     }
@@ -91,6 +98,12 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     title: 'Aplikasi Trader',
                     href: traderApplications(),
                     icon: UserCheck,
+                },
+                { title: 'Penarikan', href: withdrawals(), icon: Banknote },
+                {
+                    title: 'Wallet Pengguna',
+                    href: adminWallets(),
+                    icon: Landmark,
                 },
                 {
                     title: 'Master Data',

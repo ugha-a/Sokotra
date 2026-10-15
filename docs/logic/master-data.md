@@ -121,6 +121,7 @@ Update lewat `PUT /admin/settings` dengan payload bersarang per grup: `settings[
 | wallet.min_withdraw            | 100000       | Rp                                                          |
 | wallet.withdraw_fee            | 6500         | Rp per withdraw                                             |
 | wallet.hold_period_days        | 7            | Pendapatan pending → available                              |
+| wallet.max_bank_accounts       | 3            | Maksimal rekening per pengguna                              |
 | subscription.fee_percent       | 20.00        | Fee platform                                                |
 | subscription.durations         | [1, 3, 6]    | Bulan                                                       |
 | marketplace.commission_percent | 15.00        |                                                             |

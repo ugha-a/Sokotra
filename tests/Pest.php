@@ -1,12 +1,18 @@
 <?php
 
+use App\Actions\Wallet\PostTransaction;
+use App\Enums\KycStatus;
 use App\Enums\Role;
 use App\Enums\SignalStatus;
+use App\Enums\WalletBucket;
+use App\Enums\WalletTransactionType;
 use App\Models\Follow;
+use App\Models\KycVerification;
 use App\Models\Rank;
 use App\Models\Signal;
 use App\Models\TraderProfile;
 use App\Models\User;
+use App\Models\WalletTransaction;
 use App\Services\PriceFeed\FakePriceFeed;
 use App\Services\PriceFeed\PriceFeed;
 use Carbon\CarbonImmutable;
@@ -118,4 +124,24 @@ function followTrader(User $trader, int $count = 1, bool $valid = true): void
         'email_verified_at' => $valid ? now() : null,
         'last_active_at' => now(),
     ])->each(fn (User $user) => Follow::create(['follower_id' => $user->id, 'trader_id' => $trader->id]));
+}
+
+function verifiedKyc(User $user, string $fullName = 'Rina Kartika'): KycVerification
+{
+    return KycVerification::factory()->for($user)->create([
+        'full_name' => $fullName,
+        'status' => KycStatus::Verified,
+    ]);
+}
+
+function credit(User $user, int $amount, string $reference = 'test:credit'): WalletTransaction
+{
+    return app(PostTransaction::class)->handle(
+        $user,
+        WalletTransactionType::AdminAdjustment,
+        WalletBucket::Available,
+        $amount,
+        $reference,
+        'Saldo awal test',
+    );
 }
