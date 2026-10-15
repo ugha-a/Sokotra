@@ -20,6 +20,7 @@ it('assigns the member role to newly registered users', function () {
         'email' => 'budi@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'accept_terms' => true,
     ]);
 
     expect(User::where('email', 'budi@example.com')->first()->hasRole(Role::Member->value))

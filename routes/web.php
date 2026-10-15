@@ -5,6 +5,8 @@ use App\Enums\Role;
 use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\BrokerAccountController as AdminBrokerAccountController;
 use App\Http\Controllers\Admin\BrokerRebateController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\FraudFlagController;
 use App\Http\Controllers\Admin\KycDocumentController;
 use App\Http\Controllers\Admin\MasterDataController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -13,6 +15,7 @@ use App\Http\Controllers\Admin\PlatformSettingController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\SubscriptionController as AdminSubscriptionController;
 use App\Http\Controllers\Admin\TraderApplicationController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
 use App\Http\Controllers\Member\BecomeTraderController;
@@ -116,7 +119,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {
-            Route::inertia('/', 'admin/dashboard')->name('dashboard');
+            Route::get('/', AdminDashboardController::class)->name('dashboard');
+            Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+            Route::post('users/{user}/flag', [AdminUserController::class, 'flag'])->name('users.flag');
+            Route::post('users/{user}/unflag', [AdminUserController::class, 'unflag'])->name('users.unflag');
+            Route::get('fraud-flags', [FraudFlagController::class, 'index'])->name('fraud-flags.index');
+            Route::post('fraud-flags/{flag}/confirm', [FraudFlagController::class, 'confirm'])->name('fraud-flags.confirm');
+            Route::post('fraud-flags/{flag}/dismiss', [FraudFlagController::class, 'dismiss'])->name('fraud-flags.dismiss');
 
             Route::get('master/{resource}', [MasterDataController::class, 'index'])->name('master.index');
             Route::post('master/{resource}', [MasterDataController::class, 'store'])->name('master.store');

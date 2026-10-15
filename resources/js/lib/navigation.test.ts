@@ -78,6 +78,8 @@ describe('buildNavigation', () => {
                 label: 'Admin',
                 items: [
                     'Ringkasan',
+                    'Pengguna',
+                    'Fraud Flags',
                     'Aplikasi Trader',
                     'Payroll',
                     'Subscription',
@@ -120,6 +122,8 @@ describe('buildNavigation', () => {
             '/trader/payroll',
             '/wallet',
             '/admin',
+            '/admin/users',
+            '/admin/fraud-flags',
             '/admin/traders',
             '/admin/payroll',
             '/admin/subscriptions',

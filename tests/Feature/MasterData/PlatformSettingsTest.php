@@ -38,7 +38,7 @@ it('shows settings grouped for admins', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('admin/settings')
-            ->has('groups', 7)
+            ->has('groups', 8)
             ->where('groups.0.key', 'signal'));
 });
 

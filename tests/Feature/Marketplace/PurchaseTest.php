@@ -1,6 +1,8 @@
 <?php
 
+use App\Actions\Subscription\RunSubscriptionLifecycle;
 use App\Enums\OrderStatus;
+use App\Enums\PaymentStatus;
 use App\Enums\ProductStatus;
 use App\Enums\Role;
 use App\Models\Order;
@@ -114,4 +116,14 @@ it('lets admins refund an order while the income is held', function () {
 
     $this->actingAs(adminUser())->get(route('admin.orders.index'))
         ->assertInertia(fn (Assert $page) => $page->component('admin/orders/index')->has('orders.data', 1));
+});
+
+it('cancels orders whose checkout expired', function () {
+    $this->actingAs($this->buyer)->post(route('orders.store', $this->product), ['accept_risk' => true]);
+    $this->travel(25)->hours();
+
+    app(RunSubscriptionLifecycle::class)->handle();
+
+    expect(Order::firstOrFail()->status)->toBe(OrderStatus::Cancelled)
+        ->and(Payment::firstOrFail()->status)->toBe(PaymentStatus::Expired);
 });

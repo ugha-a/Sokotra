@@ -30,6 +30,9 @@ const TONES: Record<string, StatusTone> = {
     published: 'profit',
     unlisted: 'neutral',
     linked: 'profit',
+    open: 'pending',
+    confirmed: 'loss',
+    dismissed: 'neutral',
 };
 
 /**

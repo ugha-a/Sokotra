@@ -2,10 +2,12 @@
 
 namespace App\Actions\Subscription;
 
+use App\Enums\OrderStatus;
 use App\Enums\PaymentStatus;
 use App\Enums\Role;
 use App\Enums\SignalVisibility;
 use App\Enums\SubscriptionStatus;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Signal;
 use App\Models\Subscription;
@@ -18,7 +20,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Notification;
 
 /**
- * Daily: expire finished subscriptions and stale checkouts, send reminders, and warn
+ * Daily: expire finished subscriptions and stale checkouts (subscriptions and orders), send reminders, and warn
  * admins about premium channels that stopped posting premium signals.
  */
 class RunSubscriptionLifecycle
@@ -32,9 +34,11 @@ class RunSubscriptionLifecycle
             ->each(function (Payment $payment) {
                 $payment->update(['status' => PaymentStatus::Expired]);
 
-                if ($payment->payable instanceof Subscription) {
-                    $payment->payable->update(['status' => SubscriptionStatus::Cancelled]);
-                }
+                match (true) {
+                    $payment->payable instanceof Subscription => $payment->payable->update(['status' => SubscriptionStatus::Cancelled]),
+                    $payment->payable instanceof Order => $payment->payable->update(['status' => OrderStatus::Cancelled]),
+                    default => null,
+                };
             });
 
         $this->sendReminders();

@@ -15,6 +15,8 @@ import {
     Wallet,
     Banknote,
     Building2,
+    ShieldAlert,
+    UsersRound,
     HandCoins,
     Coins,
     Crown,
@@ -27,6 +29,8 @@ import {
 } from 'lucide-react';
 import { dashboard, leaderboard } from '@/routes';
 import { index as adminBrokerAccounts } from '@/routes/admin/broker-accounts';
+import { index as fraudFlags } from '@/routes/admin/fraud-flags';
+import { index as adminUsers } from '@/routes/admin/users';
 import { index as brokerRebates } from '@/routes/admin/broker-rebates';
 import { index as adminOrders } from '@/routes/admin/orders';
 import { index as brokerAccounts } from '@/routes/broker-accounts';
@@ -129,6 +133,8 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     href: adminDashboard(),
                     icon: ShieldCheck,
                 },
+                { title: 'Pengguna', href: adminUsers(), icon: UsersRound },
+                { title: 'Fraud Flags', href: fraudFlags(), icon: ShieldAlert },
                 {
                     title: 'Aplikasi Trader',
                     href: traderApplications(),

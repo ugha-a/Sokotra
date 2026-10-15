@@ -214,6 +214,10 @@ class MasterDataSeeder extends Seeder
             [SettingGroup::Trader, 'kyc.max_file_mb', SettingType::Integer, 5, 'Ukuran foto KTP / selfie maksimal (MB)', null],
             [SettingGroup::Trader, 'kyc.min_age', SettingType::Integer, 18, 'Usia minimum (tahun)', null],
             [SettingGroup::Trader, 'kyc.document_link_minutes', SettingType::Integer, 10, 'Masa berlaku link dokumen KYC untuk admin (menit)', null],
+
+            [SettingGroup::Fraud, 'fraud.hedge_window_minutes', SettingType::Integer, 10, 'Jendela waktu sinyal berlawanan dari jaringan yang sama (menit)', null],
+            [SettingGroup::Fraud, 'fraud.follower_ip_threshold', SettingType::Integer, 5, 'Jumlah follower baru dari IP yang sama untuk ditandai', null],
+            [SettingGroup::Fraud, 'fraud.follower_window_days', SettingType::Integer, 7, 'Jendela waktu follower baru (hari)', null],
         ];
 
         foreach ($settings as $order => [$group, $key, $type, $value, $label, $options]) {

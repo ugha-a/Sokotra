@@ -15,3 +15,4 @@ Schedule::command('wallets:release')->hourly()->withoutOverlapping();
 Schedule::command('wallets:reconcile')->dailyAt('00:30');
 Schedule::command('payroll:generate')->monthlyOn(1, '01:00')->timezone('Asia/Jakarta')->withoutOverlapping();
 Schedule::command('subscriptions:lifecycle')->dailyAt('06:00')->withoutOverlapping();
+Schedule::command('fraud:scan')->dailyAt('00:45');

@@ -2,6 +2,7 @@
 
 namespace App\Actions\Signal;
 
+use App\Actions\Fraud\DetectHedging;
 use App\Enums\OrderType;
 use App\Enums\SignalDirection;
 use App\Enums\SignalStatus;
@@ -33,7 +34,7 @@ class PublishSignal
 {
     public const DISK = 'local';
 
-    public function __construct(private PriceFeed $feed) {}
+    public function __construct(private PriceFeed $feed, private DetectHedging $hedging) {}
 
     /**
      * Why this user cannot publish right now, or null when they can.
@@ -80,10 +81,14 @@ class PublishSignal
         $chartPath = $chart?->store("signals/{$trader->id}", self::DISK) ?: null;
 
         try {
-            return DB::transaction(fn () => $this->create(
+            $signal = DB::transaction(fn () => $this->create(
                 $trader, $instrument, $direction, $orderType, $visibility, $math,
                 $entry, $stopLoss, $takeProfit, (string) $data['analysis'], $chartPath, $quote, $ip, $userAgent,
             ));
+
+            $this->hedging->handle($signal);
+
+            return $signal;
         } catch (Throwable $exception) {
             if ($chartPath) {
                 Storage::disk(self::DISK)->delete($chartPath);
