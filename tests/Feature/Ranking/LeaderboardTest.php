@@ -75,3 +75,36 @@ it('switches the period', function () {
     $this->get(route('leaderboard', ['period' => 'week']))
         ->assertInertia(fn (Assert $page) => $page->where('period', 'week')->has('rows', 1));
 });
+
+it('delivers trader standing when logged in as ranked trader', function () {
+    $trader = rankedTrader('Trader Saya', array_fill(0, 25, 2.0), 10);
+
+    $this->actingAs($trader)
+        ->get(route('leaderboard'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('public/leaderboard')
+            ->where('myStanding.is_trader', true)
+            ->where('myStanding.is_ranked', true)
+            ->where('myStanding.position', 1)
+            ->has('myStanding.score')
+            ->where('myStanding.closed_signals', 25)
+            ->where('rows.0.trader.id', $trader->id)
+        );
+});
+
+it('delivers trader standing with progress when trader is not yet qualified', function () {
+    $trader = rankedTrader('Trader Pemula', array_fill(0, 5, 2.0));
+
+    $this->actingAs($trader)
+        ->get(route('leaderboard'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('public/leaderboard')
+            ->where('myStanding.is_trader', true)
+            ->where('myStanding.is_ranked', false)
+            ->where('myStanding.position', null)
+            ->where('myStanding.closed_signals', 5)
+            ->where('myStanding.min_signals', 20)
+        );
+});

@@ -65,6 +65,7 @@ class BuildLeaderboard
             return [
                 'position' => $index + 1,
                 'trader' => [
+                    'id' => $profile->user_id,
                     'name' => $profile->display_name,
                     'slug' => $profile->slug,
                     'rank' => $profile->rank ? ['name' => $profile->rank->name, 'color' => $profile->rank->color] : null,
