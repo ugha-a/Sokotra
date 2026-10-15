@@ -8,6 +8,7 @@ use App\Enums\Role;
 use App\Enums\SignalStatus;
 use App\Enums\WalletBucket;
 use App\Enums\WalletTransactionType;
+use App\Models\Broker;
 use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\KycVerification;
@@ -204,4 +205,21 @@ function payLatestPayment(): void
 {
     $payment = Payment::latest('id')->firstOrFail();
     app(HandlePaymentEvent::class)->handle(new PaymentEvent($payment->gateway_reference, PaymentStatus::Paid, []));
+}
+
+function demoBroker(array $overrides = []): Broker
+{
+    return Broker::create([
+        'name' => 'Contoh Berjangka',
+        'slug' => 'contoh-berjangka',
+        'regulator_license_no' => '123/BAPPEBTI/SI/01/2026',
+        'website_url' => 'https://contoh-berjangka.co.id',
+        'affiliate_url' => 'https://contoh-berjangka.co.id/daftar?ib={ref}',
+        'account_types' => [['name' => 'Micro', 'min_deposit' => 1000000, 'spread_from' => 1.2, 'commission' => 0]],
+        'description' => 'Broker contoh berizin.',
+        'rebate_per_lot_usd' => 5,
+        'sort_order' => 1,
+        'is_active' => true,
+        ...$overrides,
+    ]);
 }

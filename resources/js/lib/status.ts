@@ -29,6 +29,7 @@ const TONES: Record<string, StatusTone> = {
     in_review: 'pending',
     published: 'profit',
     unlisted: 'neutral',
+    linked: 'profit',
 };
 
 /**

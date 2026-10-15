@@ -2,6 +2,7 @@ import { Link, usePage } from '@inertiajs/react';
 import AppLogo from '@/components/app-logo';
 import { Button } from '@/components/ui/button';
 import { dashboard, home, leaderboard, login, register } from '@/routes';
+import { index as brokers } from '@/routes/brokers';
 import { index as marketplace } from '@/routes/marketplace';
 
 /**
@@ -27,6 +28,14 @@ export default function PublicLayout({
                         </Button>
                         <Button variant="ghost" size="sm" asChild>
                             <Link href={marketplace()}>Marketplace</Link>
+                        </Button>
+                        <Button
+                            variant="ghost"
+                            size="sm"
+                            asChild
+                            className="hidden sm:inline-flex"
+                        >
+                            <Link href={brokers()}>Broker</Link>
                         </Button>
                         {auth.user ? (
                             <Button size="sm" asChild>

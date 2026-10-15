@@ -14,6 +14,8 @@ import {
     UserCheck,
     Wallet,
     Banknote,
+    Building2,
+    HandCoins,
     Coins,
     Crown,
     Gem,
@@ -24,7 +26,10 @@ import {
     Landmark,
 } from 'lucide-react';
 import { dashboard, leaderboard } from '@/routes';
+import { index as adminBrokerAccounts } from '@/routes/admin/broker-accounts';
+import { index as brokerRebates } from '@/routes/admin/broker-rebates';
 import { index as adminOrders } from '@/routes/admin/orders';
+import { index as brokerAccounts } from '@/routes/broker-accounts';
 import { index as adminProducts } from '@/routes/admin/products';
 import { index as marketplace } from '@/routes/marketplace';
 import { index as purchases } from '@/routes/purchases';
@@ -70,6 +75,11 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                 { title: 'Diikuti', href: following(), icon: Users },
                 { title: 'Langganan', href: subscriptions(), icon: Gem },
                 { title: 'Pembelian', href: purchases(), icon: ShoppingBag },
+                {
+                    title: 'Akun Broker',
+                    href: brokerAccounts(),
+                    icon: Building2,
+                },
                 ...(isTrader
                     ? []
                     : [
@@ -132,6 +142,12 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                 },
                 { title: 'Produk', href: adminProducts(), icon: Package },
                 { title: 'Pesanan', href: adminOrders(), icon: ShoppingBag },
+                {
+                    title: 'Akun Broker',
+                    href: adminBrokerAccounts(),
+                    icon: Building2,
+                },
+                { title: 'Rebate IB', href: brokerRebates(), icon: HandCoins },
                 { title: 'Penarikan', href: withdrawals(), icon: Banknote },
                 {
                     title: 'Wallet Pengguna',

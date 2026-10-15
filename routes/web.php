@@ -3,6 +3,8 @@
 use App\Enums\Permission;
 use App\Enums\Role;
 use App\Http\Controllers\Admin\AuditLogController;
+use App\Http\Controllers\Admin\BrokerAccountController as AdminBrokerAccountController;
+use App\Http\Controllers\Admin\BrokerRebateController;
 use App\Http\Controllers\Admin\KycDocumentController;
 use App\Http\Controllers\Admin\MasterDataController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
@@ -14,6 +16,7 @@ use App\Http\Controllers\Admin\TraderApplicationController;
 use App\Http\Controllers\Admin\WalletController as AdminWalletController;
 use App\Http\Controllers\Admin\WithdrawalController as AdminWithdrawalController;
 use App\Http\Controllers\Member\BecomeTraderController;
+use App\Http\Controllers\Member\BrokerAccountController as MemberBrokerAccountController;
 use App\Http\Controllers\Member\DashboardController as MemberDashboardController;
 use App\Http\Controllers\Member\FollowController;
 use App\Http\Controllers\Member\FollowingController;
@@ -22,6 +25,7 @@ use App\Http\Controllers\Member\PurchaseController;
 use App\Http\Controllers\Member\SubscriptionController as MemberSubscriptionController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\Public\BrokerController;
 use App\Http\Controllers\Public\LeaderboardController;
 use App\Http\Controllers\Public\MarketplaceController;
 use App\Http\Controllers\Public\TraderProfileController;
@@ -42,6 +46,7 @@ Route::inertia('/', 'welcome')->name('home');
 Route::get('leaderboard', LeaderboardController::class)->name('leaderboard');
 Route::get('traders/{profile:slug}', [TraderProfileController::class, 'show'])->name('traders.show');
 Route::post('webhooks/payments/{gateway}', [PaymentController::class, 'webhook'])->name('webhooks.payments');
+Route::get('brokers', [BrokerController::class, 'index'])->name('brokers.index');
 Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
 Route::get('marketplace/{product:slug}', [MarketplaceController::class, 'show'])->name('marketplace.show');
 
@@ -57,6 +62,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
     Route::get('payments/{payment}/simulate', [PaymentController::class, 'simulate'])->name('payments.simulate.show');
     Route::post('payments/{payment}/simulate', [PaymentController::class, 'completeSimulation'])->name('payments.simulate.complete');
+
+    Route::get('brokers/{broker}/open', [BrokerController::class, 'open'])->name('brokers.open');
+    Route::get('broker-accounts', [MemberBrokerAccountController::class, 'index'])->name('broker-accounts.index');
+    Route::post('broker-accounts', [MemberBrokerAccountController::class, 'store'])->name('broker-accounts.store');
 
     Route::post('marketplace/{product}/buy', [OrderController::class, 'store'])->name('orders.store');
     Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
@@ -125,6 +134,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('payroll/{period}/approve', [AdminPayrollController::class, 'approve'])->name('payroll.approve');
             Route::post('payroll/items/{item}/hold', [AdminPayrollController::class, 'hold'])->name('payroll.items.hold');
             Route::post('payroll/items/{item}/release', [AdminPayrollController::class, 'release'])->name('payroll.items.release');
+
+            Route::get('broker-accounts', [AdminBrokerAccountController::class, 'index'])->name('broker-accounts.index');
+            Route::post('broker-accounts/{account}/link', [AdminBrokerAccountController::class, 'link'])->name('broker-accounts.link');
+            Route::post('broker-accounts/{account}/reject', [AdminBrokerAccountController::class, 'reject'])->name('broker-accounts.reject');
+            Route::get('broker-rebates', [BrokerRebateController::class, 'index'])->name('broker-rebates.index');
+            Route::post('broker-rebates', [BrokerRebateController::class, 'import'])->name('broker-rebates.import');
 
             Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
             Route::post('products/{product}/approve', [AdminProductController::class, 'approve'])->name('products.approve');

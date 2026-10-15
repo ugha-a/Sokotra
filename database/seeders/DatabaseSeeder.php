@@ -7,6 +7,7 @@ use App\Actions\Ranking\RefreshTraderStats;
 use App\Enums\KycStatus;
 use App\Enums\Role;
 use App\Enums\SignalStatus;
+use App\Models\Broker;
 use App\Models\ChannelPlan;
 use App\Models\Follow;
 use App\Models\Instrument;
@@ -64,6 +65,22 @@ class DatabaseSeeder extends Seeder
             'price' => 350000,
         ]);
         Storage::disk('local')->put((string) $product->file_path, 'demo-ex5');
+
+        Broker::create([
+            'name' => 'Broker Contoh Berjangka',
+            'slug' => 'broker-contoh',
+            'regulator_license_no' => 'CONTOH/BAPPEBTI/SI/00/0000',
+            'website_url' => 'https://example.com',
+            'affiliate_url' => 'https://example.com/daftar?ib={ref}',
+            'account_types' => [
+                ['name' => 'Micro', 'min_deposit' => 1000000, 'spread_from' => 1.2, 'commission' => 0],
+                ['name' => 'Standard', 'min_deposit' => 10000000, 'spread_from' => 0.8, 'commission' => 0],
+            ],
+            'description' => 'Data contoh untuk pengembangan. Ganti dengan broker partner asli yang izinnya sudah diverifikasi.',
+            'rebate_per_lot_usd' => 5,
+            'sort_order' => 1,
+            'is_active' => true,
+        ]);
 
         $applicant = $this->demoUser('Pemohon Demo', 'pemohon@sokotra.test', Role::Member);
         $this->demoKyc($applicant, KycStatus::Submitted);
