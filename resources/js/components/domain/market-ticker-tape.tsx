@@ -114,17 +114,14 @@ export function MarketTickerTape({ className }: { className?: string }) {
         <aside
             aria-label="Informasi Pergerakan Pasar Live"
             className={cn(
-                'w-full border-b border-white/10 bg-[#070a12]/90 text-xs backdrop-blur-md',
+                'w-full border-b border-[#2a2e39] bg-[#131722] text-xs text-slate-300',
                 className,
             )}
         >
             <div className="no-scrollbar mx-auto flex max-w-7xl items-center overflow-x-auto px-4 py-2 sm:px-6">
-                <div className="flex shrink-0 items-center gap-2 border-r border-white/10 pr-4 text-[11px] font-semibold tracking-wider text-slate-300 uppercase select-none">
-                    <span className="relative flex size-2.5">
-                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                        <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
-                    </span>
-                    <Radio className="size-3 animate-pulse text-emerald-400" />
+                <div className="flex shrink-0 items-center gap-2 border-r border-[#2a2e39] pr-3 text-xs font-semibold tracking-wider text-slate-400 uppercase select-none">
+                    <span className="size-2 rounded-full bg-emerald-500" />
+                    <Radio className="size-3 text-emerald-500" />
                     <span className="font-bold text-slate-200">Pasar Live</span>
                 </div>
 
@@ -137,11 +134,11 @@ export function MarketTickerTape({ className }: { className?: string }) {
                             <div
                                 key={item.symbol}
                                 className={cn(
-                                    'flex items-center gap-2 rounded-md border border-white/5 bg-white/[0.03] px-2.5 py-1 font-mono transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06]',
+                                    'flex items-center gap-2 border border-[#2a2e39] bg-[#1e222d] px-2.5 py-1 font-mono text-xs transition-colors hover:border-slate-600',
                                     flash === 'up' &&
-                                        'flash-up border-emerald-500/50',
+                                        'flash-up border-emerald-500',
                                     flash === 'down' &&
-                                        'flash-down border-rose-500/50',
+                                        'flash-down border-rose-500',
                                 )}
                             >
                                 <span className="font-bold text-slate-200">
@@ -152,7 +149,7 @@ export function MarketTickerTape({ className }: { className?: string }) {
                                 </span>
                                 <span
                                     className={cn(
-                                        'inline-flex items-center text-[11px] font-bold tabular-nums',
+                                        'inline-flex items-center text-xs font-bold tabular-nums',
                                         isPositive
                                             ? 'text-emerald-400'
                                             : 'text-rose-400',

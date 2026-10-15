@@ -51,14 +51,14 @@ export function TradingCalculator({ trigger }: { trigger?: React.ReactNode }) {
                     <Button
                         variant="outline"
                         size="sm"
-                        className="gap-2 border-white/15 bg-white/5 font-medium text-slate-200 backdrop-blur-md transition-all hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
+                        className="gap-2 border-slate-700 bg-[#1e222d] font-medium text-slate-200 transition-colors hover:border-slate-500 hover:bg-slate-800 hover:text-white"
                     >
                         <Calculator className="size-4 text-cyan-400" />
                         <span>Kalkulator Risiko</span>
                     </Button>
                 )}
             </DialogTrigger>
-            <DialogContent className="max-w-lg border-white/10 bg-[#121826] text-white shadow-2xl backdrop-blur-2xl sm:rounded-2xl">
+            <DialogContent className="max-w-lg border border-[#2a2e39] bg-[#131722] text-white shadow-xl sm:rounded-lg">
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-2 text-lg font-bold text-white">
                         <Calculator className="size-5 text-cyan-400" />
@@ -199,7 +199,7 @@ export function TradingCalculator({ trigger }: { trigger?: React.ReactNode }) {
                                     <span className="block text-xs font-medium text-foreground">
                                         Rekomendasi Ukuran Lot
                                     </span>
-                                    <span className="text-[11px] text-muted-foreground">
+                                    <span className="text-xs text-muted-foreground">
                                         Ukuran aman sesuai toleransi risiko
                                     </span>
                                 </div>
@@ -316,7 +316,7 @@ export function TradingCalculator({ trigger }: { trigger?: React.ReactNode }) {
                                         title={`Reward: ${rrRatio.toFixed(2)}R`}
                                     />
                                 </div>
-                                <div className="flex justify-between font-mono text-[11px] text-muted-foreground">
+                                <div className="flex justify-between font-mono text-xs text-muted-foreground">
                                     <span>Risiko (1R)</span>
                                     <span>Target ({rrRatio.toFixed(2)}R)</span>
                                 </div>

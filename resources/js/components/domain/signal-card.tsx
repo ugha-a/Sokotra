@@ -117,12 +117,9 @@ RR: 1:${rrValue.toFixed(2)}`;
                 <div className="flex items-center gap-2">
                     {signal.status === 'active' && (
                         <span
-                            className="relative flex size-2"
+                            className="size-2 rounded-full bg-brand"
                             title="Sinyal sedang dimonitor real-time"
-                        >
-                            <span className="absolute inline-flex size-full animate-ping rounded-full bg-brand opacity-75" />
-                            <span className="relative inline-flex size-2 rounded-full bg-brand" />
-                        </span>
+                        />
                     )}
                     <SignalStatusPill
                         status={signal.status}

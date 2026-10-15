@@ -133,7 +133,7 @@ export function EquityCurve({ points }: { points: EquityPoint[] }) {
                     <text
                         x={PAD + 4}
                         y={g.zeroY - 6}
-                        className="fill-muted-foreground font-mono text-[11px]"
+                        className="fill-muted-foreground font-mono text-xs"
                     >
                         0R
                     </text>

@@ -118,32 +118,28 @@ export function TradingChartPreview({
     return (
         <div
             className={cn(
-                'relative overflow-hidden rounded-2xl border border-white/10 bg-[#0d121f]/95 p-5 font-mono text-slate-200 shadow-2xl shadow-black/60 backdrop-blur-xl transition-all duration-300 hover:border-cyan-500/40',
-                'before:absolute before:inset-x-0 before:top-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-cyan-400/60 before:to-transparent',
+                'relative overflow-hidden border border-[#2a2e39] bg-[#131722] p-4 font-mono text-slate-200',
                 className,
             )}
         >
             {/* Top Toolbar: Symbol, Price, Timeframes, Live Badge */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#2a2e39] pb-3">
                 <div className="flex items-center gap-3">
-                    <div className="flex size-9 items-center justify-center rounded-lg border border-amber-500/30 bg-gradient-to-br from-amber-500/20 to-amber-600/10 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-                        <CandlestickChart className="size-5" />
+                    <div className="flex size-8 items-center justify-center border border-[#2a2e39] bg-[#1e222d] text-amber-400">
+                        <CandlestickChart className="size-4" />
                     </div>
                     <div>
                         <div className="flex items-center gap-2">
                             <span className="text-base font-bold tracking-wide text-white">
                                 {symbol}
                             </span>
-                            <span className="rounded bg-white/10 px-1.5 py-0.5 text-[10px] font-semibold text-slate-300">
+                            <span className="border border-[#2a2e39] bg-[#1e222d] px-1.5 py-0.5 text-xs font-semibold text-slate-400">
                                 SPOT
                             </span>
                             <span
-                                className="relative flex size-2"
+                                className="size-2 rounded-full bg-emerald-500"
                                 title="Harga Streaming Live"
-                            >
-                                <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                                <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
-                            </span>
+                            />
                         </div>
                         <div className="flex items-center gap-2 text-xs">
                             <span className="text-xl font-bold tracking-tight text-white tabular-nums">
@@ -184,7 +180,7 @@ export function TradingChartPreview({
             </div>
 
             {/* OHLCV High-Precision Readout */}
-            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b border-white/5 py-2.5 text-[11px] text-slate-400 tabular-nums">
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5 border-b border-[#2a2e39] py-2 text-xs text-slate-400 tabular-nums">
                 <span className="flex items-center gap-1 text-slate-300">
                     <Activity className="size-3 text-cyan-400" /> Waktu:{' '}
                     <strong className="text-white">
@@ -418,7 +414,7 @@ export function TradingChartPreview({
             </div>
 
             {/* Bottom Bar: Engine Status & Active Indicators */}
-            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-white/10 pt-3 text-[11px] text-slate-400">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-t border-[#2a2e39] pt-3 text-xs text-slate-400">
                 <div className="flex items-center gap-2">
                     <span className="flex items-center gap-1.5 font-semibold text-cyan-400">
                         <TrendingUp className="size-3.5" /> Engine Evaluasi
@@ -428,10 +424,10 @@ export function TradingChartPreview({
                     <span>Twelve Data & MT5 Feed Sync</span>
                 </div>
                 <div className="flex items-center gap-1.5 text-slate-400">
-                    <span className="rounded bg-white/5 px-2 py-0.5 font-mono text-[10px]">
+                    <span className="border border-[#2a2e39] bg-[#1e222d] px-2 py-0.5 font-mono text-xs">
                         SL/TP Otomatis
                     </span>
-                    <span className="rounded bg-white/5 px-2 py-0.5 font-mono text-[10px]">
+                    <span className="border border-[#2a2e39] bg-[#1e222d] px-2 py-0.5 font-mono text-xs">
                         Spread 0.8 pips
                     </span>
                 </div>

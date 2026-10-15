@@ -218,85 +218,10 @@
     }
 }
 
-/* Trading platform visual depth, glassmorphism and micro-animations */
-.trading-glass {
-    background: color-mix(in oklch, var(--card) 85%, transparent);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid color-mix(in oklch, var(--border) 75%, transparent);
-}
-
-.trading-card-glow {
-    position: relative;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.trading-card-glow:hover {
-    border-color: color-mix(in oklch, var(--brand) 60%, transparent);
-    box-shadow: 0 0 35px -10px
-        color-mix(in oklch, var(--brand) 25%, transparent);
-    transform: translateY(-2px);
-}
-
-.trading-stat-box {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.03) 0%,
-            rgba(255, 255, 255, 0.005) 100%
-        ),
-        var(--card);
-    border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
-    position: relative;
-    overflow: hidden;
-}
-
-.trading-stat-box::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(255, 255, 255, 0.15),
-        transparent
-    );
-}
-
-.trading-grid-bg {
-    background-size: 32px 32px;
-    background-image:
-        linear-gradient(
-            to right,
-            color-mix(in oklch, var(--border) 35%, transparent) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            to bottom,
-            color-mix(in oklch, var(--border) 35%, transparent) 1px,
-            transparent 1px
-        );
-}
-
-.glow-profit {
-    box-shadow: 0 0 20px -3px
-        color-mix(in oklch, var(--profit) 30%, transparent);
-}
-
-.glow-loss {
-    box-shadow: 0 0 20px -3px color-mix(in oklch, var(--loss) 30%, transparent);
-}
-
-.glow-brand {
-    box-shadow: 0 0 25px -4px color-mix(in oklch, var(--brand) 35%, transparent);
-}
-
+/* Financial Data Micro-Animations (Utilitarian Price Change Feedback) */
 @keyframes priceFlashGreen {
     0% {
-        background-color: color-mix(in oklch, var(--profit) 35%, transparent);
+        background-color: color-mix(in oklch, var(--profit) 25%, transparent);
     }
     100% {
         background-color: transparent;
@@ -305,7 +230,7 @@
 
 @keyframes priceFlashRed {
     0% {
-        background-color: color-mix(in oklch, var(--loss) 35%, transparent);
+        background-color: color-mix(in oklch, var(--loss) 25%, transparent);
     }
     100% {
         background-color: transparent;
@@ -313,9 +238,9 @@
 }
 
 .flash-up {
-    animation: priceFlashGreen 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: priceFlashGreen 0.6s ease-out;
 }
 
 .flash-down {
-    animation: priceFlashRed 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: priceFlashRed 0.6s ease-out;
 }
