@@ -154,51 +154,51 @@
 }
 
 .dark {
-    --background: oklch(0.145 0 0);
+    --background: oklch(0.135 0.012 255);
     --foreground: oklch(0.985 0 0);
-    --card: oklch(0.145 0 0);
+    --card: oklch(0.165 0.012 255);
     --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.145 0 0);
+    --popover: oklch(0.165 0.012 255);
     --popover-foreground: oklch(0.985 0 0);
     --primary: oklch(0.985 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
+    --primary-foreground: oklch(0.135 0.012 255);
+    --secondary: oklch(0.22 0.012 255);
     --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
+    --muted: oklch(0.22 0.012 255);
+    --muted-foreground: oklch(0.72 0.01 255);
+    --accent: oklch(0.22 0.012 255);
     --accent-foreground: oklch(0.985 0 0);
     --destructive: oklch(0.396 0.141 25.723);
     --destructive-foreground: oklch(0.637 0.237 25.331);
-    --border: oklch(0.269 0 0);
-    --input: oklch(0.269 0 0);
-    --ring: oklch(0.439 0 0);
+    --border: oklch(0.25 0.012 255);
+    --input: oklch(0.25 0.012 255);
+    --ring: oklch(0.55 0.15 250);
     --chart-1: oklch(0.488 0.243 264.376);
     --chart-2: oklch(0.696 0.17 162.48);
     --chart-3: oklch(0.769 0.188 70.08);
     --chart-4: oklch(0.627 0.265 303.9);
     --chart-5: oklch(0.645 0.246 16.439);
-    --sidebar: oklch(0.205 0 0);
+    --sidebar: oklch(0.15 0.012 255);
     --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.985 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-primary: oklch(0.68 0.14 250);
+    --sidebar-primary-foreground: oklch(0.135 0.012 255);
+    --sidebar-accent: oklch(0.22 0.012 255);
     --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(0.269 0 0);
-    --sidebar-ring: oklch(0.439 0 0);
+    --sidebar-border: oklch(0.22 0.012 255);
+    --sidebar-ring: oklch(0.55 0.15 250);
 
     --brand: oklch(0.68 0.14 250);
-    --brand-foreground: oklch(0.145 0 0);
+    --brand-foreground: oklch(0.135 0.012 255);
     --profit: oklch(0.72 0.16 155);
-    --profit-foreground: oklch(0.145 0 0);
+    --profit-foreground: oklch(0.135 0.012 255);
     --loss: oklch(0.68 0.19 25);
-    --loss-foreground: oklch(0.145 0 0);
+    --loss-foreground: oklch(0.985 0 0);
     --pending: oklch(0.8 0.14 80);
-    --pending-foreground: oklch(0.145 0 0);
+    --pending-foreground: oklch(0.135 0.012 255);
     --neutral-status: oklch(0.708 0 0);
-    --neutral-status-foreground: oklch(0.145 0 0);
+    --neutral-status-foreground: oklch(0.135 0.012 255);
     --premium: oklch(0.78 0.13 70);
-    --premium-foreground: oklch(0.145 0 0);
+    --premium-foreground: oklch(0.135 0.012 255);
     --chart-equity: oklch(0.65 0.14 250);
     --rank-1: oklch(0.708 0 0);
     --rank-2: oklch(0.72 0.16 155);
@@ -214,6 +214,33 @@
     }
 
     body {
-        @apply bg-background text-foreground;
+        @apply bg-background text-foreground antialiased selection:bg-brand/20 selection:text-brand;
     }
+}
+
+/* Trading platform micro-animations and utilities */
+@keyframes priceFlashGreen {
+    0% {
+        background-color: color-mix(in oklch, var(--profit) 30%, transparent);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+@keyframes priceFlashRed {
+    0% {
+        background-color: color-mix(in oklch, var(--loss) 30%, transparent);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+.flash-up {
+    animation: priceFlashGreen 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flash-down {
+    animation: priceFlashRed 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }

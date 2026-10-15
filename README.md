@@ -38,34 +38,38 @@ Platform perantara trader analis ↔ member (sinyal trading, sistem ranking otom
 ## 📦 Instalasi & Menjalankan Lokal
 
 1. **Clone repositori**:
-   ```bash
-   git clone https://github.com/ugha-a/Sokotra.git
-   cd Sokotra
-   ```
+
+    ```bash
+    git clone https://github.com/ugha-a/Sokotra.git
+    cd Sokotra
+    ```
 
 2. **Install dependensi**:
-   ```bash
-   composer install
-   npm install
-   ```
+
+    ```bash
+    composer install
+    npm install
+    ```
 
 3. **Konfigurasi Environment**:
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
+
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
 
 4. **Migrasi & Seeding Database**:
-   ```bash
-   php artisan migrate --seed
-   ```
+
+    ```bash
+    php artisan migrate --seed
+    ```
 
 5. **Build Asset & Jalankan Dev Server**:
-   ```bash
-   npm run dev
-   # dan di terminal terpisah
-   php artisan serve
-   ```
+    ```bash
+    npm run dev
+    # dan di terminal terpisah
+    php artisan serve
+    ```
 
 ---
 
