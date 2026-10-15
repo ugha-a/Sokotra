@@ -8,6 +8,7 @@ import { SignalCard } from '@/components/domain/signal-card';
 import { StatsGrid } from '@/components/domain/stats-grid';
 import { Button } from '@/components/ui/button';
 import { formatCompact, formatRupiah } from '@/lib/format';
+import { leaderboard } from '@/routes';
 import { create as subscribe } from '@/routes/subscriptions';
 import type { EquityPoint } from '@/lib/equity-curve';
 import type {
@@ -42,82 +43,125 @@ export default function TraderProfile({
 }: Props) {
     return (
         <>
-            <Head title={trader.name} />
-            <div className="grid gap-8">
-                <header className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
-                    <div className="grid gap-2">
-                        <div className="flex flex-wrap items-center gap-2">
-                            <h1 className="text-2xl font-semibold tracking-tight">
-                                {trader.name}
-                            </h1>
-                            <BadgeCheck
-                                className="size-5 text-brand"
-                                aria-label="Identitas terverifikasi"
-                            />
-                            {trader.rank && (
-                                <RankBadge
-                                    name={trader.rank.name}
-                                    color={trader.rank.color}
+            <Head title={`Profil Analis ${trader.name} - Sokotra`} />
+            <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
+                {/* eToro & Darwinex Benchmark: Verified Trader Header Card */}
+                <header className="rounded-xl border border-border bg-card p-5">
+                    <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                        <div className="flex items-start gap-4">
+                            <div className="flex size-14 shrink-0 items-center justify-center rounded-xl border border-border bg-muted font-mono text-xl font-bold text-foreground">
+                                {trader.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div className="grid gap-1.5">
+                                <div className="flex flex-wrap items-center gap-2">
+                                    <h1 className="text-xl font-bold tracking-tight text-foreground">
+                                        {trader.name}
+                                    </h1>
+                                    <BadgeCheck
+                                        className="size-5 text-brand"
+                                        aria-label="Identitas terverifikasi"
+                                    />
+                                    {trader.rank && (
+                                        <RankBadge
+                                            name={trader.rank.name}
+                                            color={trader.rank.color}
+                                        />
+                                    )}
+                                    {trader.is_featured && (
+                                        <span className="inline-flex items-center gap-1 rounded-md border border-premium/30 bg-premium/10 px-2 py-0.5 text-xs font-semibold text-premium">
+                                            <Star className="size-3.5 fill-premium" />{' '}
+                                            Pilihan Sokotra
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                                    <span className="font-medium text-foreground">
+                                        {trader.trading_style}
+                                    </span>
+                                    <span>·</span>
+                                    <span>
+                                        {trader.experience_years} tahun
+                                        pengalaman
+                                    </span>
+                                    <span>·</span>
+                                    <span className="font-mono text-foreground">
+                                        {trader.main_instruments.join(', ')}
+                                    </span>
+                                    <span>·</span>
+                                    <span>
+                                        <strong className="font-mono text-foreground">
+                                            {formatCompact(trader.followers)}
+                                        </strong>{' '}
+                                        follower
+                                    </span>
+                                </div>
+                                {trader.bio && (
+                                    <p className="max-w-2xl pt-1 text-xs leading-relaxed whitespace-pre-line text-muted-foreground">
+                                        {trader.bio}
+                                    </p>
+                                )}
+                            </div>
+                        </div>
+
+                        {!isOwnProfile && (
+                            <div className="flex flex-wrap items-center gap-2 md:self-start">
+                                <FollowButton
+                                    traderId={trader.id}
+                                    isFollowing={isFollowing}
                                 />
-                            )}
-                            {trader.is_featured && (
-                                <span className="inline-flex items-center gap-1 text-xs text-premium">
-                                    <Star className="size-3.5" /> Pilihan
-                                    Sokotra
-                                </span>
-                            )}
-                        </div>
-                        <p className="text-sm text-muted-foreground">
-                            {trader.trading_style} · {trader.experience_years}{' '}
-                            tahun pengalaman ·{' '}
-                            <span className="font-mono">
-                                {trader.main_instruments.join(', ')}
-                            </span>{' '}
-                            · {formatCompact(trader.followers)} follower
-                        </p>
-                        <p className="max-w-2xl text-sm whitespace-pre-line">
-                            {trader.bio}
-                        </p>
+                                {plan && (
+                                    <Button
+                                        variant={
+                                            isSubscribed ? 'outline' : 'default'
+                                        }
+                                        size="sm"
+                                        asChild
+                                        className="h-9 gap-1.5 text-xs font-semibold shadow-xs"
+                                    >
+                                        <Link href={subscribe(trader.id)}>
+                                            <Crown className="size-3.5" />
+                                            {isSubscribed
+                                                ? 'Perpanjang Langganan'
+                                                : `Langganan ${formatRupiah(plan.monthly_price)}/bln`}
+                                        </Link>
+                                    </Button>
+                                )}
+                            </div>
+                        )}
                     </div>
-                    {!isOwnProfile && (
-                        <div className="flex flex-wrap gap-2">
-                            <FollowButton
-                                traderId={trader.id}
-                                isFollowing={isFollowing}
-                            />
-                            {plan && (
-                                <Button
-                                    variant={
-                                        isSubscribed ? 'outline' : 'default'
-                                    }
-                                    asChild
-                                >
-                                    <Link href={subscribe(trader.id)}>
-                                        <Crown />
-                                        {isSubscribed
-                                            ? 'Perpanjang langganan'
-                                            : `Langganan ${formatRupiah(plan.monthly_price)}/bln`}
-                                    </Link>
-                                </Button>
-                            )}
-                        </div>
-                    )}
                 </header>
 
+                {/* Quantitative Performance Metrics (Darwinex Style) */}
                 <StatsGrid
                     stats={stats}
                     windowDays={windowDays}
                     initial="all_time"
                 />
 
+                {/* Equity Curve Visualizer */}
                 <EquityCurve points={equityCurve} />
 
+                {/* Signals History Feed */}
                 <section className="grid gap-4">
-                    <h2 className="text-lg font-semibold">Riwayat sinyal</h2>
+                    <div className="flex items-center justify-between">
+                        <h2 className="text-base font-bold text-foreground">
+                            Riwayat Sinyal & Eksekusi
+                        </h2>
+                        <span className="font-mono text-xs text-muted-foreground">
+                            Total {signals.total} sinyal tercatat
+                        </span>
+                    </div>
+
                     {signals.data.length === 0 ? (
-                        <p className="rounded-xl border border-dashed p-6 text-center text-sm text-muted-foreground">
-                            Belum ada sinyal.
-                        </p>
+                        <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border bg-card p-10 text-center text-sm text-muted-foreground">
+                            <p className="font-medium text-foreground">
+                                Belum ada sinyal yang dipublikasikan
+                            </p>
+                            <p className="text-xs">
+                                Sinyal baru dari analis ini akan tampil di sini
+                                saat dirilis.
+                            </p>
+                        </div>
                     ) : (
                         <div className="grid gap-4 lg:grid-cols-2">
                             {signals.data.map((signal) => (
@@ -131,3 +175,10 @@ export default function TraderProfile({
         </>
     );
 }
+
+TraderProfile.layout = {
+    breadcrumbs: [
+        { title: 'Leaderboard', href: leaderboard() },
+        { title: 'Profil Trader' },
+    ],
+};

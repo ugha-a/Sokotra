@@ -75,15 +75,18 @@ export default function Channel({
                 )}
                 {canSell && (
                     <form
-                        className="grid max-w-2xl gap-5 rounded-xl border p-4 md:p-6"
+                        className="grid max-w-2xl gap-5 rounded-xl border border-border bg-card p-4 shadow-xs md:p-6"
                         onSubmit={(event) => {
                             event.preventDefault();
                             form.submit(update(), { preserveScroll: true });
                         }}
                     >
                         <div className="grid gap-2">
-                            <Label htmlFor="monthly_price">
-                                Harga per bulan
+                            <Label
+                                htmlFor="monthly_price"
+                                className="text-xs font-semibold"
+                            >
+                                Harga Langganan per Bulan
                             </Label>
                             <MoneyInput
                                 id="monthly_price"
@@ -96,22 +99,66 @@ export default function Channel({
                                 }
                             />
                             <p className="text-xs text-muted-foreground">
-                                Rentang rank kamu {formatRupiah(range.min ?? 0)}{' '}
-                                – {formatRupiah(range.max ?? 0)}. Fee platform{' '}
-                                {feePercent}%: kamu menerima{' '}
-                                {formatRupiah(
-                                    Math.floor(price * (1 - feePercent / 100)),
-                                )}{' '}
-                                per bulan per subscriber. Durasi:{' '}
-                                {durations.join(', ')} bulan.
+                                Batas rentang rank kamu:{' '}
+                                <strong className="font-mono text-foreground">
+                                    {formatRupiah(range.min ?? 0)}
+                                </strong>{' '}
+                                –{' '}
+                                <strong className="font-mono text-foreground">
+                                    {formatRupiah(range.max ?? 0)}
+                                </strong>
+                                . Durasi paket: {durations.join(', ')} bulan.
                             </p>
                             <InputError
                                 message={errors.monthly_price ?? errors.channel}
                             />
                         </div>
+
+                        {/* Patreon / Creator Economy Revenue Breakdown Card */}
+                        <div className="grid grid-cols-2 gap-3 rounded-lg border border-border bg-muted/30 p-3 sm:grid-cols-3">
+                            <div>
+                                <p className="text-[11px] text-muted-foreground">
+                                    Harga Paket
+                                </p>
+                                <p className="font-mono text-sm font-bold text-foreground">
+                                    {formatRupiah(price)}
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-[11px] text-muted-foreground">
+                                    Bagi Hasil Analis ({100 - feePercent}%)
+                                </p>
+                                <p className="font-mono text-sm font-bold text-profit">
+                                    {formatRupiah(
+                                        Math.floor(
+                                            price * (1 - feePercent / 100),
+                                        ),
+                                    )}
+                                    <span className="text-[10px] font-normal text-muted-foreground">
+                                        /sub/bln
+                                    </span>
+                                </p>
+                            </div>
+                            <div className="col-span-2 border-t border-border/50 pt-2 sm:col-span-1 sm:border-t-0 sm:pt-0">
+                                <p className="text-[11px] text-muted-foreground">
+                                    Estimasi MRR ({activeSubscribers} aktif)
+                                </p>
+                                <p className="font-mono text-sm font-bold text-foreground">
+                                    {formatRupiah(
+                                        Math.floor(
+                                            price * (1 - feePercent / 100),
+                                        ) * activeSubscribers,
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+
                         <div className="grid gap-2">
-                            <Label htmlFor="description">
-                                Deskripsi channel
+                            <Label
+                                htmlFor="description"
+                                className="text-xs font-semibold"
+                            >
+                                Deskripsi Channel & Janji Analisa
                             </Label>
                             <Textarea
                                 id="description"
@@ -120,10 +167,11 @@ export default function Channel({
                                 onChange={(e) =>
                                     form.setData('description', e.target.value)
                                 }
-                                placeholder="Gaya trading, instrumen, frekuensi sinyal…"
+                                placeholder="Jelaskan gaya trading (scalping/swing), pair utama (XAUUSD, EURUSD), rata-rata sinyal per minggu, dan manajemen risiko…"
+                                className="text-xs leading-relaxed"
                             />
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 rounded-lg border border-border bg-muted/20 p-3">
                             <Checkbox
                                 id="is_open"
                                 checked={form.data.is_open}
@@ -131,16 +179,24 @@ export default function Channel({
                                     form.setData('is_open', checked === true)
                                 }
                             />
-                            <Label htmlFor="is_open">
-                                Terima subscriber baru
+                            <Label
+                                htmlFor="is_open"
+                                className="cursor-pointer text-xs font-normal"
+                            >
+                                <strong>
+                                    Buka pendaftaran subscriber baru
+                                </strong>{' '}
+                                (jika dinonaktifkan, profil kamu tidak akan
+                                menerima pembayaran langganan baru).
                             </Label>
                         </div>
                         <Button
                             type="submit"
-                            className="justify-self-start"
+                            className="justify-self-start text-xs font-semibold"
                             disabled={form.processing}
                         >
-                            <Crown /> Simpan channel
+                            <Crown className="mr-1.5 size-3.5" /> Simpan
+                            Konfigurasi Channel
                         </Button>
                     </form>
                 )}
