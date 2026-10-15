@@ -7,7 +7,7 @@ export type TickerItem = {
     name: string;
     price: number;
     digits: number;
-    change: number; // percentage, e.g. +0.42 or -0.18
+    change: number;
     high: number;
     low: number;
 };
@@ -66,7 +66,6 @@ export function MarketTickerTape({ className }: { className?: string }) {
         Record<string, 'up' | 'down' | null>
     >({});
 
-    // Simulate subtle micro-market tick updates to give genuine trading platform vitality
     useEffect(() => {
         const interval = setInterval(() => {
             const randomIndex = Math.floor(Math.random() * tickers.length);
@@ -100,14 +99,13 @@ export function MarketTickerTape({ className }: { className?: string }) {
                 [target.symbol]: isUp ? 'up' : 'down',
             }));
 
-            // Clear flash animation after 700ms
             setTimeout(() => {
                 setFlashes((prev) => ({
                     ...prev,
                     [target.symbol]: null,
                 }));
             }, 700);
-        }, 3200);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, [tickers]);
@@ -116,21 +114,21 @@ export function MarketTickerTape({ className }: { className?: string }) {
         <aside
             aria-label="Informasi Pergerakan Pasar Live"
             className={cn(
-                'w-full border-b border-border/60 bg-card/60 text-xs backdrop-blur-sm',
+                'w-full border-b border-white/10 bg-[#070a12]/90 text-xs backdrop-blur-md',
                 className,
             )}
         >
-            <div className="no-scrollbar mx-auto flex max-w-7xl items-center overflow-x-auto px-4 py-1.5">
-                <div className="flex shrink-0 items-center gap-1.5 border-r border-border/60 pr-4 text-[11px] font-semibold tracking-wider text-muted-foreground uppercase select-none">
-                    <span className="relative flex size-2">
-                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-profit opacity-75" />
-                        <span className="relative inline-flex size-2 rounded-full bg-profit" />
+            <div className="no-scrollbar mx-auto flex max-w-7xl items-center overflow-x-auto px-4 py-2 sm:px-6">
+                <div className="flex shrink-0 items-center gap-2 border-r border-white/10 pr-4 text-[11px] font-semibold tracking-wider text-slate-300 uppercase select-none">
+                    <span className="relative flex size-2.5">
+                        <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                        <span className="relative inline-flex size-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
                     </span>
-                    <Radio className="size-3 animate-pulse text-profit" />
-                    <span>Pasar Live</span>
+                    <Radio className="size-3 animate-pulse text-emerald-400" />
+                    <span className="font-bold text-slate-200">Pasar Live</span>
                 </div>
 
-                <div className="flex items-center gap-6 pl-4 whitespace-nowrap">
+                <div className="flex items-center gap-3 pl-4 whitespace-nowrap">
                     {tickers.map((item) => {
                         const isPositive = item.change >= 0;
                         const flash = flashes[item.symbol];
@@ -139,23 +137,25 @@ export function MarketTickerTape({ className }: { className?: string }) {
                             <div
                                 key={item.symbol}
                                 className={cn(
-                                    'flex items-center gap-2 rounded px-2 py-0.5 font-mono transition-colors duration-300',
-                                    flash === 'up' && 'flash-up text-profit',
-                                    flash === 'down' && 'flash-down text-loss',
+                                    'flex items-center gap-2 rounded-md border border-white/5 bg-white/[0.03] px-2.5 py-1 font-mono transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06]',
+                                    flash === 'up' &&
+                                        'flash-up border-emerald-500/50',
+                                    flash === 'down' &&
+                                        'flash-down border-rose-500/50',
                                 )}
                             >
-                                <span className="font-semibold text-foreground">
+                                <span className="font-bold text-slate-200">
                                     {item.symbol}
                                 </span>
-                                <span className="font-medium text-foreground tabular-nums">
+                                <span className="font-semibold text-white tabular-nums">
                                     {item.price.toFixed(item.digits)}
                                 </span>
                                 <span
                                     className={cn(
-                                        'inline-flex items-center text-[11px] font-semibold tabular-nums',
+                                        'inline-flex items-center text-[11px] font-bold tabular-nums',
                                         isPositive
-                                            ? 'text-profit'
-                                            : 'text-loss',
+                                            ? 'text-emerald-400'
+                                            : 'text-rose-400',
                                     )}
                                 >
                                     {isPositive ? (

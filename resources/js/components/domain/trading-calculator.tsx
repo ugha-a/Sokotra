@@ -51,35 +51,35 @@ export function TradingCalculator({ trigger }: { trigger?: React.ReactNode }) {
                     <Button
                         variant="outline"
                         size="sm"
-                        className="gap-2 border-border/80 bg-card hover:border-brand/50 hover:bg-muted/50"
+                        className="gap-2 border-white/15 bg-white/5 font-medium text-slate-200 backdrop-blur-md transition-all hover:border-cyan-500/40 hover:bg-white/10 hover:text-white"
                     >
-                        <Calculator className="size-4 text-brand" />
+                        <Calculator className="size-4 text-cyan-400" />
                         <span>Kalkulator Risiko</span>
                     </Button>
                 )}
             </DialogTrigger>
-            <DialogContent className="max-w-lg border-border bg-card sm:rounded-xl">
+            <DialogContent className="max-w-lg border-white/10 bg-[#121826] text-white shadow-2xl backdrop-blur-2xl sm:rounded-2xl">
                 <DialogHeader>
-                    <DialogTitle className="flex items-center gap-2 text-lg">
-                        <Calculator className="size-5 text-brand" />
+                    <DialogTitle className="flex items-center gap-2 text-lg font-bold text-white">
+                        <Calculator className="size-5 text-cyan-400" />
                         <span>Kalkulator Trading & Manajemen Risiko</span>
                     </DialogTitle>
-                    <DialogDescription className="text-sm">
+                    <DialogDescription className="text-sm text-slate-400">
                         Alat bantu belajar agar kamu trading dengan lot dan
                         rasio risiko terukur, bukan asal tebak.
                     </DialogDescription>
                 </DialogHeader>
 
                 {/* Tab switcher */}
-                <div className="flex rounded-lg border border-border/80 bg-muted/40 p-1">
+                <div className="flex rounded-xl border border-white/10 bg-white/[0.03] p-1">
                     <button
                         type="button"
                         onClick={() => setTab('lot')}
                         className={cn(
-                            'flex-1 rounded-md py-1.5 text-xs font-semibold transition-all',
+                            'flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all',
                             tab === 'lot'
-                                ? 'bg-card text-foreground shadow-xs'
-                                : 'text-muted-foreground hover:text-foreground',
+                                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-sm'
+                                : 'text-slate-400 hover:text-white',
                         )}
                     >
                         Kalkulator Lot & Risiko Modal
@@ -88,10 +88,10 @@ export function TradingCalculator({ trigger }: { trigger?: React.ReactNode }) {
                         type="button"
                         onClick={() => setTab('rr')}
                         className={cn(
-                            'flex-1 rounded-md py-1.5 text-xs font-semibold transition-all',
+                            'flex-1 rounded-lg py-1.5 text-xs font-semibold transition-all',
                             tab === 'rr'
-                                ? 'bg-card text-foreground shadow-xs'
-                                : 'text-muted-foreground hover:text-foreground',
+                                ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-sm'
+                                : 'text-slate-400 hover:text-white',
                         )}
                     >
                         Simulasi Risk/Reward (RR)
