@@ -3,6 +3,7 @@ import AppLogo from '@/components/app-logo';
 import { Button } from '@/components/ui/button';
 import { dashboard, home, leaderboard, login, register } from '@/routes';
 import { index as brokers } from '@/routes/brokers';
+import { show as showPage } from '@/routes/pages';
 import { index as marketplace } from '@/routes/marketplace';
 
 /**
@@ -13,7 +14,7 @@ export default function PublicLayout({
 }: {
     children: React.ReactNode;
 }) {
-    const { auth, riskDisclaimer } = usePage().props;
+    const { auth, riskDisclaimer, legalPages } = usePage().props;
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
@@ -58,9 +59,27 @@ export default function PublicLayout({
                 {children}
             </main>
             <footer className="border-t">
-                <p className="mx-auto max-w-6xl px-4 py-6 text-xs text-muted-foreground">
-                    {riskDisclaimer}
-                </p>
+                <div className="mx-auto grid max-w-6xl gap-3 px-4 py-6">
+                    {legalPages.length > 0 && (
+                        <nav
+                            aria-label="Informasi"
+                            className="flex flex-wrap gap-x-4 gap-y-1 text-xs"
+                        >
+                            {legalPages.map((page) => (
+                                <Link
+                                    key={page.slug}
+                                    href={showPage(page.slug)}
+                                    className="text-muted-foreground hover:text-foreground"
+                                >
+                                    {page.title}
+                                </Link>
+                            ))}
+                        </nav>
+                    )}
+                    <p className="text-xs text-muted-foreground">
+                        {riskDisclaimer}
+                    </p>
+                </div>
             </footer>
         </div>
     );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\ContentPage;
 use App\Support\Settings;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
@@ -47,6 +48,8 @@ class HandleInertiaRequests extends Middleware
                 ? ['unread' => $request->user()->unreadNotifications()->count()]
                 : null,
             'riskDisclaimer' => fn () => Settings::get('content.risk_disclaimer'),
+            'legalPages' => fn () => ContentPage::query()->where('is_published', true)->orderBy('title')->get(['slug', 'title'])
+                ->map(fn (ContentPage $page) => ['slug' => $page->slug, 'title' => $page->title])->values()->all(),
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
         ];
     }

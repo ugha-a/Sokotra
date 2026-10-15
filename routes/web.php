@@ -29,6 +29,8 @@ use App\Http\Controllers\Member\SubscriptionController as MemberSubscriptionCont
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\Public\BrokerController;
+use App\Http\Controllers\Public\ContentPageController;
+use App\Http\Controllers\Public\HomeController;
 use App\Http\Controllers\Public\LeaderboardController;
 use App\Http\Controllers\Public\MarketplaceController;
 use App\Http\Controllers\Public\TraderProfileController;
@@ -45,7 +47,8 @@ use App\Http\Controllers\Wallet\WithdrawalController;
 use App\Models\KycVerification;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'welcome')->name('home');
+Route::get('/', HomeController::class)->name('home');
+Route::get('pages/{slug}', [ContentPageController::class, 'show'])->name('pages.show');
 Route::get('leaderboard', LeaderboardController::class)->name('leaderboard');
 Route::get('traders/{profile:slug}', [TraderProfileController::class, 'show'])->name('traders.show');
 Route::post('webhooks/payments/{gateway}', [PaymentController::class, 'webhook'])->name('webhooks.payments');
@@ -56,12 +59,12 @@ Route::get('marketplace/{product:slug}', [MarketplaceController::class, 'show'])
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', MemberDashboardController::class)->name('dashboard');
     Route::get('following', [FollowingController::class, 'index'])->name('following.index');
-    Route::post('traders/{profile}/follow', [FollowController::class, 'store'])->name('traders.follow');
-    Route::delete('traders/{profile}/follow', [FollowController::class, 'destroy'])->name('traders.unfollow');
+    Route::post('traders/{profile}/follow', [FollowController::class, 'store'])->middleware('throttle:follows')->name('traders.follow');
+    Route::delete('traders/{profile}/follow', [FollowController::class, 'destroy'])->middleware('throttle:follows')->name('traders.unfollow');
 
     Route::get('subscriptions', [MemberSubscriptionController::class, 'index'])->name('subscriptions.index');
     Route::get('traders/{profile}/subscribe', [MemberSubscriptionController::class, 'create'])->name('subscriptions.create');
-    Route::post('traders/{profile}/subscribe', [MemberSubscriptionController::class, 'store'])->name('subscriptions.store');
+    Route::post('traders/{profile}/subscribe', [MemberSubscriptionController::class, 'store'])->middleware('throttle:checkout')->name('subscriptions.store');
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show');
     Route::get('payments/{payment}/simulate', [PaymentController::class, 'simulate'])->name('payments.simulate.show');
     Route::post('payments/{payment}/simulate', [PaymentController::class, 'completeSimulation'])->name('payments.simulate.complete');
@@ -70,7 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('broker-accounts', [MemberBrokerAccountController::class, 'index'])->name('broker-accounts.index');
     Route::post('broker-accounts', [MemberBrokerAccountController::class, 'store'])->name('broker-accounts.store');
 
-    Route::post('marketplace/{product}/buy', [OrderController::class, 'store'])->name('orders.store');
+    Route::post('marketplace/{product}/buy', [OrderController::class, 'store'])->middleware('throttle:checkout')->name('orders.store');
     Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
     Route::get('purchases/{order}/download', [PurchaseController::class, 'download'])->name('purchases.download');
     Route::get('purchases/{order}/file', [PurchaseController::class, 'file'])->middleware('signed')->name('purchases.file');
@@ -79,7 +82,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('wallet', [WalletController::class, 'show'])->name('wallet.show');
     Route::post('wallet/bank-accounts', [BankAccountController::class, 'store'])->name('wallet.bank-accounts.store');
     Route::delete('wallet/bank-accounts/{bankAccount}', [BankAccountController::class, 'destroy'])->name('wallet.bank-accounts.destroy');
-    Route::post('wallet/withdrawals', [WithdrawalController::class, 'store'])->name('wallet.withdrawals.store');
+    Route::post('wallet/withdrawals', [WithdrawalController::class, 'store'])->middleware('throttle:withdrawals')->name('wallet.withdrawals.store');
 
     Route::get('notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::get('notifications/{notification}', [NotificationController::class, 'open'])->name('notifications.open');
@@ -89,7 +92,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('signals/{signal}/chart', [SignalFeedController::class, 'chart'])->name('signals.chart');
 
     Route::get('become-trader', [BecomeTraderController::class, 'show'])->name('become-trader.show');
-    Route::post('become-trader', [BecomeTraderController::class, 'store'])->name('become-trader.store');
+    Route::post('become-trader', [BecomeTraderController::class, 'store'])->middleware('throttle:applications')->name('become-trader.store');
 
     Route::middleware('role:'.Role::Trader->value)
         ->prefix('trader')
@@ -99,7 +102,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
             Route::get('signals', [SignalController::class, 'index'])->name('signals.index');
             Route::get('signals/create', [SignalController::class, 'create'])->name('signals.create');
-            Route::post('signals', [SignalController::class, 'store'])->name('signals.store');
+            Route::post('signals', [SignalController::class, 'store'])->middleware('throttle:signals')->name('signals.store');
             Route::post('signals/{signal}/cancel', [SignalController::class, 'cancel'])->name('signals.cancel');
 
             Route::get('quotes/{instrument}', [QuoteController::class, 'show'])->name('quotes.show');

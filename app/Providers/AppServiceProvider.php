@@ -7,8 +7,11 @@ use App\Services\Payments\SimulatedPaymentGateway;
 use App\Services\PriceFeed\PriceFeed;
 use App\Services\PriceFeed\SimulatedPriceFeed;
 use Carbon\CarbonImmutable;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use InvalidArgumentException;
@@ -53,6 +56,21 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+        $this->configureRateLimits();
+    }
+
+    /**
+     * Abuse protection for write-heavy member actions (docs/logic/compliance.md → Anti-Fraud & Audit).
+     */
+    protected function configureRateLimits(): void
+    {
+        $perUser = fn (int $perMinute) => fn (Request $request) => Limit::perMinute($perMinute)->by($request->user()?->id ?: $request->ip());
+
+        RateLimiter::for('follows', $perUser(30));
+        RateLimiter::for('signals', $perUser(10));
+        RateLimiter::for('checkout', $perUser(10));
+        RateLimiter::for('withdrawals', $perUser(5));
+        RateLimiter::for('applications', $perUser(5));
     }
 
     /**

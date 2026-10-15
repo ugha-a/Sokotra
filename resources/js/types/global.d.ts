@@ -14,6 +14,7 @@ declare module '@inertiajs/core' {
             sidebarOpen: boolean;
             notifications: { unread: number } | null;
             riskDisclaimer: string;
+            legalPages: { slug: string; title: string }[];
             [key: string]: unknown;
         };
     }
