@@ -35,4 +35,20 @@ return [
         ],
     ],
 
+    /*
+    | Market data for signals (docs/logic/signal-lifecycle.md). "simulated" is for
+    | local development only; a real provider driver is added later.
+    */
+    'price_feed' => [
+        'driver' => env('PRICE_FEED_DRIVER', 'simulated'),
+
+        'simulated' => [
+            'base_prices' => [
+                'EURUSD' => 1.0850, 'GBPUSD' => 1.2700, 'USDJPY' => 150.00, 'AUDUSD' => 0.6600,
+                'USDCHF' => 0.8800, 'USDCAD' => 1.3600, 'NZDUSD' => 0.6000,
+                'XAUUSD' => 2650.0, 'XAGUSD' => 31.00,
+            ],
+        ],
+    ],
+
 ];

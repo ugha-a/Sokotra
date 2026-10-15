@@ -39,6 +39,8 @@ Seed: EURUSD, GBPUSD, USDJPY, AUDUSD, USDCHF, USDCAD, NZDUSD, XAUUSD, XAGUSD.
 | signal.max_cancel_per_week     | 3          | Batas pembatalan pending                              |
 | signal.ambiguous_candle_rule   | `sl_first` | Jika satu candle menyentuh TP & SL                    |
 | signal.count_expired_in_streak | false      | Expired/cancelled tidak memutus streak                |
+| signal.min_analysis_chars      | 30         | Panjang minimal teks analisa (karakter)               |
+| signal.chart_max_mb            | 5          | Ukuran gambar chart maksimal (MB)                     |
 
 ## 3. Ranks — `ranks`
 

@@ -1,6 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import { ChevronRight, UserCheck } from 'lucide-react';
 import Heading from '@/components/heading';
+import { Pagination } from '@/components/domain/pagination';
 import { RankBadge } from '@/components/domain/rank-badge';
 import { StatusPill } from '@/components/domain/status-pill';
 import { formatDate } from '@/lib/format';
@@ -112,28 +113,7 @@ export default function TraderApplications({
                     </ul>
                 )}
 
-                {profiles.last_page > 1 && (
-                    <nav aria-label="Halaman" className="flex flex-wrap gap-1">
-                        {profiles.links.map((link, i) => (
-                            <Link
-                                key={i}
-                                href={link.url ?? '#'}
-                                preserveScroll
-                                className={cn(
-                                    'rounded-md border px-3 py-1 text-sm',
-                                    link.active &&
-                                        'border-brand bg-brand text-brand-foreground',
-                                    !link.url &&
-                                        'pointer-events-none opacity-50',
-                                )}
-                            >
-                                {link.label
-                                    .replace('&laquo;', '«')
-                                    .replace('&raquo;', '»')}
-                            </Link>
-                        ))}
-                    </nav>
-                )}
+                <Pagination paginator={profiles} />
             </div>
         </>
     );

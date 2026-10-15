@@ -11,20 +11,23 @@ function summarize(roles: string[]) {
 describe('buildNavigation', () => {
     it('offers the trader application to members', () => {
         expect(summarize(['member'])).toEqual([
-            { label: 'Member', items: ['Beranda', 'Jadi Trader'] },
+            { label: 'Member', items: ['Beranda', 'Sinyal', 'Jadi Trader'] },
         ]);
     });
 
     it('adds the trader group for traders', () => {
         expect(summarize(['member', 'trader'])).toEqual([
-            { label: 'Member', items: ['Beranda'] },
-            { label: 'Trader', items: ['Dashboard Trader'] },
+            { label: 'Member', items: ['Beranda', 'Sinyal'] },
+            {
+                label: 'Trader',
+                items: ['Dashboard Trader', 'Posting Sinyal', 'Sinyal Saya'],
+            },
         ]);
     });
 
     it('adds the admin group for admins', () => {
         expect(summarize(['admin'])).toEqual([
-            { label: 'Member', items: ['Beranda', 'Jadi Trader'] },
+            { label: 'Member', items: ['Beranda', 'Sinyal', 'Jadi Trader'] },
             {
                 label: 'Admin',
                 items: [
@@ -48,7 +51,10 @@ describe('buildNavigation', () => {
 
         expect(urls).toEqual([
             '/dashboard',
+            '/signals',
             '/trader',
+            '/trader/signals/create',
+            '/trader/signals',
             '/admin',
             '/admin/traders',
             '/admin/master/instruments',

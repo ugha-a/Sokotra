@@ -178,6 +178,8 @@ class MasterDataSeeder extends Seeder
             [SettingGroup::Signal, 'signal.max_cancel_per_week', SettingType::Integer, 3, 'Maksimal pembatalan pending per minggu', null],
             [SettingGroup::Signal, 'signal.ambiguous_candle_rule', SettingType::Choice, 'sl_first', 'Jika TP & SL tersentuh di candle yang sama', ['sl_first' => 'SL lebih dulu (konservatif)', 'tp_first' => 'TP lebih dulu']],
             [SettingGroup::Signal, 'signal.count_expired_in_streak', SettingType::Boolean, false, 'Sinyal expired/cancelled memutus streak', null],
+            [SettingGroup::Signal, 'signal.min_analysis_chars', SettingType::Integer, 30, 'Panjang minimal teks analisa (karakter)', null],
+            [SettingGroup::Signal, 'signal.chart_max_mb', SettingType::Integer, 5, 'Ukuran gambar chart maksimal (MB)', null],
 
             [SettingGroup::Score, 'score.weight_win_rate', SettingType::Decimal, 0.30, 'Bobot win rate', null],
             [SettingGroup::Score, 'score.weight_total_r', SettingType::Decimal, 0.35, 'Bobot total R', null],

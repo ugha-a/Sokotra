@@ -1,7 +1,11 @@
 <?php
 
 use App\Enums\Role;
+use App\Models\Rank;
+use App\Models\TraderProfile;
 use App\Models\User;
+use App\Services\PriceFeed\FakePriceFeed;
+use App\Services\PriceFeed\PriceFeed;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -57,4 +61,23 @@ function userWithRoles(Role ...$roles): User
 function adminUser(): User
 {
     return userWithRoles(Role::Member, Role::Admin);
+}
+
+function fakePriceFeed(): FakePriceFeed
+{
+    $feed = new FakePriceFeed;
+    app()->instance(PriceFeed::class, $feed);
+
+    return $feed;
+}
+
+function approvedTrader(string $rankSlug = 'newbie'): User
+{
+    $user = userWithRoles(Role::Member, Role::Trader);
+
+    TraderProfile::factory()->approved()->for($user)->create([
+        'rank_id' => Rank::where('slug', $rankSlug)->value('id'),
+    ]);
+
+    return $user;
 }

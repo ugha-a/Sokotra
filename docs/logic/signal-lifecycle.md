@@ -91,20 +91,38 @@ Dijalankan oleh scheduler **setiap menit**.
 ## Price Feed
 
 - Interface `App\Services\PriceFeed\PriceFeed`:
-    - `quote(string $symbol): Quote` (bid, ask, time)
-    - `candles(string $symbol, CarbonInterface $from, CarbonInterface $to): Collection<Candle>` (time, open, high, low, close)
-- Driver dipilih dari `config/services.php` → `price_feed.driver`. Kandidat: Twelve Data, Finnhub, Polygon, OANDA. Pilih setelah membandingkan harga dan cakupan XAUUSD.
-- `FakePriceFeed` untuk test: candle disuntikkan manual.
-- Jika feed gagal atau ada gap data, evaluasi **tidak menebak**. Engine mencoba lagi di run berikutnya dari timestamp terakhir yang sukses (`instrument_feed_cursors`).
+    - `quote(Instrument $instrument): Quote` (bid, ask, time)
+    - `candles(Instrument $instrument, CarbonInterface $from, CarbonInterface $to): list<Candle>`: candle 1m harga **bid** yang sudah selesai, waktu mulai di `[from, to)`, urut dari yang terlama
+    - Kegagalan apa pun dilempar sebagai `PriceFeedUnavailable`.
+- Driver dipilih dari env `PRICE_FEED_DRIVER` (`config/services.php` → `price_feed.driver`):
+
+| Driver          | Untuk      | Catatan                                                                                                     |
+| --------------- | ---------- | ----------------------------------------------------------------------------------------------------------- |
+| `simulated`     | Dev lokal  | Harga sintetis deterministik dari `price_feed.simulated.base_prices`. **Ditolak di production.**            |
+| `FakePriceFeed` | Test       | Quote & candle disuntikkan (`setQuote`, `addCandles`, `failFor`, `recover`), lewat helper `fakePriceFeed()` |
+| provider asli   | Production | Belum dipilih: Twelve Data, Finnhub, Polygon, atau OANDA. Bandingkan harga dan cakupan XAUUSD 1m            |
+
+- Jika feed gagal atau ada gap data, evaluasi **tidak menebak**. Cursor (`instrument_feed_cursors.last_candle_at`) tidak maju, dan run berikutnya mengulang dari candle terakhir yang sukses.
+
+## Implementasi Engine
+
+- Command `signals:evaluate` dijadwalkan **setiap menit** (`routes/console.php`, `withoutOverlapping`). Lokal: `php artisan schedule:work`.
+- Semua perbandingan harga memakai `App\Support\Signal\PriceMath` dalam satuan **poin** bilangan bulat (`harga × 10^digits`), memakai snapshot `digits`/`pip_size`/`spread` dari sinyal, bukan master saat ini.
+- Hanya candle yang **mulai pada atau setelah** `published_at` yang dihitung. Sinyal yang dipublish 10:00:30 mulai dinilai dari candle 10:01.
+- Rentang candle per run: dari `max(cursor + 1 menit, menit publish sinyal terbuka tertua)` sampai menit berjalan (hanya candle yang sudah selesai).
+- `closed_timeout` hanya ditutup jika ada harga close yang diketahui dari candle sebelum batas waktu. Kalau tidak ada, engine mencoba lagi di run berikutnya.
+- Transisi memicu event `App\Events\SignalTriggered` / `App\Events\SignalClosed` (dipakai modul statistik & notifikasi).
 
 ## Visibilitas
 
-| Viewer                 | Sinyal free | Sinyal premium (terbuka)                | Sinyal premium (closed) |
-| ---------------------- | ----------- | --------------------------------------- | ----------------------- |
-| Publik / member        | Lengkap     | Hanya instrumen + arah, detail terkunci | Lengkap                 |
-| Subscriber aktif       | Lengkap     | Lengkap, real-time                      | Lengkap                 |
-| Trader pemilik / admin | Lengkap     | Lengkap                                 | Lengkap                 |
+| Viewer                 | Sinyal free | Sinyal premium (terbuka)                            | Sinyal premium (closed) |
+| ---------------------- | ----------- | --------------------------------------------------- | ----------------------- |
+| Publik / member        | Lengkap     | Hanya instrumen + arah, detail terkunci             | Lengkap                 |
+| Subscriber aktif       | Lengkap     | Lengkap, real-time (menyusul di modul Subscription) | Lengkap                 |
+| Trader pemilik / admin | Lengkap     | Lengkap                                             | Lengkap                 |
 
 ## Notifikasi
 
-Saat publish: follower (sinyal free) dan subscriber (premium) menerima notifikasi database + broadcast Reverb. Saat closed: notifikasi hasil ke orang yang sama.
+Saat publish: follower (sinyal free) dan subscriber (premium) menerima notifikasi database + broadcast Reverb. Saat closed: notifikasi hasil ke orang yang sama. **Diimplementasikan di modul Follow** (listener `SignalTriggered`/`SignalClosed`), karena relasi follower baru ada di sana.
+
+Aturan visibilitas diterapkan di `App\Policies\SignalPolicy::viewDetails` dan `App\Http\Resources\SignalResource` (field detail dikirim `null` saat terkunci). Gambar chart disimpan di disk privat dan hanya dilayani lewat `GET /signals/{signal}/chart` dengan policy yang sama.

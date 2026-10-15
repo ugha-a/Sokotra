@@ -8,6 +8,9 @@ use App\Http\Controllers\Admin\MasterDataController;
 use App\Http\Controllers\Admin\PlatformSettingController;
 use App\Http\Controllers\Admin\TraderApplicationController;
 use App\Http\Controllers\Member\BecomeTraderController;
+use App\Http\Controllers\SignalFeedController;
+use App\Http\Controllers\Trader\QuoteController;
+use App\Http\Controllers\Trader\SignalController;
 use App\Models\KycVerification;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +18,9 @@ Route::inertia('/', 'welcome')->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::inertia('dashboard', 'dashboard')->name('dashboard');
+
+    Route::get('signals', [SignalFeedController::class, 'index'])->name('signals.index');
+    Route::get('signals/{signal}/chart', [SignalFeedController::class, 'chart'])->name('signals.chart');
 
     Route::get('become-trader', [BecomeTraderController::class, 'show'])->name('become-trader.show');
     Route::post('become-trader', [BecomeTraderController::class, 'store'])->name('become-trader.store');
@@ -24,6 +30,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('trader.')
         ->group(function () {
             Route::inertia('/', 'trader/dashboard')->name('dashboard');
+
+            Route::get('signals', [SignalController::class, 'index'])->name('signals.index');
+            Route::get('signals/create', [SignalController::class, 'create'])->name('signals.create');
+            Route::post('signals', [SignalController::class, 'store'])->name('signals.store');
+            Route::post('signals/{signal}/cancel', [SignalController::class, 'cancel'])->name('signals.cancel');
+
+            Route::get('quotes/{instrument}', [QuoteController::class, 'show'])->name('quotes.show');
         });
 
     Route::middleware('role:'.Role::Admin->value)

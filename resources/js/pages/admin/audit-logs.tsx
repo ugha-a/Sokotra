@@ -1,8 +1,8 @@
-import { Head, Link } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import { History } from 'lucide-react';
 import Heading from '@/components/heading';
+import { Pagination } from '@/components/domain/pagination';
 import { formatDate } from '@/lib/format';
-import { cn } from '@/lib/utils';
 import { index } from '@/routes/admin/audit-logs';
 import type { AuditLog, Paginated } from '@/types';
 
@@ -95,28 +95,7 @@ export default function AuditLogs({ logs }: { logs: Paginated<AuditLog> }) {
                     </ul>
                 )}
 
-                {logs.last_page > 1 && (
-                    <nav aria-label="Halaman" className="flex flex-wrap gap-1">
-                        {logs.links.map((link, i) => (
-                            <Link
-                                key={i}
-                                href={link.url ?? '#'}
-                                preserveScroll
-                                className={cn(
-                                    'rounded-md border px-3 py-1 text-sm',
-                                    link.active &&
-                                        'border-brand bg-brand text-brand-foreground',
-                                    !link.url &&
-                                        'pointer-events-none opacity-50',
-                                )}
-                            >
-                                {link.label
-                                    .replace('&laquo;', '«')
-                                    .replace('&raquo;', '»')}
-                            </Link>
-                        ))}
-                    </nav>
-                )}
+                <Pagination paginator={logs} />
             </div>
         </>
     );

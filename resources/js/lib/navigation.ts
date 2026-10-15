@@ -3,6 +3,9 @@ import {
     History,
     LayoutGrid,
     LineChart,
+    ListChecks,
+    Radio,
+    SquarePen,
     Settings2,
     ShieldCheck,
     TrendingUp,
@@ -15,6 +18,11 @@ import { index as masterData } from '@/routes/admin/master';
 import { edit as platformSettings } from '@/routes/admin/settings';
 import { index as traderApplications } from '@/routes/admin/traders';
 import { show as becomeTrader } from '@/routes/become-trader';
+import { index as signalFeed } from '@/routes/signals';
+import {
+    create as createSignal,
+    index as traderSignals,
+} from '@/routes/trader/signals';
 import { dashboard as traderDashboard } from '@/routes/trader';
 import type { NavGroup } from '@/types';
 
@@ -28,6 +36,7 @@ export function buildNavigation(roles: string[]): NavGroup[] {
             label: 'Member',
             items: [
                 { title: 'Beranda', href: dashboard(), icon: LayoutGrid },
+                { title: 'Sinyal', href: signalFeed(), icon: Radio },
                 ...(isTrader
                     ? []
                     : [
@@ -49,6 +58,16 @@ export function buildNavigation(roles: string[]): NavGroup[] {
                     title: 'Dashboard Trader',
                     href: traderDashboard(),
                     icon: LineChart,
+                },
+                {
+                    title: 'Posting Sinyal',
+                    href: createSignal(),
+                    icon: SquarePen,
+                },
+                {
+                    title: 'Sinyal Saya',
+                    href: traderSignals(),
+                    icon: ListChecks,
                 },
             ],
         });
