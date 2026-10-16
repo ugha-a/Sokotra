@@ -3,10 +3,8 @@ import AppLogo from '@/components/app-logo';
 import { MarketTickerTape } from '@/components/domain/market-ticker-tape';
 import { TradingCalculator } from '@/components/domain/trading-calculator';
 import { Button } from '@/components/ui/button';
-import { dashboard, home, leaderboard, login, register } from '@/routes';
-import { index as brokers } from '@/routes/brokers';
+import { dashboard, home, login, register } from '@/routes';
 import { show as showPage } from '@/routes/pages';
-import { index as marketplace } from '@/routes/marketplace';
 
 /**
  * Utilitarian layout for public-facing trading portal.
@@ -34,68 +32,104 @@ export default function PublicLayout({
                         <AppLogo />
                     </Link>
                     <nav className="flex items-center gap-1 text-sm font-medium sm:gap-2">
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            asChild
-                            className="h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white"
-                        >
-                            <Link href={leaderboard()}>Leaderboard</Link>
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            asChild
-                            className="h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white"
-                        >
-                            <Link href={marketplace()}>Marketplace</Link>
-                        </Button>
-                        <Button
-                            variant="ghost"
-                            size="sm"
-                            asChild
-                            className="hidden h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white sm:inline-flex"
-                        >
-                            <Link href={brokers()}>Broker Legal</Link>
-                        </Button>
-
-                        {/* Interactive Risk & Lot Calculator Trigger */}
-                        <TradingCalculator />
-
                         {auth.user ? (
-                            <Button
-                                size="sm"
-                                asChild
-                                className="h-8 bg-[#2962ff] font-medium text-white hover:bg-[#1e53e5]"
-                            >
-                                <Link href={dashboard()}>Terminal Saya</Link>
-                            </Button>
-                        ) : (
-                            <div className="flex items-center gap-1.5 pl-1">
+                            <>
                                 <Button
                                     variant="ghost"
                                     size="sm"
                                     asChild
                                     className="h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white"
                                 >
-                                    <Link href={login()}>Masuk</Link>
+                                    <Link href={dashboard()}>Dashboard</Link>
                                 </Button>
+                                <TradingCalculator />
                                 <Button
                                     size="sm"
                                     asChild
                                     className="h-8 bg-[#2962ff] font-medium text-white hover:bg-[#1e53e5]"
                                 >
-                                    <Link href={register()}>Daftar</Link>
+                                    <Link href={dashboard()}>
+                                        Terminal Saya
+                                    </Link>
                                 </Button>
-                            </div>
+                            </>
+                        ) : (
+                            <>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    asChild
+                                    className="hidden h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white md:inline-flex"
+                                >
+                                    <a href={`${home.url()}#live-leaderboard`}>
+                                        Leaderboard
+                                    </a>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    asChild
+                                    className="hidden h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white sm:inline-flex"
+                                >
+                                    <a href={`${home.url()}#ekosistem`}>
+                                        Ekosistem
+                                    </a>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    asChild
+                                    className="hidden h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white lg:inline-flex"
+                                >
+                                    <a href={`${home.url()}#analyst-pitch`}>
+                                        Untuk Analis
+                                    </a>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    asChild
+                                    className="hidden h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white lg:inline-flex"
+                                >
+                                    <a href={`${home.url()}#broker-partner`}>
+                                        Broker Legal
+                                    </a>
+                                </Button>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    asChild
+                                    className="hidden h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white sm:inline-flex"
+                                >
+                                    <a href={`${home.url()}#faq`}>FAQ</a>
+                                </Button>
+
+                                <TradingCalculator />
+
+                                <div className="flex items-center gap-1.5 pl-1">
+                                    <Button
+                                        variant="ghost"
+                                        size="sm"
+                                        asChild
+                                        className="h-8 text-[#d1d4dc] hover:bg-[#1e222d] hover:text-white"
+                                    >
+                                        <Link href={login()}>Masuk</Link>
+                                    </Button>
+                                    <Button
+                                        size="sm"
+                                        asChild
+                                        className="h-8 bg-[#2962ff] font-medium text-white hover:bg-[#1e53e5]"
+                                    >
+                                        <Link href={register()}>Daftar</Link>
+                                    </Button>
+                                </div>
+                            </>
                         )}
                     </nav>
                 </div>
             </header>
 
-            <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6">
-                {children}
-            </main>
+            <main className="w-full flex-1">{children}</main>
 
             {/* Utilitarian Footer */}
             <footer className="border-t border-[#2a2e39] bg-[#131722] text-[#787b86]">

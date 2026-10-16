@@ -4,11 +4,16 @@ use App\Enums\Role;
 use App\Models\BrokerReferral;
 use Inertia\Testing\AssertableInertia as Assert;
 
-it('lists active licensed brokers publicly', function () {
+it('requires login to view brokers directory', function () {
+    $this->get(route('brokers.index'))->assertRedirect(route('login'));
+});
+
+it('lists active licensed brokers for members', function () {
     demoBroker();
     demoBroker(['name' => 'Nonaktif', 'slug' => 'nonaktif', 'is_active' => false]);
 
-    $this->get(route('brokers.index'))
+    $this->actingAs(userWithRoles(Role::Member))
+        ->get(route('brokers.index'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('public/brokers')

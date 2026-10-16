@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Ranking\RefreshTraderStats;
+use App\Enums\Role;
 use App\Enums\TraderStatus;
 use App\Models\TraderProfile;
 use App\Models\User;
@@ -9,6 +10,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 beforeEach(function () {
     $this->travelTo(Carbon::parse('2026-10-16 12:00:00'));
+    $this->member = userWithRoles(Role::Member);
 });
 
 function rankedTrader(string $name, array $results, int $followers = 0): User
@@ -22,12 +24,17 @@ function rankedTrader(string $name, array $results, int $followers = 0): User
     return $trader;
 }
 
-it('is public and ranks traders by weighted score', function () {
+it('requires authentication to view leaderboard', function () {
+    $this->get(route('leaderboard'))->assertRedirect(route('login'));
+});
+
+it('ranks traders by weighted score for authenticated members', function () {
     rankedTrader('Sedang', [...array_fill(0, 15, 1.5), ...array_fill(0, 10, -1.0)], 5);
     rankedTrader('Terbaik', [...array_fill(0, 20, 2.0), ...array_fill(0, 5, -1.0)], 20);
     rankedTrader('Sedikit Sinyal', [2.0, 2.0, 2.0], 100);
 
-    $this->get(route('leaderboard'))
+    $this->actingAs($this->member)
+        ->get(route('leaderboard'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('public/leaderboard')
@@ -46,14 +53,17 @@ it('excludes suspended and flagged traders', function () {
     TraderProfile::where('user_id', $suspended->id)->update(['status' => TraderStatus::Suspended]);
     TraderProfile::where('user_id', $flagged->id)->update(['is_flagged' => true]);
 
-    $this->get(route('leaderboard'))->assertInertia(fn (Assert $page) => $page->has('rows', 0));
+    $this->actingAs($this->member)
+        ->get(route('leaderboard'))
+        ->assertInertia(fn (Assert $page) => $page->has('rows', 0));
 });
 
 it('lists the most consistent traders with enough signals', function () {
     rankedTrader('Stabil', [...array_fill(0, 40, 1.0), ...array_fill(0, 15, -0.5)]);
     rankedTrader('Kurang Sinyal', array_fill(0, 30, 1.0));
 
-    $this->get(route('leaderboard', ['tab' => 'consistent']))
+    $this->actingAs($this->member)
+        ->get(route('leaderboard', ['tab' => 'consistent']))
         ->assertInertia(fn (Assert $page) => $page
             ->where('tab', 'consistent')
             ->has('rows', 1)
@@ -65,14 +75,16 @@ it('shows featured traders', function () {
     rankedTrader('Biasa', array_fill(0, 25, 1.0));
     TraderProfile::where('user_id', $featured->id)->update(['is_featured' => true]);
 
-    $this->get(route('leaderboard', ['tab' => 'featured']))
+    $this->actingAs($this->member)
+        ->get(route('leaderboard', ['tab' => 'featured']))
         ->assertInertia(fn (Assert $page) => $page->has('rows', 1)->where('rows.0.trader.name', 'Pilihan'));
 });
 
 it('switches the period', function () {
     rankedTrader('Minggu Ini', array_fill(0, 25, 1.0));
 
-    $this->get(route('leaderboard', ['period' => 'week']))
+    $this->actingAs($this->member)
+        ->get(route('leaderboard', ['period' => 'week']))
         ->assertInertia(fn (Assert $page) => $page->where('period', 'week')->has('rows', 1));
 });
 

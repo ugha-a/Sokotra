@@ -14,10 +14,16 @@ beforeEach(function () {
     app(RefreshTraderStats::class)->handle($this->trader);
 });
 
-it('shows a public trader profile with stats, equity curve and signals', function () {
-    Signal::factory()->for($this->trader, 'trader')->create(['visibility' => 'premium']);
+it('requires login to view a trader profile', function () {
+    $this->get(route('traders.show', $this->profile->slug))->assertRedirect(route('login'));
+});
 
-    $this->get(route('traders.show', $this->profile->slug))
+it('shows a trader profile with stats, equity curve and signals for members', function () {
+    Signal::factory()->for($this->trader, 'trader')->create(['visibility' => 'premium']);
+    $member = userWithRoles(Role::Member);
+
+    $this->actingAs($member)
+        ->get(route('traders.show', $this->profile->slug))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('public/traders/show')
@@ -44,6 +50,7 @@ it('knows when the viewer follows the trader', function () {
 
 it('hides profiles of traders who are not approved', function () {
     $applicant = TraderProfile::factory()->create();
+    $member = userWithRoles(Role::Member);
 
-    $this->get(route('traders.show', $applicant->slug))->assertNotFound();
+    $this->actingAs($member)->get(route('traders.show', $applicant->slug))->assertNotFound();
 });

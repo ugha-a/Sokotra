@@ -142,6 +142,22 @@ Update lewat `PUT /admin/settings` dengan payload bersarang per grup: `settings[
 | payment.account_number           | 1234567890   | Nomor rekening tujuan transfer admin                                     |
 | payment.account_holder           | PT Sokotra.. | Nama pemilik rekening tujuan admin                                       |
 | payment.instructions             | teks         | Instruksi pembayaran transfer bank                                       |
+| landing.hero_badge               | teks         | Lencana tagline kecil di atas judul hero                                 |
+| landing.hero_title               | teks         | Judul utama hero landing page                                            |
+| landing.hero_subtitle            | teks         | Subjudul / deskripsi utama hero                                          |
+| landing.hero_cta_primary         | teks         | Teks tombol CTA utama (daftar gratis)                                    |
+| landing.hero_cta_secondary       | teks         | Teks tombol CTA kedua (pelajari cara kerja)                              |
+| landing.features_title           | teks         | Judul section 4 pilar / keunggulan                                       |
+| landing.features_subtitle        | teks         | Subjudul section 4 pilar / keunggulan                                    |
+| landing.step1_title, step1_desc  | teks         | Judul dan deskripsi langkah 1 cara kerja                                 |
+| landing.step2_title, step2_desc  | teks         | Judul dan deskripsi langkah 2 cara kerja                                 |
+| landing.step3_title, step3_desc  | teks         | Judul dan deskripsi langkah 3 cara kerja                                 |
+| landing.broker_title, desc       | teks         | Judul dan deskripsi komitmen kepatuhan broker Bappebti                   |
+| landing.cta_banner_title, desc   | teks         | Judul dan deskripsi banner ajakan pendaftaran di bawah                   |
+| landing.cta_banner_button        | teks         | Teks tombol banner ajakan pendaftaran                                    |
+| landing.faq_q1, faq_a1           | teks         | Pertanyaan dan jawaban FAQ 1                                             |
+| landing.faq_q2, faq_a2           | teks         | Pertanyaan dan jawaban FAQ 2                                             |
+| landing.faq_q3, faq_a3           | teks         | Pertanyaan dan jawaban FAQ 3                                             |
 
 ## 8. Brokers — `brokers`
 

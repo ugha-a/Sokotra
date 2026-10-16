@@ -21,14 +21,21 @@ beforeEach(function () {
     $this->buyer = userWithRoles(Role::Member);
 });
 
-it('lists only published products publicly', function () {
+it('requires login to view marketplace', function () {
+    $this->get(route('marketplace.index'))->assertRedirect(route('login'));
+    $this->get(route('marketplace.show', $this->product->slug))->assertRedirect(route('login'));
+});
+
+it('lists only published products for members', function () {
     Product::factory()->for($this->seller, 'seller')->create(['status' => ProductStatus::Draft]);
 
-    $this->get(route('marketplace.index'))
+    $this->actingAs($this->buyer)
+        ->get(route('marketplace.index'))
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page->component('public/marketplace/index')->has('products.data', 1)->has('categories'));
 
-    $this->get(route('marketplace.show', $this->product->slug))
+    $this->actingAs($this->buyer)
+        ->get(route('marketplace.show', $this->product->slug))
         ->assertInertia(fn (Assert $page) => $page
             ->component('public/marketplace/show')
             ->where('product.name', $this->product->name)
@@ -38,7 +45,9 @@ it('lists only published products publicly', function () {
 it('hides unpublished products', function () {
     $draft = Product::factory()->for($this->seller, 'seller')->create(['status' => ProductStatus::Draft]);
 
-    $this->get(route('marketplace.show', $draft->slug))->assertNotFound();
+    $this->actingAs($this->buyer)
+        ->get(route('marketplace.show', $draft->slug))
+        ->assertNotFound();
 });
 
 it('buys a product, then unlocks the license, download and seller income', function () {

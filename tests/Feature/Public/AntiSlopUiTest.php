@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\Ranking\RefreshTraderStats;
+use App\Enums\Role;
 use App\Models\TraderProfile;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -43,7 +44,10 @@ it('delivers high data density props on landing page without arbitrary decoratio
 });
 
 it('delivers structured multi-metric leaderboard data without decorative noise', function () {
-    $response = $this->get(route('leaderboard'));
+    $this->get(route('leaderboard'))->assertRedirect(route('login'));
+
+    $member = userWithRoles(Role::Member);
+    $response = $this->actingAs($member)->get(route('leaderboard'));
 
     $response->assertOk()
         ->assertInertia(fn (Assert $page) => $page

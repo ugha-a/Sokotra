@@ -13,11 +13,15 @@ class Settings
 {
     public const CACHE_KEY = 'platform_settings';
 
-    public static function get(string $key): mixed
+    public static function get(string $key, mixed ...$default): mixed
     {
         $settings = self::all();
 
         if (! array_key_exists($key, $settings)) {
+            if ($default !== []) {
+                return $default[0];
+            }
+
             throw new InvalidArgumentException("Unknown platform setting [{$key}].");
         }
 

@@ -50,15 +50,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 Route::get('pages/{slug}', [ContentPageController::class, 'show'])->name('pages.show');
-Route::get('leaderboard', LeaderboardController::class)->name('leaderboard');
-Route::get('traders/{profile:slug}', [TraderProfileController::class, 'show'])->name('traders.show');
 Route::post('webhooks/payments/{gateway}', [PaymentController::class, 'webhook'])->name('webhooks.payments');
-Route::get('brokers', [BrokerController::class, 'index'])->name('brokers.index');
-Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
-Route::get('marketplace/{product:slug}', [MarketplaceController::class, 'show'])->name('marketplace.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('dashboard', MemberDashboardController::class)->name('dashboard');
+    Route::get('leaderboard', LeaderboardController::class)->name('leaderboard');
+    Route::get('traders/{profile:slug}', [TraderProfileController::class, 'show'])->name('traders.show');
+    Route::get('brokers', [BrokerController::class, 'index'])->name('brokers.index');
+    Route::get('marketplace', [MarketplaceController::class, 'index'])->name('marketplace.index');
+    Route::get('marketplace/{product:slug}', [MarketplaceController::class, 'show'])->name('marketplace.show');
     Route::get('following', [FollowingController::class, 'index'])->name('following.index');
     Route::post('traders/{profile}/follow', [FollowController::class, 'store'])->middleware('throttle:follows')->name('traders.follow');
     Route::delete('traders/{profile}/follow', [FollowController::class, 'destroy'])->middleware('throttle:follows')->name('traders.unfollow');

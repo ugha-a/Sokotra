@@ -4,28 +4,31 @@
 
 ### Publik (tanpa login) — `PublicLayout`
 
-| URL                   | Halaman                                                                                                                     |
-| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `/`                   | Landing: value proposition, top trader minggu ini, cara kerja, broker partner, disclaimer                                   |
-| `/leaderboard`        | Leaderboard (Mingguan/Bulanan/All-time, filter instrumen), tab Most Consistent & Featured                                   |
-| `/traders/{slug}`     | Profil trader: StatsGrid, EquityCurve, riwayat sinyal (closed lengkap, premium terbuka terkunci), Follow, Langganan, produk |
-| `/marketplace`        | Daftar produk (filter kategori, platform, harga, rating)                                                                    |
-| `/marketplace/{slug}` | Detail produk                                                                                                               |
-| `/brokers`            | Daftar broker partner                                                                                                       |
-| `/pages/{slug}`       | S&K, kebijakan privasi, disclaimer risiko, FAQ                                                                              |
+Halaman depan difokuskan sebagai Landing Page konversi dengan konten yang dapat dikustomisasi admin dari Admin Settings. Menu internal platform diproteksi login sehingga data sinyal, performa, dan produk eksklusif hanya dapat diakses setelah user mendaftar/login.
+
+| URL             | Halaman                                                                                                |
+| --------------- | ------------------------------------------------------------------------------------------------------ |
+| `/`             | Landing: value proposition, 4 pilar transparansi, cara kerja, teaser fitur member, FAQ, dan disclaimer |
+| `/pages/{slug}` | Halaman legal & kepatuhan: S&K, kebijakan privasi, disclaimer risiko, FAQ                              |
+| `/login`        | Masuk akun                                                                                             |
+| `/register`     | Registrasi member                                                                                      |
 
 ### Member (login) — sidebar
 
-| Menu           | URL                                                                           |
-| -------------- | ----------------------------------------------------------------------------- |
-| Beranda        | `/dashboard` (feed sinyal dari trader yang di-follow/di-subscribe, ringkasan) |
-| Sinyal         | `/signals` (feed semua sinyal free + premium terkunci, filter)                |
-| Trader Diikuti | `/following`                                                                  |
-| Langganan Saya | `/subscriptions`                                                              |
-| Pembelian Saya | `/purchases` (download + lisensi)                                             |
-| Akun Broker    | `/broker-accounts`                                                            |
-| Notifikasi     | `/notifications`                                                              |
-| Jadi Trader    | `/become-trader` (hanya jika belum trader)                                    |
+| Menu           | URL                                                                                             |
+| -------------- | ----------------------------------------------------------------------------------------------- |
+| Beranda        | `/dashboard` (feed sinyal dari trader yang di-follow/di-subscribe, ringkasan)                   |
+| Sinyal         | `/signals` (feed semua sinyal free + premium terkunci, filter)                                  |
+| Leaderboard    | `/leaderboard` (peringkat trader berdasarkan skor multi-metrik, kurva R, win rate, konsistensi) |
+| Profil Trader  | `/traders/{slug}` (StatsGrid, EquityCurve, riwayat sinyal, follow, langganan channel)           |
+| Marketplace    | `/marketplace`, `/marketplace/{slug}` (katalog indikator & EA terverifikasi)                    |
+| Broker Legal   | `/brokers` (daftar broker partner resmi Bappebti)                                               |
+| Trader Diikuti | `/following`                                                                                    |
+| Langganan Saya | `/subscriptions`                                                                                |
+| Pembelian Saya | `/purchases` (download + lisensi)                                                               |
+| Akun Broker    | `/broker-accounts` (hubungkan akun trading MT4/MT5)                                             |
+| Notifikasi     | `/notifications`                                                                                |
+| Jadi Trader    | `/become-trader` (hanya jika belum trader)                                                      |
 
 ### Trader (tambahan) — grup "Trader"
 

@@ -9,7 +9,7 @@ export default function ContentPage({ page }: Props) {
     return (
         <>
             <Head title={page.title} />
-            <article className="mx-auto grid max-w-3xl gap-4">
+            <article className="mx-auto grid max-w-3xl gap-4 px-4 py-12">
                 <h1 className="text-2xl font-semibold tracking-tight">
                     {page.title}
                 </h1>
