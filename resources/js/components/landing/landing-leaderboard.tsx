@@ -163,7 +163,7 @@ export function LandingLeaderboard({
                                                             <div className="text-xs text-[#787b86]">
                                                                 {row.trader
                                                                     .is_featured
-                                                                    ? 'Analis Pilihan Sokotra'
+                                                                    ? 'Analis Pilihan Sotra'
                                                                     : 'Strategi Swing & Intraday'}
                                                             </div>
                                                         </div>

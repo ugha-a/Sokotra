@@ -51,7 +51,7 @@ export default function BrokerAccounts({
             <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 <Heading
                     title="Akun Broker"
-                    description="Hubungkan akun trading yang kamu buka lewat Sokotra. Admin mencocokkannya dengan laporan broker."
+                    description="Hubungkan akun trading yang kamu buka lewat Sotra. Admin mencocokkannya dengan laporan broker."
                 />
                 <div className="grid gap-6 lg:grid-cols-2">
                     <form

@@ -32,7 +32,7 @@ it('allows admin to edit landing page content and reflects changes on the home p
         ->put(route('admin.settings.update'), [
             'settings' => [
                 'landing' => [
-                    'hero_title' => 'Judul Baru Landing Page Sokotra',
+                    'hero_title' => 'Judul Baru Landing Page Sotra',
                     'hero_subtitle' => 'Subjudul baru yang dikustomisasi oleh admin.',
                 ],
             ],
@@ -44,6 +44,6 @@ it('allows admin to edit landing page content and reflects changes on the home p
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('public/home')
-            ->where('landing.hero_title', 'Judul Baru Landing Page Sokotra')
+            ->where('landing.hero_title', 'Judul Baru Landing Page Sotra')
             ->where('landing.hero_subtitle', 'Subjudul baru yang dikustomisasi oleh admin.'));
 });

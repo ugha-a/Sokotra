@@ -29,7 +29,7 @@ class TraderApplicationReviewed extends Notification
         if ($this->profile->status === TraderStatus::Approved) {
             return $message
                 ->subject('Aplikasi trader kamu disetujui')
-                ->line('Selamat, kamu sekarang trader di Sokotra dan bisa mulai memposting analisa.')
+                ->line('Selamat, kamu sekarang trader di Sotra dan bisa mulai memposting analisa.')
                 ->line('Setiap sinyal dinilai otomatis dari harga pasar dan masuk ke statistik kamu.')
                 ->action('Buka Dashboard Trader', route('trader.dashboard'));
         }

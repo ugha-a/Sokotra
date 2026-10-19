@@ -14,7 +14,7 @@ export default function Brokers({ brokers }: { brokers: BrokerCardData[] }) {
             <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 <Heading
                     title="Broker Partner Resmi"
-                    description="Sokotra hanya bermitra dengan pialang berjangka resmi berizin Bappebti. Sokotra tidak pernah mengelola atau menampung dana trading kamu."
+                    description="Sotra hanya bermitra dengan pialang berjangka resmi berizin Bappebti. Sotra tidak pernah mengelola atau menampung dana trading kamu."
                 />
 
                 {/* Institutional Security & Compliance Bar */}
@@ -39,7 +39,7 @@ export default function Brokers({ brokers }: { brokers: BrokerCardData[] }) {
                             </p>
                             <p className="text-[11px] leading-relaxed text-muted-foreground">
                                 Dana trading tersimpan aman di bank kustodian
-                                terpisah, bukan di pihak Sokotra.
+                                terpisah, bukan di pihak Sotra.
                             </p>
                         </div>
                     </div>

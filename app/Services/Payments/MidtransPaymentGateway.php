@@ -90,9 +90,9 @@ class MidtransPaymentGateway implements PaymentGateway
     private function itemName(Payment $payment): string
     {
         return match (true) {
-            $payment->payable instanceof Subscription => "Langganan Sokotra {$payment->payable->months} bulan",
-            $payment->payable instanceof Order => "Sokotra: {$payment->payable->product->name}",
-            default => 'Pembayaran Sokotra',
+            $payment->payable instanceof Subscription => "Langganan Sotra {$payment->payable->months} bulan",
+            $payment->payable instanceof Order => "Sotra: {$payment->payable->product->name}",
+            default => 'Pembayaran Sotra',
         };
     }
 }

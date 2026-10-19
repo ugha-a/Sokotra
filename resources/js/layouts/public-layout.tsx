@@ -155,8 +155,8 @@ export default function PublicLayout({
                     </p>
                     <div className="flex flex-wrap items-center justify-between border-t border-[#2a2e39] pt-3 text-xs text-[#787b86]">
                         <span>
-                            Hak Cipta © 2026 Sokotra. Ekosistem Edukasi &
-                            Analisa Trading Terbuka.
+                            Hak Cipta © 2026 Sotra. Ekosistem Edukasi & Analisa
+                            Trading Terbuka.
                         </span>
                         <span>Kemitraan Broker Berizin Resmi Bappebti</span>
                     </div>

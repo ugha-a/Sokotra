@@ -63,7 +63,7 @@
     --font-mono:
         'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-    /* Sokotra semantic tokens — see docs/ui-ux/design-system.md */
+    /* Sotra semantic tokens — see docs/ui-ux/design-system.md */
     --color-brand: var(--brand);
     --color-brand-foreground: var(--brand-foreground);
     --color-profit: var(--profit);

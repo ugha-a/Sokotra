@@ -105,7 +105,7 @@ export default function Register({ passwordRules }: Props) {
                                     >
                                         Saya menyetujui syarat & ketentuan dan
                                         memahami bahwa trading berisiko tinggi
-                                        serta analisa di Sokotra tidak menjamin
+                                        serta analisa di Sotra tidak menjamin
                                         profit.
                                     </Label>
                                 </div>
@@ -137,7 +137,7 @@ export default function Register({ passwordRules }: Props) {
 }
 
 Register.layout = {
-    title: 'Buat akun Sokotra',
+    title: 'Buat akun Sotra',
     description:
         'Gratis. Ikuti trader, lihat sinyal, dan belajar dari track record yang dinilai otomatis.',
 };
