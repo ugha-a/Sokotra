@@ -44,7 +44,7 @@ export function LandingAnalystPitch() {
 
                         <p className="mt-4 text-base leading-relaxed text-[#b2b5be] sm:text-lg">
                             Hentikan kerepotan mengelola grup VIP manual, bukti
-                            transfer palsu, dan kebocoran sinyal. Di Sotra,
+                            transfer palsu, dan kebocoran sinyal. Di SooTa,
                             reputasi Anda diaudit secara profesional layaknya
                             Darwinex, dan sistem kami menangani langganan
                             bulanan Anda layaknya Patreon.

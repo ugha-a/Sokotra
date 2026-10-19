@@ -25,18 +25,18 @@ export function LandingFaq({ faq = {}, ctaBanner = {} }: LandingFaqProps) {
 
     const questions = [
         {
-            q: faq.q1 || 'Apakah Sotra menjamin keuntungan dalam trading?',
+            q: faq.q1 || 'Apakah SooTa menjamin keuntungan dalam trading?',
             a:
                 faq.a1 ||
-                'Tidak ada jaminan profit dalam trading. Sotra berkomitmen memberikan transparansi penuh di mana setiap sinyal dan riwayat loss dicatat apa adanya agar Anda dapat membuat keputusan berbasis data obyektif.',
+                'Tidak ada jaminan profit dalam trading. SooTa berkomitmen memberikan transparansi penuh di mana setiap sinyal dan riwayat loss dicatat apa adanya agar Anda dapat membuat keputusan berbasis data obyektif.',
         },
         {
             q:
                 faq.q2 ||
-                'Apakah Sotra menghimpun dana atau memegang uang trading saya?',
+                'Apakah SooTa menghimpun dana atau memegang uang trading saya?',
             a:
                 faq.a2 ||
-                'Tidak. Sotra bukan manajer investasi dan tidak mengelola dana nasabah. Anda bertransaksi langsung pada pialang berjangka resmi rekanan yang diawasi oleh Bappebti melalui segregated account.',
+                'Tidak. SooTa bukan manajer investasi dan tidak mengelola dana nasabah. Anda bertransaksi langsung pada pialang berjangka resmi rekanan yang diawasi oleh Bappebti melalui segregated account.',
         },
         {
             q:
@@ -68,7 +68,7 @@ export function LandingFaq({ faq = {}, ctaBanner = {} }: LandingFaqProps) {
                         <span>Pertanyaan Umum</span>
                     </div>
                     <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                        Ketahui Lebih Banyak tentang Standar Sotra
+                        Ketahui Lebih Banyak tentang Standar SooTa
                     </h2>
                     <p className="mx-auto mt-2 max-w-xl text-sm text-[#b2b5be]">
                         Semua informasi penting terkait sistem kerja platform,

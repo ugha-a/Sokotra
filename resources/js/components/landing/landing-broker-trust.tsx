@@ -52,7 +52,7 @@ export function LandingBrokerTrust({
                         Standar Broker Teregulasi & Perlindungan Nasabah
                     </h2>
                     <p className="mx-auto mt-2 max-w-2xl text-sm leading-relaxed text-[#787b86] sm:text-base">
-                        Sotra tidak pernah menyimpan dana trading Anda. Anda
+                        SooTa tidak pernah menyimpan dana trading Anda. Anda
                         membuka akun langsung pada pialang berjangka resmi yang
                         mematuhi hukum Republik Indonesia.
                     </p>
@@ -116,7 +116,7 @@ export function LandingBrokerTrust({
                                 Non-Custodial Technology
                             </h5>
                             <p className="mt-1 text-xs leading-relaxed text-[#787b86]">
-                                Sotra adalah penyedia infrastruktur informasi
+                                SooTa adalah penyedia infrastruktur informasi
                                 dan perangkat lunak sinyal, bukan penghimpun
                                 dana investasi masyarakat.
                             </p>

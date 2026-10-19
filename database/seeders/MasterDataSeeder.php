@@ -24,7 +24,7 @@ use Illuminate\Database\Seeder;
  */
 class MasterDataSeeder extends Seeder
 {
-    public const RISK_DISCLAIMER = 'Trading forex, emas, dan instrumen derivatif lainnya berisiko tinggi dan dapat menyebabkan kehilangan seluruh modal. Kinerja masa lalu tidak menjamin hasil di masa depan. Analisa di Sotra adalah pendapat masing-masing trader, bukan nasihat investasi. Keputusan dan risiko trading sepenuhnya ada pada kamu.';
+    public const RISK_DISCLAIMER = 'Trading forex, emas, dan instrumen derivatif lainnya berisiko tinggi dan dapat menyebabkan kehilangan seluruh modal. Kinerja masa lalu tidak menjamin hasil di masa depan. Analisa di SooTa adalah pendapat masing-masing trader, bukan nasihat investasi. Keputusan dan risiko trading sepenuhnya ada pada kamu.';
 
     public function run(): void
     {
@@ -221,7 +221,7 @@ class MasterDataSeeder extends Seeder
 
             [SettingGroup::Payment, 'payment.bank_name', SettingType::Text, 'Bank Central Asia (BCA)', 'Nama Bank Tujuan Transfer', null],
             [SettingGroup::Payment, 'payment.account_number', SettingType::Text, '1234567890', 'Nomor Rekening Tujuan', null],
-            [SettingGroup::Payment, 'payment.account_holder', SettingType::Text, 'PT Sotra Teknologi Indonesia', 'Nama Pemilik Rekening', null],
+            [SettingGroup::Payment, 'payment.account_holder', SettingType::Text, 'PT SooTa Teknologi Indonesia', 'Nama Pemilik Rekening', null],
             [SettingGroup::Payment, 'payment.instructions', SettingType::Text, 'Silakan transfer tepat sesuai nominal yang tertera. Cantumkan kode pembayaran pada berita transfer dan unggah bukti transfer setelah selesai.', 'Instruksi Pembayaran', null],
 
             [SettingGroup::Landing, 'landing.hero_badge', SettingType::Text, 'Platform Edukasi & Analisa Trading Independen', 'Hero - Lencana Tagline', null],
@@ -230,22 +230,22 @@ class MasterDataSeeder extends Seeder
             [SettingGroup::Landing, 'landing.hero_cta_primary', SettingType::Text, 'Daftar Sekarang — Gratis', 'Hero - Teks Tombol CTA Utama', null],
             [SettingGroup::Landing, 'landing.hero_cta_secondary', SettingType::Text, 'Pelajari Cara Kerja', 'Hero - Teks Tombol CTA Kedua', null],
             [SettingGroup::Landing, 'landing.features_title', SettingType::Text, 'Standar Transparansi & Manajemen Risiko', 'Keunggulan - Judul Bagian', null],
-            [SettingGroup::Landing, 'landing.features_subtitle', SettingType::Text, 'Prinsip utama yang membedakan Sotra: kejujuran data, kepatuhan regulasi, dan tanpa janji palsu.', 'Keunggulan - Subjudul', null],
+            [SettingGroup::Landing, 'landing.features_subtitle', SettingType::Text, 'Prinsip utama yang membedakan SooTa: kejujuran data, kepatuhan regulasi, dan tanpa janji palsu.', 'Keunggulan - Subjudul', null],
             [SettingGroup::Landing, 'landing.step1_title', SettingType::Text, '1. Buat Akun Gratis', 'Cara Kerja - Langkah 1 (Judul)', null],
-            [SettingGroup::Landing, 'landing.step1_desc', SettingType::Text, 'Daftar akun member dalam hitungan menit untuk mulai menjelajahi ekosistem edukasi dan analisa Sotra.', 'Cara Kerja - Langkah 1 (Deskripsi)', null],
+            [SettingGroup::Landing, 'landing.step1_desc', SettingType::Text, 'Daftar akun member dalam hitungan menit untuk mulai menjelajahi ekosistem edukasi dan analisa SooTa.', 'Cara Kerja - Langkah 1 (Deskripsi)', null],
             [SettingGroup::Landing, 'landing.step2_title', SettingType::Text, '2. Akses Analisa & Leaderboard', 'Cara Kerja - Langkah 2 (Judul)', null],
             [SettingGroup::Landing, 'landing.step2_desc', SettingType::Text, 'Login untuk melihat sinyal berargumen teknikal, performa trader teratas dengan statistik jujur, dan tools marketplace.', 'Cara Kerja - Langkah 2 (Deskripsi)', null],
             [SettingGroup::Landing, 'landing.step3_title', SettingType::Text, '3. Trading Mandiri & Disiplin', 'Cara Kerja - Langkah 3 (Judul)', null],
             [SettingGroup::Landing, 'landing.step3_desc', SettingType::Text, 'Terapkan analisa di broker mitra berizin resmi Bappebti dengan kalkulasi lot terukur dan rasio Risk/Reward minimal 1:1.', 'Cara Kerja - Langkah 3 (Deskripsi)', null],
             [SettingGroup::Landing, 'landing.broker_title', SettingType::Text, 'Keamanan Dana & Kemitraan Broker Berizin Resmi Bappebti', 'Broker - Judul Bagian', null],
-            [SettingGroup::Landing, 'landing.broker_desc', SettingType::Text, 'Sotra tidak pernah menghimpun, mengelola, atau menerima deposit dana trading kamu. Seluruh eksekusi dan penempatan dana dilakukan secara langsung pada broker partner berizin resmi Bappebti.', 'Broker - Deskripsi', null],
+            [SettingGroup::Landing, 'landing.broker_desc', SettingType::Text, 'SooTa tidak pernah menghimpun, mengelola, atau menerima deposit dana trading kamu. Seluruh eksekusi dan penempatan dana dilakukan secara langsung pada broker partner berizin resmi Bappebti.', 'Broker - Deskripsi', null],
             [SettingGroup::Landing, 'landing.cta_banner_title', SettingType::Text, 'Siap Tingkatkan Kualitas & Kedisiplinan Trading Kamu?', 'CTA Banner - Judul', null],
             [SettingGroup::Landing, 'landing.cta_banner_desc', SettingType::Text, 'Daftar sekarang untuk membuka akses penuh ke leaderboard, sinyal real-time, dan produk marketplace.', 'CTA Banner - Deskripsi', null],
             [SettingGroup::Landing, 'landing.cta_banner_button', SettingType::Text, 'Daftar Akun Member Sekarang', 'CTA Banner - Teks Tombol', null],
-            [SettingGroup::Landing, 'landing.faq_q1', SettingType::Text, 'Apakah Sotra menjanjikan keuntungan atau profit pasti?', 'FAQ 1 - Pertanyaan', null],
-            [SettingGroup::Landing, 'landing.faq_a1', SettingType::Text, 'Tidak. Sotra menentang keras janji profit palsu. Trading instrumen derivatif berisiko tinggi. Kami menyediakan track record transparan agar kamu belajar dari data objektif.', 'FAQ 1 - Jawaban', null],
-            [SettingGroup::Landing, 'landing.faq_q2', SettingType::Text, 'Apakah Sotra mengelola atau menerima dana deposit pengguna?', 'FAQ 2 - Pertanyaan', null],
-            [SettingGroup::Landing, 'landing.faq_a2', SettingType::Text, 'Tidak sama sekali. Sotra bukan broker dan tidak menghimpun dana pengguna. Dana trading kamu tetap berada di akun terpisah broker resmi berizin Bappebti.', 'FAQ 2 - Jawaban', null],
+            [SettingGroup::Landing, 'landing.faq_q1', SettingType::Text, 'Apakah SooTa menjanjikan keuntungan atau profit pasti?', 'FAQ 1 - Pertanyaan', null],
+            [SettingGroup::Landing, 'landing.faq_a1', SettingType::Text, 'Tidak. SooTa menentang keras janji profit palsu. Trading instrumen derivatif berisiko tinggi. Kami menyediakan track record transparan agar kamu belajar dari data objektif.', 'FAQ 1 - Jawaban', null],
+            [SettingGroup::Landing, 'landing.faq_q2', SettingType::Text, 'Apakah SooTa mengelola atau menerima dana deposit pengguna?', 'FAQ 2 - Pertanyaan', null],
+            [SettingGroup::Landing, 'landing.faq_a2', SettingType::Text, 'Tidak sama sekali. SooTa bukan broker dan tidak menghimpun dana pengguna. Dana trading kamu tetap berada di akun terpisah broker resmi berizin Bappebti.', 'FAQ 2 - Jawaban', null],
             [SettingGroup::Landing, 'landing.faq_q3', SettingType::Text, 'Bagaimana cara melihat sinyal dan performa lengkap trader?', 'FAQ 3 - Pertanyaan', null],
             [SettingGroup::Landing, 'landing.faq_a3', SettingType::Text, 'Seluruh data internal platform seperti Sinyal, Leaderboard, dan Profil Analis dapat diakses lengkap setelah kamu mendaftar dan login ke dalam platform.', 'FAQ 3 - Jawaban', null],
         ];

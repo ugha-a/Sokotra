@@ -55,7 +55,7 @@ type Props = {
 const TABS = [
     { value: 'score', label: 'Peringkat Skor' },
     { value: 'consistent', label: 'Paling Konsisten' },
-    { value: 'featured', label: 'Pilihan Sotra' },
+    { value: 'featured', label: 'Pilihan SooTa' },
 ] as const;
 
 const PERIODS = [
@@ -148,7 +148,7 @@ export default function Leaderboard({
                             <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
                                 Peringkat objektif dihitung transparan dari
                                 sinyal riil yang dievaluasi langsung oleh engine
-                                harga pasar Sotra. Minimal {minSignals} sinyal
+                                harga pasar SooTa. Minimal {minSignals} sinyal
                                 selesai dinilai.
                             </p>
                         </div>
@@ -356,7 +356,7 @@ export default function Leaderboard({
                                             </strong>{' '}
                                             yang dinilai otomatis oleh engine
                                             pasar untuk masuk daftar peringkat
-                                            resmi Sotra dan membuka fitur
+                                            resmi SooTa dan membuka fitur
                                             monetisasi.
                                         </p>
                                         {/* Progress Bar */}
@@ -589,7 +589,7 @@ export default function Leaderboard({
                                     <th
                                         scope="col"
                                         className="hidden px-3 py-2.5 text-right font-medium sm:table-cell"
-                                        title="Skor bobot algoritma transparansi Sotra"
+                                        title="Skor bobot algoritma transparansi SooTa"
                                     >
                                         {tab === 'consistent'
                                             ? 'Konsistensi'
@@ -686,7 +686,7 @@ export default function Leaderboard({
                                                     )}
                                                     {row.trader.is_featured && (
                                                         <span
-                                                            title="Pilihan Sotra"
+                                                            title="Pilihan SooTa"
                                                             className="flex items-center text-amber-500"
                                                         >
                                                             <Star className="size-3 fill-amber-500" />

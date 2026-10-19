@@ -6,7 +6,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 it('renders published content pages from safe markdown', function () {
     ContentPage::where('slug', 'faq')->update([
         'is_published' => true,
-        'body' => "## Apa itu Sotra?\n\nPlatform **analisa** trader.\n\n<script>alert('x')</script>",
+        'body' => "## Apa itu SooTa?\n\nPlatform **analisa** trader.\n\n<script>alert('x')</script>",
     ]);
 
     $this->get(route('pages.show', 'faq'))
@@ -14,7 +14,7 @@ it('renders published content pages from safe markdown', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('public/page')
             ->where('page.title', 'FAQ')
-            ->where('page.html', fn (string $html) => str_contains($html, '<h2>Apa itu Sotra?</h2>')
+            ->where('page.html', fn (string $html) => str_contains($html, '<h2>Apa itu SooTa?</h2>')
                 && str_contains($html, '<strong>analisa</strong>')
                 && ! str_contains($html, '<script>')));
 });

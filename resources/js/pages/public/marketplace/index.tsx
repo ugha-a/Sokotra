@@ -129,7 +129,7 @@ export default function Marketplace({
             <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 <Heading
                     title="Marketplace Indikator & EA"
-                    description="Katalog alat analisis teknikal, script otomatisasi, dan Expert Advisor karya trader Sotra. Setiap produk dikurasi dan diawasi sebelum tayang."
+                    description="Katalog alat analisis teknikal, script otomatisasi, dan Expert Advisor karya trader SooTa. Setiap produk dikurasi dan diawasi sebelum tayang."
                 />
 
                 {/* MQL5 + TradingView Benchmark: Trust & Standard Bar */}
@@ -304,7 +304,7 @@ export default function Marketplace({
                             <p className="max-w-sm text-xs text-muted-foreground">
                                 {searchQuery || priceFilter !== 'all'
                                     ? 'Coba atur ulang kata kunci pencarian atau sesuaikan filter kategori dan platform.'
-                                    : 'Katalog produk sedang dalam kurasi oleh tim Sotra. Periksa kembali nanti.'}
+                                    : 'Katalog produk sedang dalam kurasi oleh tim SooTa. Periksa kembali nanti.'}
                             </p>
                         </div>
                         {(searchQuery || priceFilter !== 'all') && (

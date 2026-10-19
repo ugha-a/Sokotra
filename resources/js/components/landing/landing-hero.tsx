@@ -146,7 +146,7 @@ export function LandingHero({
                                         <div className="h-3 w-3 rounded-full bg-[#089981]/80" />
                                     </div>
                                     <span className="ml-2 font-mono text-xs font-semibold text-white">
-                                        SOTRA_PRO_TERMINAL
+                                        SOOTA_PRO_TERMINAL
                                     </span>
                                 </div>
                                 <div className="flex items-center gap-2">

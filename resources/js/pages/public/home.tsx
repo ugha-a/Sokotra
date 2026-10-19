@@ -57,7 +57,7 @@ export default function Home({
 
     return (
         <div className="w-full">
-            <Head title="Sotra — Platform Analisa & Sinyal Trading Terverifikasi" />
+            <Head title="SooTa — Platform Analisa & Sinyal Trading Terverifikasi" />
 
             {/* 1. Hero Section (Inspirasi: TradingView - Show Don't Tell, Dark Mode, Workstation Mockup, Dual CTAs) */}
             <LandingHero

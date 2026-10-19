@@ -43,7 +43,7 @@ export default function TraderProfile({
 }: Props) {
     return (
         <>
-            <Head title={`Profil Analis ${trader.name} - Sotra`} />
+            <Head title={`Profil Analis ${trader.name} - SooTa`} />
             <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 {/* eToro & Darwinex Benchmark: Verified Trader Header Card */}
                 <header className="rounded-xl border border-border bg-card p-5">
@@ -70,7 +70,7 @@ export default function TraderProfile({
                                     {trader.is_featured && (
                                         <span className="inline-flex items-center gap-1 rounded-md border border-premium/30 bg-premium/10 px-2 py-0.5 text-xs font-semibold text-premium">
                                             <Star className="size-3.5 fill-premium" />{' '}
-                                            Pilihan Sotra
+                                            Pilihan SooTa
                                         </span>
                                     )}
                                 </div>

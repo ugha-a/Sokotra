@@ -34,7 +34,7 @@ export default function SignalFeed({
             <div className="flex h-full flex-1 flex-col gap-6 p-4 md:p-6">
                 <Heading
                     title="Sinyal"
-                    description="Semua analisa dari trader Sotra. Hasilnya dinilai otomatis dari harga pasar, termasuk yang kalah."
+                    description="Semua analisa dari trader SooTa. Hasilnya dinilai otomatis dari harga pasar, termasuk yang kalah."
                 />
                 <RiskDisclaimer text={riskDisclaimer} />
                 <SignalFilters

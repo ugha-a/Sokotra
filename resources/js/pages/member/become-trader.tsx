@@ -200,7 +200,7 @@ export default function BecomeTrader({
             <Head title="Jadi Trader" />
             <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 p-4 md:p-6">
                 <Heading
-                    title="Jadi Trader di Sotra"
+                    title="Jadi Trader di SooTa"
                     description="Posting analisa, bangun track record yang dinilai otomatis dari harga pasar, dan dapatkan penghasilan dari kinerja dan followers kamu."
                 />
 

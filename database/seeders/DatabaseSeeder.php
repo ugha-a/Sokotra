@@ -36,7 +36,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RoleSeeder::class);
 
-        $this->demoUser('Admin Sotra', 'admin@sokotra.test', Role::Member, Role::Admin);
+        $this->demoUser('Admin SooTa', 'admin@sokotra.test', Role::Member, Role::Admin);
         $this->demoUser('Member Demo', 'member@sokotra.test', Role::Member);
 
         $trader = $this->demoUser('Trader Demo', 'trader@sokotra.test', Role::Member, Role::Trader);

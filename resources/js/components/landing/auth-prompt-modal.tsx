@@ -50,7 +50,7 @@ export function AuthPromptModal({
                 </h3>
 
                 <p className="mt-2 text-sm leading-relaxed text-[#b2b5be]">
-                    Buat akun Sotra gratis untuk melihat parameter entry, target
+                    Buat akun SooTa gratis untuk melihat parameter entry, target
                     Stop Loss, Take Profit, dan menghubungkan copy trade
                     langsung ke akun broker legal Anda.
                 </p>
